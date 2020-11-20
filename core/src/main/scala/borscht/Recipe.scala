@@ -2,8 +2,8 @@ package borscht
 
 import java.nio.file.Path
 
-class Engine(provider: ConfigProvider) extends ConfigProvider:
-  given Engine = this
+class Recipe(provider: ConfigProvider) extends ConfigProvider:
+  given Recipe = this
 
   override def parse(content: String): ObjectNode = provider.parse(content)
 

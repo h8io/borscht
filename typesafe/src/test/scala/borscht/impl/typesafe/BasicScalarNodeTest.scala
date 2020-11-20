@@ -1,6 +1,6 @@
 package borscht.impl.typesafe
 
-import borscht.{Engine, ObjectNode, ScalarNode}
+import borscht.{Recipe, ObjectNode, ScalarNode}
 import borscht.parsers.{given _}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -8,8 +8,8 @@ import org.scalatest.matchers.should.Matchers
 import scala.language.implicitConversions
 
 class BasicScalarNodeTest extends AnyFlatSpec with Matchers:
-  private val engine = Engine(provider = TypesafeConfigProvider())
-  import engine.{given _}
+  private val recipe = Recipe(provider = TypesafeConfigProvider())
+  import recipe.{given _}
   
   "Config" should "provide a string value" in {
     cfg"key: value".get[String]("key") shouldEqual "value"

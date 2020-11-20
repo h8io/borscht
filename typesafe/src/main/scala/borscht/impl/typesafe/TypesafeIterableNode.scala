@@ -1,6 +1,6 @@
 package borscht.impl.typesafe
 
-import borscht.{Engine, IterableNode, Node}
+import borscht.{Recipe, IterableNode, Node}
 import com.typesafe.config.ConfigList
 
 import scala.jdk.CollectionConverters._

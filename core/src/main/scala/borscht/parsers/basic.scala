@@ -2,14 +2,14 @@ package borscht.parsers
 
 import java.lang.{Boolean => jBoolean}
 
-import borscht.{Engine, IterableNode, ObjectNode, Parser, ScalarNode, UnparsableValueException}
+import borscht.{Recipe, IterableNode, ObjectNode, Parser, ScalarNode, UnparsableValueException}
 
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.jdk.CollectionConverters._
 import scala.language.implicitConversions
 
-given ParserString(using engine: Engine) as Parser[String]:
+given ParserString(using recipe: Recipe) as Parser[String]:
   override def apply(node: ScalarNode): String = node.asString
 
 given ParserBoolean as Parser[Boolean]:
