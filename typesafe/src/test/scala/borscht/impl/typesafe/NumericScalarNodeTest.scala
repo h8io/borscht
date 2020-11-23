@@ -7,7 +7,7 @@ import org.scalatest.matchers.should.Matchers
 
 import scala.language.implicitConversions
 
-class NumericScalarNodeTest extends AnyFlatSpec with Matchers {
+class NumericScalarNodeTest extends AnyFlatSpec with Matchers:
   private val recipe = Recipe(provider = TypesafeConfigProvider())
   import recipe.given
 
@@ -16,7 +16,7 @@ class NumericScalarNodeTest extends AnyFlatSpec with Matchers {
     cfg.get[Byte]("key") shouldEqual 42.toByte
   }
 
-  it should "provide a byte value from string" in {
+  it should "provide a byte value from a string" in {
     val cfg = cfg"""key: "42""""
     cfg.get[Byte]("key") shouldEqual 42.toByte
   }
@@ -26,7 +26,7 @@ class NumericScalarNodeTest extends AnyFlatSpec with Matchers {
     cfg.get[Double]("key") shouldEqual 2.66
   }
 
-  it should "provide a double value from string" in {
+  it should "provide a double value from a string" in {
     val cfg = cfg"""key: "2.66""""
     cfg.get[Double]("key") shouldEqual 2.66
   }
@@ -36,7 +36,7 @@ class NumericScalarNodeTest extends AnyFlatSpec with Matchers {
     cfg.get[Float]("key") shouldEqual 2.66f
   }
 
-  it should "provide a float value from string" in {
+  it should "provide a float value from a string" in {
     val cfg = cfg"""key: "2.66""""
     cfg.get[Float]("key") shouldEqual 2.66f
   }
@@ -46,7 +46,7 @@ class NumericScalarNodeTest extends AnyFlatSpec with Matchers {
     cfg.get[Int]("key") shouldEqual Int.MaxValue
   }
 
-  it should "provide an integer value from string" in {
+  it should "provide an integer value from a string" in {
     val cfg = cfg"""key: "1""""
     cfg.get[Int]("key") shouldEqual 1
   }
@@ -56,7 +56,7 @@ class NumericScalarNodeTest extends AnyFlatSpec with Matchers {
     cfg.get[Long]("key") shouldEqual Long.MaxValue
   }
 
-  it should "provide a long value from string" in {
+  it should "provide a long value from a string" in {
     val cfg = cfg"""key: "${Long.MinValue}""""
     cfg.get[Long]("key") shouldEqual Long.MinValue
   }
@@ -66,8 +66,7 @@ class NumericScalarNodeTest extends AnyFlatSpec with Matchers {
     cfg.get[Short]("key") shouldEqual 42.toShort
   }
 
-  it should "provide a short value from string" in {
+  it should "provide a short value from a string" in {
     val cfg = cfg"""key: "42""""
     cfg.get[Short]("key") shouldEqual 42.toShort
   }
-}
