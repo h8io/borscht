@@ -1,5 +1,6 @@
 package borscht
 
+import scala.annotation.infix
 import scala.jdk.CollectionConverters._
 
 trait Parser[T]:
@@ -11,7 +12,8 @@ trait Parser[T]:
 
   def apply(node: ObjectNode): T = throw UnparsableNodeTypeException(node)
 
-  final def ~>[U](f: T => U): Parser[U] = new Parser[U]:
+  @infix
+  final def andThen[U](f: T => U): Parser[U] = new Parser[U]:
     override def apply(node: ScalarNode): U = f(self(node))
 
     override def apply(node: IterableNode): U = f(self(node))

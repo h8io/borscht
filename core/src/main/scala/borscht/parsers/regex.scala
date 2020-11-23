@@ -7,7 +7,7 @@ import borscht.ScalarNode
 
 import scala.util.matching.Regex
 
-given ParserPattern(using parser: Parser[String]) as Parser[Pattern] = parser ~> Pattern.compile
+given ParserPattern(using parser: Parser[String]) as Parser[Pattern] = parser andThen Pattern.compile
 
 given ParserRegex(using recipe: Recipe) as Parser[Regex]:
   override def apply(node: ScalarNode): Regex = Regex(node.asString)
