@@ -1,6 +1,6 @@
 package borscht
 
-import parsers.{given _}
+import parsers.given
 
 trait ObjectNode extends Node with Iterable[(String, Node)]:
   override final def parse[T](using parser: Parser[T]): T = parser(this)

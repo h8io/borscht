@@ -1,8 +1,7 @@
 ThisBuild / organization := "h8.io"
-ThisBuild / scalaVersion := "0.27.0-RC1"
-//ThisBuild / scalaVersion := "3.0.0-M1"
+ThisBuild / scalaVersion := "3.0.0-M1"
 
-ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.2" % Test
+ThisBuild / libraryDependencies += "org.scalatest" %% "scalatest" % "3.2.3" % Test
 
 lazy val core = project
   .in(file("core"))
