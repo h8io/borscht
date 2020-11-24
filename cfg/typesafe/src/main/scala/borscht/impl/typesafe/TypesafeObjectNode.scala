@@ -1,12 +1,12 @@
 package borscht.impl.typesafe
 
-import borscht.{BorschtParserException, Node, ObjectNode, Parser}
+import borscht.{BorschtParserException, Node, ObjectNode, Parser, Recipe}
 import com.typesafe.config.Config
 
 import scala.jdk.CollectionConverters._
 
-private[typesafe] final class TypesafeObjectNode(uc: Config)
-  extends ObjectNode with TypesafeNode(uc.root):
+private[typesafe] final class TypesafeObjectNode(uc: Config)(using recipe: Recipe)
+  extends ObjectNode with TypesafeNode(uc.root) with Node:
 
   override def iterator: Iterator[(String, Node)] =
     uc.entrySet().iterator.asScala map { e => e.getKey -> node(e.getValue) }

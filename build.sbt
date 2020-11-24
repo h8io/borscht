@@ -17,7 +17,16 @@ lazy val typesafe = project
       "org.antlr" % "ST4" % "4.3.1"))
   .dependsOn(core)
 
+lazy val tests = project
+  .in(file("tests"))
+  .settings(
+    name := "borscht-tests",
+    publishArtifact := false)
+  .dependsOn(core, typesafe)
+
 lazy val root = project
   .in(file("."))
-  .settings(publishArtifact := false)
-  .aggregate(core, typesafe)
+  .settings(
+    name := "borscht",
+    publishArtifact := false)
+  .aggregate(core, typesafe, tests)

@@ -2,7 +2,7 @@ package borscht
 
 import parsers.given
 
-trait ObjectNode extends Node with Iterable[(String, Node)]:
+trait ObjectNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
   override final def parse[T](using parser: Parser[T]): T = parser(this)
 
   def +(cfg: ObjectNode): ObjectNode = ???
