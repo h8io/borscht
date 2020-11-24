@@ -7,14 +7,20 @@ lazy val core = project
   .in(file("core"))
   .settings(name := "borscht-core")
 
-lazy val typesafe = project
+lazy val `cfg-typesafe` = project
   .in(file("cfg/typesafe"))
   .settings(
     name := "borscht-cfg-typesafe",
 
-    libraryDependencies ++= Seq(
-      "com.typesafe" % "config" % "1.4.0",
-      "org.antlr" % "ST4" % "4.3.1"))
+    libraryDependencies += "com.typesafe" % "config" % "1.4.0")
+  .dependsOn(core)
+
+lazy val `template-core` = project
+  .in(file("template/core"))
+  .settings(
+    name := "borscht-template-core",
+    // Move it to implementation later
+    libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
   .dependsOn(core)
 
 lazy val tests = project
@@ -22,11 +28,11 @@ lazy val tests = project
   .settings(
     name := "borscht-tests",
     publishArtifact := false)
-  .dependsOn(core, typesafe)
+  .dependsOn(core, `cfg-typesafe`)
 
 lazy val root = project
   .in(file("."))
   .settings(
     name := "borscht",
     publishArtifact := false)
-  .aggregate(core, typesafe, tests)
+  .aggregate(core, `cfg-typesafe`, `template-core`, tests)
