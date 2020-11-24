@@ -17,12 +17,7 @@ lazy val typesafe = project
       "org.antlr" % "ST4" % "4.3.1"))
   .dependsOn(core)
 
-lazy val map = project
-  .in(file("cfg/map"))
-  .settings(name := "borscht-cfg-map")
-  .dependsOn(core)
-
 lazy val root = project
   .in(file("."))
   .settings(publishArtifact := false)
-  .aggregate(core, typesafe, map)
+  .aggregate(core, typesafe)

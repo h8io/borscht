@@ -3,9 +3,7 @@ package borscht.impl.typesafe
 import borscht.{Node, Parser}
 import com.typesafe.config.{ConfigList, ConfigObject, ConfigRenderOptions, ConfigValue}
 
-private[typesafe] trait TypesafeNode private[typesafe](value: ConfigValue) extends Node :
-  def parse[T](implicit parser: Parser[T]): T
-
+private[typesafe] trait TypesafeNode(value: ConfigValue) extends Node:
   override lazy val position = TypesafePosition(value.origin)
 
   override def toString: String = getClass.getSimpleName + "(" + value.render(ConfigRenderOptions.concise) + ")"
