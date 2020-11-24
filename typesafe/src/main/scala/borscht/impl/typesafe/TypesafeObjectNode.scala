@@ -5,7 +5,7 @@ import com.typesafe.config.Config
 
 import scala.jdk.CollectionConverters._
 
-private[typesafe] final class TypesafeObjectNode(private val uc: Config)
+private[typesafe] final class TypesafeObjectNode(uc: Config)
   extends ObjectNode with TypesafeNode(uc.root):
 
   override def iterator: Iterator[(String, Node)] =

@@ -2,7 +2,8 @@ package borscht
 
 import java.nio.file.Path
 
-class Recipe(provider: ConfigProvider) extends ConfigProvider:
+class Recipe(provider: ConfigProvider,
+             val stringParser: Parser[String] = SimpleStringParser) extends ConfigProvider:
   given Recipe = this
 
   override def parse(content: String): ObjectNode = provider.parse(content)

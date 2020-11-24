@@ -9,8 +9,7 @@ import scala.collection.mutable
 import scala.jdk.CollectionConverters._
 import scala.language.implicitConversions
 
-given ParserString(using recipe: Recipe) as Parser[String]:
-  override def apply(node: ScalarNode): String = node.asString
+given ParserString(using recipe: Recipe) as Parser[String] = recipe.stringParser
 
 given ParserBoolean as Parser[Boolean]:
   override def apply(node: ScalarNode): Boolean = node.unwrapped match
