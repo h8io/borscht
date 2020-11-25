@@ -11,17 +11,15 @@ import scala.language.implicitConversions
 
 given NodeParserString(using recipe: Recipe) as NodeParser[String] = recipe.stringParser
 
-given NodeParserBoolean as NodeParser[Boolean] = ScalarNodeParser andThen { node => node.unwrapped match
-  case v: jBoolean => v
+given NodeParserBoolean as NodeParser[Boolean] = ScalarAnyRefParser andThen {
+  case v: jBoolean => v.booleanValue
   case v: String => jBoolean.parseBoolean(v)
   case v: Number => v != 0
-  case v => throw UnparsableValueException(node)
 }
 
-given NodeParserNumber as NodeParser[Number] = ScalarNodeParser andThen { node => node.unwrapped match
+given NodeParserNumber as NodeParser[Number] = ScalarAnyRefParser andThen {
   case v: Number => v
   case v: String => BigDecimal(v)
-  case v => throw UnparsableValueException(node)
 }
 
 given NodeParserList[T](using parser: NodeParser[T]) as NodeParser[List[T]] =
