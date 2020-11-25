@@ -1,7 +1,7 @@
 package borscht
 
 trait ScalarNode(using recipe: Recipe) extends IterableNode:
-  def unwrapped: Any
+  def unwrapped: AnyRef
   
   def asString: String = unwrapped.toString
 
