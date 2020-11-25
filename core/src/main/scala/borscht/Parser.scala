@@ -10,4 +10,4 @@ val IterableNodeParser: Parser[IterableNode] = { case node: IterableNode => node
 
 val ObjectNodeParser: Parser[ObjectNode] = { case node: ObjectNode => node }
 
-val SimpleStringParser: Parser[String] = { case node: ScalarNode => node.asString }
+val ScalarStringParser: Parser[String] = { case node: ScalarNode => node.asString }
