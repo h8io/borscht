@@ -24,7 +24,6 @@ given ParserNumber as Parser[Number]:
     case v: String => BigDecimal(v)
     case v => throw UnparsableValueException(node)
 
-
 given ParserList[T] (using parser: Parser[T]) as Parser[List[T]]:
   override def apply(node: ScalarNode): List[T] = List(node.parse[T])
   override def apply(node: IterableNode): List[T] = (node.iterator map (_.parse[T])).toList
@@ -32,9 +31,6 @@ given ParserList[T] (using parser: Parser[T]) as Parser[List[T]]:
 given ParserSet[T] (using parser: Parser[T]) as Parser[Set[T]]:
   override def apply(node: ScalarNode): Set[T] = Set(node.parse[T])
   override def apply(node: IterableNode): Set[T] = (node.iterator map (_.parse[T])).toSet
-
-given ParcerCfg as Parser[ObjectNode]:
-  override def apply(node: ObjectNode): ObjectNode = node
 
 given ParserMap[T] (using parser: Parser[T]) as Parser[Map[String, T]]:
   override def apply(node: ObjectNode): Map[String, T] = (node.iterator map (_ -> _.parse[T])).toMap

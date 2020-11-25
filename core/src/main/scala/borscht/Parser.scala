@@ -1,7 +1,6 @@
 package borscht
 
 import scala.annotation.infix
-import scala.jdk.CollectionConverters._
 
 trait Parser[T]:
   self =>
@@ -19,3 +18,16 @@ trait Parser[T]:
     override def apply(node: IterableNode): U = f(self(node))
 
     override def apply(node: ObjectNode): U = f(self(node))
+
+  @infix
+  final def orElse[T](that: Parser[T]): Parser[T] = ???
+
+object ScalarNodeParser extends Parser[ScalarNode]:
+  override def apply(node: ScalarNode): ScalarNode = node
+
+object IterableNodeParser extends Parser[IterableNode]:
+  override def apply(node: IterableNode): IterableNode = node
+
+object ObjectNodeParser extends Parser[ObjectNode]:
+  override def apply(node: ObjectNode): ObjectNode = node
+
