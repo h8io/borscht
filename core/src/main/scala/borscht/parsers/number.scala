@@ -1,15 +1,15 @@
 package borscht.parsers
 
-import borscht.Parser
+import borscht.NodeParser
 
-given ParserByte(using parser: Parser[Number]) as Parser[Byte] = parser andThen (_.byteValue)
+given NodeParserByte(using parser: NodeParser[Number]) as NodeParser[Byte] = parser andThen (_.byteValue)
 
-given ParserDouble(using parser: Parser[Number]) as Parser[Double] = parser andThen (_.doubleValue)
+given NodeParserDouble(using parser: NodeParser[Number]) as NodeParser[Double] = parser andThen (_.doubleValue)
 
-given ParserFloat(using parser: Parser[Number]) as Parser[Float] = parser andThen (_.floatValue)
+given NodeParserFloat(using parser: NodeParser[Number]) as NodeParser[Float] = parser andThen (_.floatValue)
 
-given ParserInt(using parser: Parser[Number]) as Parser[Int] = parser andThen (_.intValue)
+given NodeParserInt(using parser: NodeParser[Number]) as NodeParser[Int] = parser andThen (_.intValue)
 
-given ParserLong(using parser: Parser[Number]) as Parser[Long] = parser andThen (_.longValue)
+given NodeParserLong(using parser: NodeParser[Number]) as NodeParser[Long] = parser andThen (_.longValue)
 
-given ParserShort(using parser: Parser[Number]) as Parser[Short] = parser andThen (_.shortValue)
+given NodeParserShort(using parser: NodeParser[Number]) as NodeParser[Short] = parser andThen (_.shortValue)

@@ -5,7 +5,7 @@ import borscht.parsers.given
 
 type TemplateProvider = String => Template
 
-def TemplateParser(provider: TemplateProvider): Parser[Template] =
+def TemplateParser(provider: TemplateProvider): NodeParser[Template] =
   def toMap(node: ObjectNode): Map[String, AnyRef] = (node.iterator map (_ -> parameter(_))).toMap
 
   def parse(value: String): AnyRef = ???

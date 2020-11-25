@@ -1,6 +1,6 @@
 package borscht.impl.typesafe
 
-import borscht.{Node, Parser, Recipe}
+import borscht.{Node, Recipe}
 import com.typesafe.config.{ConfigList, ConfigObject, ConfigRenderOptions, ConfigValue}
 
 private[typesafe] trait TypesafeNode(value: ConfigValue):

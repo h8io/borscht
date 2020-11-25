@@ -1,8 +1,8 @@
 package borscht.parsers
 
-import borscht.Parser
+import borscht.NodeParser
 
 import scala.reflect.ClassTag
 
-given ParserClass[T](using parser: Parser[String]) as Parser[Class[T]] =
-  parser andThen { name => Class.forName(name).asInstanceOf[Class[T]] }
+given NodeParserClass[T](using NodeParser: NodeParser[String]) as NodeParser[Class[T]] =
+  NodeParser andThen { name => Class.forName(name).asInstanceOf[Class[T]] }

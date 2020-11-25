@@ -2,43 +2,43 @@ package io.h8.cfg.parsers
 
 import java.time._
 
-import borscht.Parser
+import borscht.NodeParser
 
-given ParserZonedDateTime(using parser: Parser[String]) as Parser[ZonedDateTime] =
+given NodeParserZonedDateTime(using parser: NodeParser[String]) as NodeParser[ZonedDateTime] =
   parser andThen (ZonedDateTime.parse(_))
 
-given ParserOffsetDateTime(using parser: Parser[String]) as Parser[OffsetDateTime] =
+given NodeParserOffsetDateTime(using parser: NodeParser[String]) as NodeParser[OffsetDateTime] =
   parser andThen (OffsetDateTime.parse(_))
 
-given ParserOffsetTime(using parser: Parser[String]) as Parser[OffsetTime] =
+given NodeParserOffsetTime(using parser: NodeParser[String]) as NodeParser[OffsetTime] =
   parser andThen (OffsetTime.parse(_))
 
-given ParserLocalTime(using parser: Parser[String]) as Parser[LocalTime] =
+given NodeParserLocalTime(using parser: NodeParser[String]) as NodeParser[LocalTime] =
   parser andThen (LocalTime.parse(_))
 
-given ParserLocalDate(using parser: Parser[String]) as Parser[LocalDate] =
+given NodeParserLocalDate(using parser: NodeParser[String]) as NodeParser[LocalDate] =
   parser andThen (LocalDate.parse(_))
 
-given ParserYearMonth(using parser: Parser[String]) as Parser[YearMonth] =
+given NodeParserYearMonth(using parser: NodeParser[String]) as NodeParser[YearMonth] =
   parser andThen (YearMonth.parse(_))
 
-given ParserMonthDay(using parser: Parser[String]) as Parser[MonthDay] =
+given NodeParserMonthDay(using parser: NodeParser[String]) as NodeParser[MonthDay] =
   parser andThen (MonthDay.parse(_))
 
-given ParserDayOfWeek(using parser: Parser[String]) as Parser[DayOfWeek] =
+given NodeParserDayOfWeek(using parser: NodeParser[String]) as NodeParser[DayOfWeek] =
   parser andThen (_.toUpperCase) andThen DayOfWeek.valueOf
 
-given ParserMonth(using parser: Parser[String]) as Parser[Month] =
+given NodeParserMonth(using parser: NodeParser[String]) as NodeParser[Month] =
   parser andThen (_.toUpperCase) andThen Month.valueOf
 
-given ParserInstant(using parser: Parser[String]) as Parser[Instant] =
+given NodeParserInstant(using parser: NodeParser[String]) as NodeParser[Instant] =
   parser andThen (Instant.parse(_))
 
-given ParserJavaDuration(using parser: Parser[String]) as Parser[Duration] =
+given NodeParserJavaDuration(using parser: NodeParser[String]) as NodeParser[Duration] =
   parser andThen (Duration.parse(_))
 
-given ParserPeriod(using parser: Parser[String]) as Parser[Period] =
+given NodeParserPeriod(using parser: NodeParser[String]) as NodeParser[Period] =
   parser andThen (Period.parse(_))
 
-given ParserZoneId(using parser: Parser[String]) as Parser[ZoneId] =
+given NodeParserZoneId(using parser: NodeParser[String]) as NodeParser[ZoneId] =
   parser andThen (ZoneId.of(_))

@@ -1,6 +1,6 @@
 package borscht.template
 
-import borscht.{Node, Parser, ScalarStringParser}
+import borscht.{Node, NodeParser, ScalarStringParser}
 
-def TemplateStringParser(parser: Parser[Template]): Parser[String] =
+def TemplateStringParser(parser: NodeParser[Template]): NodeParser[String] =
   ScalarStringParser orElse { case node: Node => parser(node).render }
