@@ -11,8 +11,8 @@ private[typesafe] final class TypesafeObjectNode(uc: Config)(using recipe: Recip
   override def iterator: Iterator[(String, Node)] =
     uc.entrySet().iterator.asScala map { e => e.getKey -> node(e.getValue) }
 
-  def opt[T: Parser](path: String): Option[T] =
+  def opt[T](path: String)(using parser: Parser[T]): Option[T] =
     if (uc.hasPath(path)) Some {
       val n = node(uc.getValue(path))
-      try n.parse[T] catch { case e: Exception => throw BorschtParserException(n.position, e) }
+      try parser(n) catch { case e: Exception => throw BorschtParserException(n.position, e) }
     } else None

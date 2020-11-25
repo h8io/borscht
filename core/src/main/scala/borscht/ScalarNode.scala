@@ -1,8 +1,8 @@
 package borscht
 
-trait ScalarNode(using recipe: Recipe) extends Node:
-  override final def parse[T](using parser: Parser[T]): T = parser(this)
-
+trait ScalarNode(using recipe: Recipe) extends IterableNode:
   def unwrapped: Any
   
   def asString: String = unwrapped.toString
+
+  override def iterator: Iterator[Node] = Iterator(this)

@@ -1,7 +1,12 @@
 package borscht.template
 
-import borscht.{ObjectNode, Parser, ScalarNode}
+import borscht.{ObjectNodeParser, Parser, ScalarNodeParser, SimpleStringParser}
 
-trait TemplateParser extends Parser[Template]:
-  override def apply(node: ObjectNode): Template = ???
-    // this(node.get[ScalarNode]("template").asString).set(node.map[AnyRef]("parameters"))
+type TemplateProvider = String => Template
+
+def TemplateParser(provider: TemplateProvider): Parser[Template] =
+  SimpleStringParser andThen provider orElse
+    (ObjectNodeParser andThen { node =>
+      ???
+      // provider(node.get[ScalarNode]("template").asString).set(node.map[AnyRef]("parameters"))
+    }) 

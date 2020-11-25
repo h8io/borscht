@@ -7,9 +7,8 @@ import borscht.ScalarNode
 
 import scala.util.matching.Regex
 
-given ParserPattern(using parser: Parser[String]) as Parser[Pattern] = parser andThen Pattern.compile
+given ParserPattern(using parser: Parser[String]) as Parser[Pattern] = parser andThen (Pattern.compile(_))
 
-given ParserRegex(using recipe: Recipe) as Parser[Regex]:
-  override def apply(node: ScalarNode): Regex = Regex(node.asString)
-  override def apply(node: ObjectNode): Regex =
-    Regex(node.get[String]("pattern"), node.list[String]("groups"): _*)
+given ParserRegex(using recipe: Recipe) as Parser[Regex] =
+  ScalarNodeParser andThen { node => Regex(node.asString) } orElse
+    (ObjectNodeParser andThen { node  => Regex(node.get[String]("pattern"), node.list[String]("groups"): _*) })

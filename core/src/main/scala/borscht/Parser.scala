@@ -2,32 +2,12 @@ package borscht
 
 import scala.annotation.infix
 
-trait Parser[T]:
-  self =>
+type Parser[T] = PartialFunction[Node, T]
 
-  def apply(node: ScalarNode): T = throw UnparsableNodeTypeException(node)
+val ScalarNodeParser: Parser[ScalarNode] = { case node: ScalarNode => node }
 
-  def apply(node: IterableNode): T = throw UnparsableNodeTypeException(node)
+val IterableNodeParser: Parser[IterableNode] = { case node: IterableNode => node }
 
-  def apply(node: ObjectNode): T = throw UnparsableNodeTypeException(node)
+val ObjectNodeParser: Parser[ObjectNode] = { case node: ObjectNode => node }
 
-  @infix
-  final def andThen[U](f: T => U): Parser[U] = new Parser[U]:
-    override def apply(node: ScalarNode): U = f(self(node))
-
-    override def apply(node: IterableNode): U = f(self(node))
-
-    override def apply(node: ObjectNode): U = f(self(node))
-
-  @infix
-  final def orElse[T](that: Parser[T]): Parser[T] = ???
-
-object ScalarNodeParser extends Parser[ScalarNode]:
-  override def apply(node: ScalarNode): ScalarNode = node
-
-object IterableNodeParser extends Parser[IterableNode]:
-  override def apply(node: IterableNode): IterableNode = node
-
-object ObjectNodeParser extends Parser[ObjectNode]:
-  override def apply(node: ObjectNode): ObjectNode = node
-
+val SimpleStringParser: Parser[String] = { case node: ScalarNode => node.asString }

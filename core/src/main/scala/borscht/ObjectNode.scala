@@ -3,8 +3,6 @@ package borscht
 import parsers.given
 
 trait ObjectNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
-  override final def parse[T](using parser: Parser[T]): T = parser(this)
-
   def +(cfg: ObjectNode): ObjectNode = ???
 
   final def get[T: Parser](path: String): T = opt[T](path) getOrElse (throw PathNotFoundException(path, position))
