@@ -10,9 +10,3 @@ open class BorschtParserException(message: String, position: Position, cause: Op
   extends BorschtException(message, position, cause):
 
   def this(position: Position, cause: Throwable) = this(cause.getMessage, position, Some(cause))
-
-class UnparsableNodeTypeException(node: Node)
-  extends BorschtParserException(s"Unparsable node type ${node.getClass.getSimpleName}", node.position)
-
-class UnparsableValueException(node: ScalarNode)
-  extends BorschtParserException(s"Unparsable value $node", node.position)
