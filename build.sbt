@@ -11,7 +11,6 @@ lazy val `cfg-typesafe` = project
   .in(file("cfg/typesafe"))
   .settings(
     name := "borscht-cfg-typesafe",
-
     libraryDependencies += "com.typesafe" % "config" % "1.4.0")
   .dependsOn(core)
 
@@ -27,8 +26,8 @@ lazy val `template-st4` = project
       libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
   .dependsOn(`template-core`)
 
-lazy val tests = project
-  .in(file("tests"))
+lazy val examples = project
+  .in(file("examples"))
   .settings(
     name := "borscht-tests",
     publishArtifact := false)
@@ -39,4 +38,4 @@ lazy val root = project
   .settings(
     name := "borscht",
     publishArtifact := false)
-  .aggregate(core, `cfg-typesafe`, `template-core`, `template-st4`, tests)
+  .aggregate(core, `cfg-typesafe`, `template-core`, `template-st4`, examples)

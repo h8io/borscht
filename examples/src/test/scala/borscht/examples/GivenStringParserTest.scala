@@ -1,4 +1,4 @@
-package borscht.tests
+package borscht.examples
 
 import borscht.{ObjectNode, Recipe, ScalarNode}
 import borscht.impl.typesafe.TypesafeConfigProvider
