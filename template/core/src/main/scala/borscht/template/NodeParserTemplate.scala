@@ -4,15 +4,15 @@ import borscht._
 import borscht.parsers.given
 
 type TemplateParser = String => Template
+type ParameterParser[T] = String => T
 
-def NodeParserTemplate(templateParser: TemplateParser): NodeParser[Template] =
+def NodeParserTemplate(templateParser: TemplateParser,
+                       parameterParser: TemplateParameterValueParser): NodeParser[Template] =
   def toMap(node: ObjectNode): Map[String, AnyRef] = (node.iterator map (_ -> parameter(_))).toMap
-
-  def parse(value: String): AnyRef = ???
 
   def parameter(node: Node): AnyRef = node match
     case scalar: ScalarNode => scalar.unwrapped match
-      case value: String => parse(value)
+      case value: String => parameterParser.lift(value) getOrElse value
       case value => value
     case iterable: IterableNode => (iterable.iterator map parameter).toArray
     case obj: ObjectNode => toMap(obj)
