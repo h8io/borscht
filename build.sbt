@@ -30,7 +30,8 @@ lazy val examples = project
   .in(file("examples"))
   .settings(
     name := "borscht-tests",
-    publishArtifact := false)
+    publishArtifact := false,
+    mainClass := Some("borscht.examples.main"))
   .dependsOn(core, `cfg-typesafe`)
 
 lazy val root = project
