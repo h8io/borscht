@@ -1,5 +1,7 @@
 package borscht.template
 
+import java.time.format.DateTimeFormatter
+
 type TemplateParameterValueParser = PartialFunction[String, AnyRef]
 
 object TemplateParameterValueParser:
@@ -17,4 +19,19 @@ object TemplateParameterValueParser:
       case Array(t, v) => parsers.get(t) -> v
       case _ => throw IllegalStateException("It should not happen")
 
-  val DefaultParsers: Map[String, String => AnyRef] = Map()
+  val NumericParsers: Map[String, String => AnyRef] = Map(
+    "bigint" -> BigInt.apply,
+    "bigdecimal" -> BigDecimal.apply,
+    "byte" -> java.lang.Byte.valueOf,
+    "double" -> java.lang.Double.valueOf,
+    "float" -> java.lang.Float.valueOf,
+    "int" -> Integer.valueOf,
+    "long" -> java.lang.Long.valueOf,
+    "short" -> java.lang.Short.valueOf)
+
+  val DateTimeParsers: Map[String, String => AnyRef] = Map(
+    "datetime" -> DateTimeFormatter.ISO_DATE_TIME.parse,
+    "date" -> DateTimeFormatter.ISO_DATE.parse,
+    "time" -> DateTimeFormatter.ISO_TIME.parse)
+
+  val DefaultParsers: Map[String, String => AnyRef] = NumericParsers ++ DateTimeParsers
