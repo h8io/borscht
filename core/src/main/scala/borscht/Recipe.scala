@@ -14,4 +14,4 @@ class Recipe(provider: ConfigProvider, val NodeParserString: NodeParser[String] 
   def apply(paths: Path*): ObjectNode = provider(paths)
 
   implicit final class CfgStringContext(sc: StringContext):
-    def cfg(args: Any*): ObjectNode = parse(sc.s(args: _*))
+    def cfg(args: Any*): ObjectNode = parse(sc.s(args: _*).stripMargin)
