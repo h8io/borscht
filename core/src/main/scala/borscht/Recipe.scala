@@ -2,7 +2,7 @@ package borscht
 
 import java.nio.file.Path
 
-class Recipe(provider: ConfigProvider, val stringParser: NodeParser[String] = ScalarStringParser):
+class Recipe(provider: ConfigProvider, val NodeParserString: NodeParser[String] = NodeParserScalarString):
   given Recipe = this
 
   def parse(content: String): ObjectNode = provider.parse(content)

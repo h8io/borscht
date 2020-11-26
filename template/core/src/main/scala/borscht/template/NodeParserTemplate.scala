@@ -3,9 +3,9 @@ package borscht.template
 import borscht._
 import borscht.parsers.given
 
-type TemplateProvider = String => Template
+type TemplateParser = String => Template
 
-def TemplateParser(provider: TemplateProvider): NodeParser[Template] =
+def NodeParserTemplate(templateParser: TemplateParser): NodeParser[Template] =
   def toMap(node: ObjectNode): Map[String, AnyRef] = (node.iterator map (_ -> parameter(_))).toMap
 
   def parse(value: String): AnyRef = ???
@@ -17,7 +17,8 @@ def TemplateParser(provider: TemplateProvider): NodeParser[Template] =
     case iterable: IterableNode => (iterable.iterator map parameter).toArray
     case obj: ObjectNode => toMap(obj)
 
-  ScalarStringParser andThen provider orElse
-    (ObjectNodeParser andThen { node =>
-      provider(ScalarStringParser(node.get[ScalarNode]("template"))).set(toMap(node.get[ObjectNode]("parameters")))
+  NodeParserScalarString andThen templateParser orElse
+    (NodeParserObjectNode andThen { node =>
+      templateParser(NodeParserScalarString(node.get[ScalarNode]("template")))
+        .set(toMap(node.get[ObjectNode]("parameters")))
     })

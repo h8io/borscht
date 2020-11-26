@@ -4,6 +4,6 @@ import scala.annotation.infix
 
 type NodeParser[T] = PartialFunction[Node, T]
 
-val ScalarAnyRefParser: NodeParser[AnyRef] = parsers.ScalarNodeParser andThen (_.unwrapped)
+val NodeParserScalarAnyRef: NodeParser[AnyRef] = parsers.NodeParserScalarNode andThen (_.unwrapped)
 
-val ScalarStringParser: NodeParser[String] = parsers.ScalarNodeParser andThen (_.asString)
+val NodeParserScalarString: NodeParser[String] = parsers.NodeParserScalarNode andThen (_.asString)
