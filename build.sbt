@@ -30,13 +30,12 @@ lazy val root = project
   .in(file("."))
   .settings(
     name := "borscht",
-    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
   .dependsOn(
     core,
     `cfg-typesafe`,
     `template-core`, `template-st4`)
   .aggregate(
-      core,
-      `cfg-typesafe`,
-      `template-core`, `template-st4`)
+    core,
+    `cfg-typesafe`,
+    `template-core`, `template-st4`)
