@@ -4,9 +4,9 @@ import parsers.given
 
 trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
   self =>
-  
+
   def ++(that: ConfigNode): ConfigNode = new ConfigNode with Node:
-    def opt[T: NodeParser](path: String): Option[T] = that.opt[T](path) orElse opt[T](path)
+    def opt[T: NodeParser](path: String): Option[T] = that.opt[T](path) orElse self.opt[T](path)
 
     def iterator: Iterator[(String, Node)] = ???
 
