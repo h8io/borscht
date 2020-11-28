@@ -14,5 +14,5 @@ private[typesafe] final class TypesafeConfigNode(uc: Config)(using recipe: Recip
   def opt[T](path: String)(using parser: NodeParser[T]): Option[T] =
     if (uc.hasPath(path)) Some {
       val n = node(uc.getValue(path))
-      try parser(n) catch { case e: Exception => throw BorschtParserException(n.position, e) }
+      try parser(n) catch { case e: Exception => throw BorschtNodeParserException(n.position, e) }
     } else None

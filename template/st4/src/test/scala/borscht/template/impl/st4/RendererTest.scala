@@ -6,7 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class RendererTest extends AnyFlatSpec with Matchers:
-  private val parser = ST4TemplateParser() 
+  private val parser = ST4TemplateParser()
   
   "Temporal accessor renderer" should "render date and time with format string" in {
     val date = DateTimeFormatter.ISO_DATE_TIME.parse("1961-04-12T09:07:00+03:00[Europe/Moscow]")

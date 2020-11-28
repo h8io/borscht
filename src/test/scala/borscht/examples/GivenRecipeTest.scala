@@ -6,7 +6,7 @@ import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class GivenStringParserTest extends AnyFlatSpec with Matchers:
+class GivenRecipeParserTest extends AnyFlatSpec with Matchers:
   "StringParser" should "be usable without given recipe" in {
     val recipe = Recipe(provider = TypesafeConfigProvider())
     import recipe.given
