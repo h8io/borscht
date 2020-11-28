@@ -26,16 +26,19 @@ lazy val `template-st4` = project
       libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
   .dependsOn(`template-core`)
 
+lazy val examples = project
+  .in(file("examples"))
+  .settings(
+    name := "borscht-examples",
+    publishArtifact := false)
+  .dependsOn(`cfg-typesafe`, `template-st4`)
+
 lazy val root = project
   .in(file("."))
   .settings(
     name := "borscht",
     publishArtifact := false)
-  .dependsOn(
-    core,
-    `cfg-typesafe`,
-    `template-core`, `template-st4`)
   .aggregate(
-    core,
+    core, examples,
     `cfg-typesafe`,
     `template-core`, `template-st4`)
