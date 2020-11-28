@@ -47,5 +47,5 @@ lazy val root = project
     publishArtifact := false)
   .aggregate(
       core, examples,
-      `cfg-typesafe`, `cfg-jackson`,
+      `cfg-typesafe`,
       `template-core`, `template-st4`)
