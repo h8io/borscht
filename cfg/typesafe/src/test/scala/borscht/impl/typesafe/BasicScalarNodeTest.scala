@@ -1,6 +1,6 @@
 package borscht.impl.typesafe
 
-import borscht.{Recipe, ObjectNode, ScalarNode}
+import borscht.{Recipe, ConfigNode, ScalarNode}
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -24,7 +24,7 @@ class BasicScalarNodeTest extends AnyFlatSpec with Matchers:
   }
   
   it should "provide a nested config" in {
-    cfg"key { property1: value1, property2: 2 }".get[ObjectNode]("key").iterator.toSeq map { case (key, node) =>
+    cfg"key { property1: value1, property2: 2 }".get[ConfigNode]("key").iterator.toSeq map { case (key, node) =>
       key -> (node match
         case scalar: ScalarNode => scalar.unwrapped
         case other => fail(s"Invalid node class ${other.getClass}"))

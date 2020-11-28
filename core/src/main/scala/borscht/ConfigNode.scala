@@ -2,8 +2,8 @@ package borscht
 
 import parsers.given
 
-trait ObjectNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
-  def ++(that: ObjectNode): ObjectNode = new ObjectNode with Node:
+trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
+  def ++(that: ConfigNode): ConfigNode = new ConfigNode with Node:
     def opt[T: NodeParser](path: String): Option[T] = that.opt[T](path) orElse opt[T](path)
 
     def iterator: Iterator[(String, Node)] = ???

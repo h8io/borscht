@@ -1,6 +1,6 @@
 package borscht.parsers
 
-import borscht.{ObjectNode, NodeParser, ScalarNode}
+import borscht.{ConfigNode, NodeParser, ScalarNode}
 
 import scala.concurrent.duration.{Duration, FiniteDuration}
 

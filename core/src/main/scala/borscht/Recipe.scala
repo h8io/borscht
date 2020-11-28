@@ -5,13 +5,13 @@ import java.nio.file.Path
 class Recipe(provider: ConfigProvider, val NodeParserString: NodeParser[String] = NodeParserScalarString):
   given Recipe = this
 
-  def parse(content: String): ObjectNode = provider.parse(content)
+  def parse(content: String): ConfigNode = provider.parse(content)
 
-  def apply(): ObjectNode = provider()
+  def apply(): ConfigNode = provider()
 
-  def apply(paths: Iterable[Path]): ObjectNode = provider(paths)
+  def apply(paths: Iterable[Path]): ConfigNode = provider(paths)
 
-  def apply(paths: Path*): ObjectNode = provider(paths)
+  def apply(paths: Path*): ConfigNode = provider(paths)
 
   implicit final class CfgStringContext(sc: StringContext):
-    def cfg(args: Any*): ObjectNode = parse(sc.s(args: _*).stripMargin)
+    def cfg(args: Any*): ConfigNode = parse(sc.s(args: _*).stripMargin)

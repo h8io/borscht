@@ -29,6 +29,6 @@ given NodeParserSet[T] (using parser: NodeParser[T]) as NodeParser[Set[T]] =
   NodeParserIterableNode andThen { node => (node.iterator map parser).toSet }
 
 given NodeParserMap[T] (using parser: NodeParser[T]) as NodeParser[Map[String, T]] =
-  NodeParserObjectNode andThen { node =>
-    (node.iterator map { (key: String, value: Node) => key -> parser(value) }).toMap
+  NodeParserConfigNode andThen { cfg =>
+    (cfg.iterator map { (key: String, value: Node) => key -> parser(value) }).toMap
   }

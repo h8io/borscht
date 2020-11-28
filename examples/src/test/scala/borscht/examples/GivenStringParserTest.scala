@@ -1,6 +1,6 @@
 package borscht.examples
 
-import borscht.{ObjectNode, Recipe, ScalarNode}
+import borscht.{ConfigNode, Recipe, ScalarNode}
 import borscht.impl.typesafe.TypesafeConfigProvider
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
@@ -15,13 +15,13 @@ class GivenStringParserTest extends AnyFlatSpec with Matchers:
     config.get[String]("scalar") shouldEqual "scalar-value"
   }
 
-  private def testList(config: ObjectNode) =
-    import config.given
-    config.get[List[String]]("list") should contain theSameElementsInOrderAs List("item1", "item2")
+  private def testList(cfg: ConfigNode) =
+    import cfg.given
+    cfg.get[List[String]]("list") should contain theSameElementsInOrderAs List("item1", "item2")
 
-  private def testObject(config: ObjectNode) =
-    import config.given
-    config.get[ObjectNode]("object") map {
+  private def testObject(cfg: ConfigNode) =
+    import cfg.given
+    cfg.get[ConfigNode]("object") map {
       case (key, node: ScalarNode) => key -> node.asString
       case (key, node) => fail(s"Unexpected node type: ($key, $node)")
     } should contain theSameElementsAs Map("property1" -> "value1", "property2" -> "value2")

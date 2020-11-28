@@ -6,4 +6,4 @@ given NodeParserScalarNode as NodeParser[ScalarNode] = { case node: ScalarNode =
 
 given NodeParserIterableNode as NodeParser[IterableNode] = { case node: IterableNode => node }
 
-given NodeParserObjectNode as NodeParser[ObjectNode] = { case node: ObjectNode => node }
+given NodeParserConfigNode as NodeParser[ConfigNode] = { case node: ConfigNode => node }
