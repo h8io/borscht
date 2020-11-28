@@ -8,7 +8,9 @@ trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)
   def ++(that: ConfigNode): ConfigNode = new ConfigNode with Node:
     def opt[T: NodeParser](path: String): Option[T] = that.opt[T](path) orElse self.opt[T](path)
 
-    def iterator: Iterator[(String, Node)] = ???
+    def iterator: Iterator[(String, Node)] =
+      val primary = that.iterator.toMap
+      (self.iterator filterNot { (key, _) => primary.contains(key) }) ++ that.iterator
 
     def position: Position = self.position | that.position
 
