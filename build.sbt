@@ -30,6 +30,7 @@ lazy val root = project
   .in(file("."))
   .settings(
     name := "borscht",
+    Test / classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
   .dependsOn(
     core,
