@@ -3,12 +3,14 @@ package borscht
 import parsers.given
 
 trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
+  self =>
+  
   def ++(that: ConfigNode): ConfigNode = new ConfigNode with Node:
     def opt[T: NodeParser](path: String): Option[T] = that.opt[T](path) orElse opt[T](path)
 
     def iterator: Iterator[(String, Node)] = ???
 
-    def position: Position = ???
+    def position: Position = self.position | that.position
 
   final def get[T: NodeParser](path: String): T = opt[T](path) getOrElse (throw PathNotFoundException(path, position))
 
