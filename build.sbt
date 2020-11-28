@@ -30,7 +30,8 @@ lazy val examples = project
   .in(file("examples"))
   .settings(
     name := "borscht-examples",
-    publishArtifact := false)
+      classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.ScalaLibrary,
+      publishArtifact := false)
   .dependsOn(`cfg-typesafe`, `template-st4`)
 
 lazy val root = project
