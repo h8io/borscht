@@ -15,5 +15,5 @@ object Position:
     case Merged(p1, p2) => append(append(sb, p1) ++= Separator, p2)
     case p => append(sb, p)
 
-  case class Merged(p1: Position, p2: Position) extends Position:
+  private case class Merged(p1: Position, p2: Position) extends Position:
     override def toString: String = (append(append(StringBuilder() += '{', p1) ++= Separator, p2) += '}').result
