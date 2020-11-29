@@ -6,7 +6,7 @@ trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)
   self =>
 
   def ++(that: ConfigNode): ConfigNode = new ConfigNode with Node:
-    def opt[T: NodeParser](path: String): Option[T] = that.opt[T](path) orElse self.opt[T](path)
+    def node(path: String): Option[Node] = that.node(path) orElse self.node(path)
 
     def iterator: Iterator[(String, Node)] =
       val primary = that.iterator.toMap
@@ -16,7 +16,11 @@ trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)
 
   final def get[T: NodeParser](path: String): T = opt[T](path) getOrElse (throw PathNotFoundException(path, position))
 
-  def opt[T: NodeParser](path: String): Option[T]
+  final def opt[T](path: String)(using parser: NodeParser[T]): Option[T] = node(path) map { n =>
+    try parser(n) catch { case e: Exception => throw BorschtNodeParserException(n.position, e) }
+  }
+
+  def node(path: String): Option[Node]
 
   final def list[T: NodeParser](path: String): List[T] = opt[List[T]](path) getOrElse Nil
 

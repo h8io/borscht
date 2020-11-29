@@ -10,7 +10,7 @@ private[typesafe] trait TypesafeNode(value: ConfigValue):
 
   override def toString: String = getClass.getSimpleName + "(" + value.render(ConfigRenderOptions.concise) + ")"
 
-private[typesafe] def node(value: ConfigValue)(using recipe: Recipe): Node = value match
+private[typesafe] def wrap(value: ConfigValue)(using recipe: Recipe): Node = value match
   case list: ConfigList => TypesafeIterableNode(list)
   case obj: ConfigObject => TypesafeConfigNode(obj.toConfig)
   case scalar => TypesafeScalarNode(scalar)

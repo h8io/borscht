@@ -9,10 +9,6 @@ private[typesafe] final class TypesafeConfigNode(uc: Config)(using recipe: Recip
   extends ConfigNode with TypesafeNode(uc.root) with Node:
 
   override def iterator: Iterator[(String, Node)] =
-    uc.entrySet().iterator.asScala map { e => e.getKey -> node(e.getValue) }
+    uc.entrySet().iterator.asScala map { e => e.getKey -> wrap(e.getValue) }
 
-  def opt[T](path: String)(using parser: NodeParser[T]): Option[T] =
-    if (uc.hasPath(path)) Some {
-      val n = node(uc.getValue(path))
-      try parser(n) catch { case e: Exception => throw BorschtNodeParserException(n.position, e) }
-    } else None
+  override def node(path: String): Option[Node] = if (uc.hasPath(path)) Some(wrap(uc.getValue(path))) else None
