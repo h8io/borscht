@@ -1,18 +1,12 @@
 package borscht
 
-import parsers.given
+import parsers.given 
+
+import scala.annotation.infix
 
 trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
-  self =>
-
-  def ++(that: ConfigNode): ConfigNode = new ConfigNode with Node:
-    def node(path: String): Option[Node] = that.node(path) orElse self.node(path)
-
-    def iterator: Iterator[(String, Node)] =
-      val primary = that.iterator.toMap
-      (self.iterator filterNot { (key, _) => primary.contains(key) }) ++ that.iterator
-
-    def position: Position = self.position | that.position
+  @infix
+  def ++(that: ConfigNode): ConfigNode = ConfigNode.Merged(this, that)
 
   final def get[T: NodeParser](path: String): T = opt[T](path) getOrElse (throw PathNotFoundException(path, position))
 
@@ -27,3 +21,23 @@ trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)
   final def set[T: NodeParser](path: String): Set[T] = opt[Set[T]](path) getOrElse Set.empty
 
   final def map[T: NodeParser](path: String): Map[String, T] = opt[Map[String, T]](path) getOrElse Map.empty
+
+object ConfigNode:
+  private def merge(optFallback: Option[Node], optMain: Option[Node]): Option[Node] =
+    optMain map { main => optFallback map { fallback =>
+      (fallback, main) match {
+        case (fallback: ConfigNode, main: ConfigNode) => fallback ++ main
+        case _ => main
+      }
+    } getOrElse main } orElse optFallback
+  
+  private case class Merged(fallback: ConfigNode, main: ConfigNode)(using recipe: Recipe) extends ConfigNode with Node:
+    def node(path: String): Option[Node] = merge(fallback.node(path), main.node(path))
+
+    def iterator: Iterator[(String, Node)] =
+      def updated = (fallback.iterator map { (key, node) =>
+        key -> merge(Some(node), main.node(key)).get
+      }).toMap
+      updated.iterator ++ (main.iterator filterNot { (key, _) => updated.contains(key) })
+
+    def position: Position = main.position + fallback.position
