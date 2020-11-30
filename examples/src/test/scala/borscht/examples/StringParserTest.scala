@@ -6,10 +6,10 @@ import borscht.parsers.given
 import borscht.template.impl.st4.NodeParserST4TemplateString
 import borscht.template.NodeParserTemplateString
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.matchers.must.Matchers
 
 class StringParserTest extends AnyFlatSpec with Matchers:
-  private def config(using recipe: Recipe) = recipe.parse("""
+  private def config(recipe: Recipe) = recipe.parse("""
     |scalar: <value>
     |object {
     |  template: "<name>: <value>"
@@ -23,14 +23,14 @@ class StringParserTest extends AnyFlatSpec with Matchers:
     val recipe = Recipe(provider = TypesafeConfigProvider())
     import recipe.given
 
-    config.get[String]("scalar") shouldEqual "<value>"
+    config(recipe)[String]("scalar") mustEqual "<value>"
   }
 
   it should "throw a parser exception for the config node" in {
     val recipe = Recipe(provider = TypesafeConfigProvider())
     import recipe.given
 
-    a[BorschtNodeParserException] should be thrownBy (config.get[String]("object"))
+    a[BorschtNodeParserException] must be thrownBy (config(recipe)[String]("object"))
   }
 
   "Template string parser" should "return the string for the scalar node" in {
@@ -39,7 +39,7 @@ class StringParserTest extends AnyFlatSpec with Matchers:
       NodeParserString = NodeParserST4TemplateString())
     import recipe.given
 
-    config.get[String]("scalar") shouldEqual "<value>"
+    config(recipe)[String]("scalar") mustEqual "<value>"
   }
 
   it should "throw a parser exception for the config node" in {
@@ -48,5 +48,5 @@ class StringParserTest extends AnyFlatSpec with Matchers:
       NodeParserString = NodeParserST4TemplateString())
     import recipe.given
 
-    config.get[String]("object") shouldEqual "value: 42"
+    config(recipe)[String]("object") mustEqual "value: 42"
   }

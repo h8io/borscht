@@ -12,5 +12,5 @@ private[typesafe] trait TypesafeNode(value: ConfigValue):
 
 private[typesafe] def wrap(value: ConfigValue)(using recipe: Recipe): Node = value match
   case list: ConfigList => TypesafeIterableNode(list)
-  case obj: ConfigObject => TypesafeConfigNode(obj.toConfig)
+  case obj: ConfigObject => TypesafeConfigNode(obj)
   case scalar => TypesafeScalarNode(scalar)

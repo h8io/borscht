@@ -1,43 +1,56 @@
 package borscht
 
-import parsers.given 
+import borscht.parsers.given
 
-import scala.annotation.infix
+import scala.annotation.{infix, tailrec}
 
 trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
   @infix
   def ++(that: ConfigNode): ConfigNode = ConfigNode.Merged(this, that)
 
-  final def get[T: NodeParser](path: String): T = opt[T](path) getOrElse (throw PathNotFoundException(path, position))
+  final def apply[T: NodeParser](ref: String*): T =
+    get[T](ref: _*) getOrElse { throw NodeNotFoundException(ref, position) }
 
-  final def opt[T](path: String)(using parser: NodeParser[T]): Option[T] = node(path) map { n =>
+  final def get[T](ref: String*)(using parser: NodeParser[T]): Option[T] = node(ref: _*) map { n =>
     try parser(n) catch { case e: Exception => throw BorschtNodeParserException(n.position, e) }
   }
 
-  def node(path: String): Option[Node]
+  final def list[T: NodeParser](ref: String*): List[T] = get[List[T]](ref: _*) getOrElse Nil
 
-  final def list[T: NodeParser](path: String): List[T] = opt[List[T]](path) getOrElse Nil
+  final def set[T: NodeParser](ref: String*): Set[T] = get[Set[T]](ref: _*) getOrElse Set.empty
 
-  final def set[T: NodeParser](path: String): Set[T] = opt[Set[T]](path) getOrElse Set.empty
+  final def map[T: NodeParser](ref: String*): Map[String, T] = get[Map[String, T]](ref: _*) getOrElse Map.empty
 
-  final def map[T: NodeParser](path: String): Map[String, T] = opt[Map[String, T]](path) getOrElse Map.empty
+  final def node(ref: String*): Option[Node] = if (ref.isEmpty) Some(this) else
+    val it = ref.iterator
+    @tailrec
+    def loop(cfg: ConfigNode): Option[Node] =
+      val next = cfg.child(it.next)
+      if (it.hasNext)
+        next match
+          case Some(nextCfg: ConfigNode) => loop(nextCfg)
+          case _ => None
+      else next
+    loop(this)
+
+  protected def child(key: String): Option[Node]
+
+  override def toString = iterator.mkString(s"${getClass.getName}(", ", ", ")") 
 
 object ConfigNode:
-  private def merge(optFallback: Option[Node], optMain: Option[Node]): Option[Node] =
-    optMain map { main => optFallback map { fallback =>
-      (fallback, main) match {
-        case (fallback: ConfigNode, main: ConfigNode) => fallback ++ main
-        case _ => main
-      }
-    } getOrElse main } orElse optFallback
-  
-  private case class Merged(fallback: ConfigNode, main: ConfigNode)(using recipe: Recipe) extends ConfigNode with Node:
-    def node(path: String): Option[Node] = merge(fallback.node(path), main.node(path))
+  private def merge(optFallback: Option[Node], optMain: Option[Node])(using recipe: Recipe): Option[Node] =
+    (optFallback, optMain) match
+      case (Some(fallback: ConfigNode), Some(main: ConfigNode)) => Some(Merged(fallback, main))
+      case (_, None) => optFallback
+      case _ => optMain
 
-    def iterator: Iterator[(String, Node)] =
+  private case class Merged(fallback: ConfigNode, main: ConfigNode)(using recipe: Recipe) extends ConfigNode with Node:
+    override protected def child(key: String): Option[Node] = merge(fallback.child(key), main.child(key))
+
+    override def iterator: Iterator[(String, Node)] =
       def updated = (fallback.iterator map { (key, node) =>
-        key -> merge(Some(node), main.node(key)).get
+        key -> merge(Some(node), main.child(key)).get
       }).toMap
       updated.iterator ++ (main.iterator filterNot { (key, _) => updated.contains(key) })
 
-    def position: Position = main.position + fallback.position
+    override def position: Position = fallback.position + main.position

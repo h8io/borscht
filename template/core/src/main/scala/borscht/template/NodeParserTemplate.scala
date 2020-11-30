@@ -19,6 +19,6 @@ def NodeParserTemplate(templateParser: TemplateParser,
 
   NodeParserScalarString andThen templateParser orElse
     (NodeParserConfigNode andThen { cfg =>
-      templateParser(NodeParserScalarString(cfg.get[ScalarNode]("template")))
-        .set(toMap(cfg.get[ConfigNode]("parameters")))
+      templateParser(NodeParserScalarString(cfg[ScalarNode]("template")))
+        .set(toMap(cfg[ConfigNode]("parameters")))
     })

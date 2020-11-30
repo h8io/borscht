@@ -1,14 +1,17 @@
 package borscht.impl.typesafe
 
 import borscht._
-import com.typesafe.config.Config
+import com.typesafe.config.{Config, ConfigObject, ConfigValue}
 
+import scala.annotation.tailrec
 import scala.jdk.CollectionConverters._
 
-private[typesafe] final class TypesafeConfigNode(uc: Config)(using recipe: Recipe)
-  extends ConfigNode with TypesafeNode(uc.root) with Node:
+private[typesafe] final class TypesafeConfigNode(uc: ConfigObject)(using recipe: Recipe)
+  extends ConfigNode with TypesafeNode(uc) with Node:
+
+  def this(cfg: Config)(using recipe: Recipe) = this(cfg.root)
 
   override def iterator: Iterator[(String, Node)] =
     uc.entrySet().iterator.asScala map { e => e.getKey -> wrap(e.getValue) }
 
-  override def node(path: String): Option[Node] = if (uc.hasPath(path)) Some(wrap(uc.getValue(path))) else None
+  override protected def child(key: String): Option[Node] = Option(uc.get(key)) map wrap

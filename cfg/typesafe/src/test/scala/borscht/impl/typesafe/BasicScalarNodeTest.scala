@@ -3,7 +3,7 @@ package borscht.impl.typesafe
 import borscht.{Recipe, ConfigNode, ScalarNode}
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.matchers.must.Matchers
 
 import scala.language.implicitConversions
 
@@ -12,21 +12,21 @@ class BasicScalarNodeTest extends AnyFlatSpec with Matchers:
   import recipe.given
   
   "Config" should "provide a string value" in {
-    cfg"key: value".get[String]("key") shouldEqual "value"
+    cfg"key: value"[String]("key") mustEqual "value"
   }
 
   it should "provide a numeric value" in {
-    cfg"key: 42".get[Number]("key") shouldEqual 42
+    cfg"key: 42"[Number]("key") mustEqual 42
   }
 
   it should "provide a numeric value from string" in {
-    cfg"""key: "42"""".get[Number]("key") shouldEqual 42
+    cfg"""key: "42""""[Number]("key") mustEqual 42
   }
   
   it should "provide a nested config" in {
-    cfg"key { property1: value1, property2: 2 }".get[ConfigNode]("key").iterator.toSeq map { case (key, node) =>
+    cfg"key { property1: value1, property2: 2 }"[ConfigNode]("key").iterator.toSeq map { case (key, node) =>
       key -> (node match
         case scalar: ScalarNode => scalar.unwrapped
         case other => fail(s"Invalid node class ${other.getClass}"))
-    } should contain theSameElementsAs Map("property1" -> "value1", "property2" -> 2)
+    } must contain theSameElementsAs Map("property1" -> "value1", "property2" -> 2)
   }

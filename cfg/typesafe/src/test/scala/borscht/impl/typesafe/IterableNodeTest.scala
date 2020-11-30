@@ -1,9 +1,9 @@
 package borscht.impl.typesafe
 
-import borscht.Recipe
 import borscht.parsers.given
+import borscht.Recipe
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.should.Matchers
+import org.scalatest.matchers.must.Matchers
 
 import scala.language.implicitConversions
 
@@ -12,41 +12,34 @@ class IterableNodeTest extends AnyFlatSpec with Matchers:
   import recipe.given
 
   "Config" should "provide a list of strings" in {
-    cfg"key: [value1, value2]".get[List[String]]("key").toSeq should contain theSameElementsInOrderAs
-      List("value1", "value2")
+    cfg"key: [value1, value2]"[List[String]]("key") must contain theSameElementsInOrderAs List("value1", "value2")
   }
 
   it should "provide a singleton list of strings" in {
-    cfg"key: value".get[List[String]]("key").toSeq should contain theSameElementsInOrderAs
-      List("value")
+    cfg"key: value"[List[String]]("key") must contain theSameElementsInOrderAs List("value")
   }
 
   it should "provide a list of numbers" in {
-    cfg"key: [42, 2.66]".get[List[Number]]("key").toSeq should contain theSameElementsInOrderAs
-      List(42, 2.66)
+    cfg"key: [42, 2.66]"[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers" in {
-    cfg"key: ${Long.MaxValue}".get[List[Number]]("key").toSeq should contain theSameElementsInOrderAs
-      List(Long.MaxValue)
+    cfg"key: ${Long.MaxValue}"[List[Number]]("key") must contain theSameElementsInOrderAs List(Long.MaxValue)
   }
 
   it should "provide a list of numbers from a string sequence" in {
-    cfg"""key: ["42", "2.66"]""".get[List[Number]]("key").toSeq should contain theSameElementsInOrderAs
-      List(42, 2.66)
+    cfg"""key: ["42", "2.66"]"""[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers from a string value" in {
-    cfg"""key: "${Long.MaxValue}"""".get[List[Number]]("key").toSeq should contain theSameElementsInOrderAs
-      List(Long.MaxValue)
+    cfg"""key: "${Long.MaxValue}""""[List[Number]]("key") must contain theSameElementsInOrderAs List(Long.MaxValue)
   }
 
   it should "provide a list of booleans" in {
-    cfg"key: [true, true, false]".get[List[Boolean]]("key").toSeq should contain theSameElementsInOrderAs
-      List(true, true, false)
+    cfg"key: [true, true, false]"[List[Boolean]]("key") must contain theSameElementsInOrderAs List(true, true, false)
   }
 
   it should "provide a list of booleans from a string sequence" in {
-    cfg"""key: ["false", "true", "false"]""".get[List[Boolean]]("key").toSeq should contain theSameElementsInOrderAs
+    cfg"""key: ["false", "true", "false"]"""[List[Boolean]]("key") must contain theSameElementsInOrderAs
       List(false, true, false)
   }
