@@ -1,7 +1,8 @@
-package borscht.examples
+package borscht.examples.typesafe
 
-import borscht.{ConfigNode, Recipe, ScalarNode}
+import borscht._
 import borscht.impl.typesafe.TypesafeConfigProvider
+import borscht.{ConfigNode, Recipe, ScalarNode}
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers

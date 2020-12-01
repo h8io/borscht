@@ -13,7 +13,14 @@ lazy val `cfg-typesafe` = project
   .in(file("cfg/typesafe"))
   .settings(
     name := "borscht-cfg-typesafe",
-    libraryDependencies += "com.typesafe" % "config" % "1.4.0")
+    libraryDependencies += "com.typesafe" % "config" % "1.4.1")
+  .dependsOn(core)
+
+lazy val `cfg-jackson` = project
+  .in(file("cfg/jackson"))
+  .settings(
+      name := "borscht-cfg-jackson",
+      libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % "2.12.0")
   .dependsOn(core)
 
 lazy val `template-core` = project
@@ -43,5 +50,5 @@ lazy val root = project
     publishArtifact := false)
   .aggregate(
     core, examples,
-    `cfg-typesafe`,
+    `cfg-typesafe`, `cfg-jackson`,
     `template-core`, `template-st4`)

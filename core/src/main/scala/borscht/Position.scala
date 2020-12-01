@@ -3,7 +3,6 @@ package borscht
 import scala.annotation.infix
 
 trait Position:
-  @infix
   final def +(that: Position): Position = Position.Merged(this, that)
   
   override def toString: String

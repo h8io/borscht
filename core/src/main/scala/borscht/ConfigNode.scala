@@ -5,7 +5,6 @@ import borscht.parsers.given
 import scala.annotation.{infix, tailrec}
 
 trait ConfigNode(using recipe: Recipe) extends Node with Iterable[(String, Node)]:
-  @infix
   def ++(that: ConfigNode): ConfigNode = ConfigNode.Merged(this, that)
 
   final def apply[T: NodeParser](ref: String*): T =

@@ -7,7 +7,7 @@ import scala.annotation.tailrec
 import scala.jdk.CollectionConverters._
 
 private[typesafe] final class TypesafeConfigNode(uc: ConfigObject)(using recipe: Recipe)
-  extends ConfigNode with TypesafeNode(uc) with Node:
+  extends ConfigNode with Node with TypesafeNode(uc):
 
   def this(cfg: Config)(using recipe: Recipe) = this(cfg.root)
 

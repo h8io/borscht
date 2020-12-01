@@ -12,6 +12,6 @@ final class TypesafeConfigProvider extends ConfigProvider:
   override def apply()(using recipe: Recipe): ConfigNode = new TypesafeConfigNode(ConfigFactory.load)
 
   override def apply(paths: Iterable[Path])(using recipe: Recipe): ConfigNode = new TypesafeConfigNode(
-    (paths map { path =>
+    (paths.iterator map { path =>
       ConfigFactory.parseFile(path.toFile)
     } reduce { (prev, next) => next withFallback prev }).resolve)

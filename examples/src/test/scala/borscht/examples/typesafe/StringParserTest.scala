@@ -1,10 +1,10 @@
-package borscht.examples
+package borscht.examples.typesafe
 
 import borscht._
 import borscht.impl.typesafe.TypesafeConfigProvider
 import borscht.parsers.given
-import borscht.template.impl.st4.NodeParserST4TemplateString
 import borscht.template.NodeParserTemplateString
+import borscht.template.impl.st4.NodeParserST4TemplateString
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 

@@ -1,4 +1,4 @@
-package borscht.examples
+package borscht.examples.typesafe
 
 import borscht._
 import borscht.impl.typesafe.TypesafeConfigProvider

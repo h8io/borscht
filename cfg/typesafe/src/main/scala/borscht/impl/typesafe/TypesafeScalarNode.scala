@@ -4,6 +4,6 @@ import borscht.{IterableNode, Node, Recipe, ScalarNode}
 import com.typesafe.config.ConfigValue
 
 private[typesafe] final class TypesafeScalarNode(scalar: ConfigValue)(using recipe: Recipe)
-  extends TypesafeNode(scalar) with ScalarNode with IterableNode with Node:
+  extends ScalarNode with IterableNode with Node with TypesafeNode(scalar):
 
-  override def unwrapped = scalar.unwrapped
+  override def unwrapped: AnyRef = scalar.unwrapped

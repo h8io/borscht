@@ -1,7 +1,5 @@
 package borscht
 
-import scala.annotation.infix
-
 type NodeParser[T] = PartialFunction[Node, T]
 
 val NodeParserScalarAnyRef: NodeParser[AnyRef] = parsers.NodeParserScalarNode andThen (_.unwrapped)
