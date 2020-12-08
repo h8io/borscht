@@ -7,6 +7,8 @@ ThisBuild / libraryDependencies ++= Seq(
     // "org.scalamock" %% "scalamock" % "5.0.0" % Test,
     "org.scalatest" %% "scalatest" % "3.2.+" % Test)
 
+//ThisBuild / scalacOptions += "-Yexplicit-nulls"
+
 lazy val core = project
   .in(file("core"))
   .settings(name := "cfg-core")

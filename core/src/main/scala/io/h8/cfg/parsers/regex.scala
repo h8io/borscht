@@ -3,6 +3,7 @@ package io.h8.cfg.parsers
 import java.util.regex.Pattern
 import io.h8.cfg._
 
+//import scala.language.unsafeNulls
 import scala.util.matching.Regex
 
 given NodeParserPattern(using parser: NodeParser[String]) as NodeParser[Pattern] = parser andThen (Pattern.compile(_))

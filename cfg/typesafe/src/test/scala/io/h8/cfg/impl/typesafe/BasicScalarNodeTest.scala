@@ -1,6 +1,7 @@
 package io.h8.cfg.impl.typesafe
 
 import io.h8.cfg.parsers.given
+import io.h8.cfg.parsers.default.given
 import io.h8.cfg.{CfgNode, Factory, ScalarNode}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
@@ -8,8 +9,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
 
 class BasicScalarNodeTest extends AnyFlatSpec with Matchers:
-  private val factory = TypesafeFactory()
-  import factory.given
+  import TypesafeFactory.given
   
   "Config" should "provide a string value" in {
     cfg"key: value"[String]("key") mustEqual "value"

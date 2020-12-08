@@ -2,7 +2,5 @@ package io.h8.cfg.parsers
 
 import io.h8.cfg.NodeParser
 
-import scala.reflect.ClassTag
-
-given NodeParserClass[T](using NodeParser: NodeParser[String]) as NodeParser[Class[T]] =
-  NodeParser andThen { name => Class.forName(name).asInstanceOf[Class[T]] }
+given NodeParserClass[T](using parser: NodeParser[String]) as NodeParser[Class[T]] =
+  parser andThen { name => Class.forName(name).asInstanceOf[Class[T]] }

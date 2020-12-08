@@ -1,15 +1,13 @@
 package io.h8.cfg.examples.jackson.yaml
 
 import io.h8.cfg.parsers.given
-import io.h8.cfg.impl.jackson.yaml.YamlFactory
+import io.h8.cfg.parsers.default.given
+import io.h8.cfg.impl.jackson.yaml.YamlFactory.given
 import io.h8.cfg.{CfgNode, Factory}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
 class NodeReferenceTest extends AnyFlatSpec with Matchers:
-  private val factory = YamlFactory()
-  import factory.given
-
   private val config =
     cfg"""
          |level1: true

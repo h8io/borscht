@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.node._
 import io.h8.cfg._
 
 private[jackson] object JacksonScalarNode:
-  def apply(node: ValueNode, src: JacksonSource)(using factory: Factory): ScalarNode =
+  def apply(node: ValueNode, src: JacksonSource): ScalarNode =
     val unwrapped = node match
       case node: BinaryNode => node.binaryValue
       case node: BooleanNode => Boolean.box(node.booleanValue)
@@ -18,5 +18,4 @@ private[jackson] object JacksonScalarNode:
 
 
 private[jackson] final class JacksonScalarNode(val unwrapped: AnyRef, node: JsonNode, src: JacksonSource)
-                                              (using factory: Factory)
-  extends ScalarNode with IterableNode with Node with JacksonNode(node, src)
+  extends ScalarNode with JacksonNode(node, src)

@@ -8,10 +8,10 @@ import io.h8.cfg._
 import scala.collection.immutable.Queue
 
 open class JacksonCfgProvider(mapper: ObjectMapper, defaultFileNames: List[String] = Nil) extends CfgProvider:
-  override def parse(content: String)(using factory: Factory): CfgNode =
+  override def parse(content: String): CfgNode =
     asConfigNode(mapper.readTree(content), JacksonSource.Raw)
 
-  override def apply()(using factory: Factory): CfgNode =
+  override def apply(): CfgNode =
     (defaultFileNames.iterator map ClassLoader.getSystemResource filter (_ != null)).nextOption map { url =>
       val src = JacksonSource(url)
       asConfigNode(mapper.readTree(url), src)
@@ -20,10 +20,10 @@ open class JacksonCfgProvider(mapper: ObjectMapper, defaultFileNames: List[Strin
         JacksonSource.oneOf(Queue.from(defaultFileNames map JacksonSource.apply)))
     }
 
-  override def apply(paths: Iterable[Path])(using factory: Factory): CfgNode =
+  override def apply(paths: Iterable[Path]): CfgNode =
     paths.iterator map { path => asConfigNode(mapper.readTree(path.toFile), JacksonSource(path)) } reduce (_ ++ _)
     
-  private def asConfigNode(node: JsonNode, src: JacksonSource)(using factory: Factory): CfgNode =
+  private def asConfigNode(node: JsonNode, src: JacksonSource): CfgNode =
     JacksonCfgNode(asObjectNode(node, src), src)
 
   private def asObjectNode(node: JsonNode, src: JacksonSource): ObjectNode = node match

@@ -3,8 +3,9 @@ package io.h8.cfg
 import io.h8.cfg.parsers.given
 
 import scala.annotation.{tailrec, targetName}
+import scala.compiletime._
 
-trait CfgNode(using factory: Factory) extends Node with Iterable[(String, Node)]:
+trait CfgNode extends Node with Iterable[(String, Node)]:
   @targetName("merge")
   def ++(that: CfgNode): CfgNode = CfgNode.Merged(this, that)
 
@@ -14,7 +15,11 @@ trait CfgNode(using factory: Factory) extends Node with Iterable[(String, Node)]
   final def get[T](ref: String*)(using parser: NodeParser[T]): Option[T] = node(ref: _*) map { n =>
     try parser(n) catch { case e: Exception => throw CfgNodeParserException(n.position, e) }
   }
-
+  
+  private def parse[T](parser: NodeParser[T], ref: Seq[String]): Option[T] = node(ref: _*) map { n =>
+    try parser(n) catch { case e: Exception => throw CfgNodeParserException(n.position, e) }
+  } 
+  
   final def list[T: NodeParser](ref: String*): List[T] = get[List[T]](ref: _*) getOrElse Nil
 
   final def set[T: NodeParser](ref: String*): Set[T] = get[Set[T]](ref: _*) getOrElse Set.empty
@@ -38,13 +43,12 @@ trait CfgNode(using factory: Factory) extends Node with Iterable[(String, Node)]
   override def toString = iterator.mkString(s"${getClass.getName}(", ", ", ")") 
 
 object CfgNode:
-  private def merge(optFallback: Option[Node], optMain: Option[Node])(using factory: Factory): Option[Node] =
-    (optFallback, optMain) match
-      case (Some(fallback: CfgNode), Some(main: CfgNode)) => Some(Merged(fallback, main))
-      case (_, None) => optFallback
-      case _ => optMain
+  private def merge(optFallback: Option[Node], optMain: Option[Node]): Option[Node] = (optFallback, optMain) match
+    case (Some(fallback: CfgNode), Some(main: CfgNode)) => Some(Merged(fallback, main))
+    case (_, None) => optFallback
+    case _ => optMain
 
-  private case class Merged(fallback: CfgNode, main: CfgNode)(using factory: Factory) extends CfgNode with Node:
+  private case class Merged(fallback: CfgNode, main: CfgNode) extends CfgNode with Node:
     override protected def child(key: String): Option[Node] = merge(fallback.child(key), main.child(key))
 
     override def iterator: Iterator[(String, Node)] =

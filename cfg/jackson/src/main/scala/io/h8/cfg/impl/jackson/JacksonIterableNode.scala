@@ -5,7 +5,7 @@ import io.h8.cfg.{IterableNode, Node, Factory}
 
 import scala.jdk.CollectionConverters._
 
-private[jackson] final class JacksonIterableNode(node: ArrayNode, src: JacksonSource)(using factory: Factory)
-  extends IterableNode with Node with JacksonNode(node, src):
+private[jackson] final class JacksonIterableNode(node: ArrayNode, src: JacksonSource)
+  extends IterableNode with JacksonNode(node, src):
 
   override def iterator: Iterator[Node] = node.elements.asScala map wrap(src)

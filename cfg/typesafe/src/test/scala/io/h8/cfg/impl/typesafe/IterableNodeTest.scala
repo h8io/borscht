@@ -1,6 +1,7 @@
 package io.h8.cfg.impl.typesafe
 
 import io.h8.cfg.parsers.given
+import io.h8.cfg.parsers.default.given
 import io.h8.cfg.Factory
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
@@ -8,8 +9,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
 
 class IterableNodeTest extends AnyFlatSpec with Matchers:
-  private val factory = TypesafeFactory()
-  import factory.given
+  import TypesafeFactory.given
 
   "Config" should "provide a list of strings" in {
     cfg"""key: [value1, value2]"""[List[String]]("key") must contain theSameElementsInOrderAs List("value1", "value2")

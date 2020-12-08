@@ -2,9 +2,7 @@ package io.h8.cfg
 
 import java.nio.file.Path
 
-class Factory(provider: CfgProvider, val NodeParserString: NodeParser[String] = NodeParserPlainString):
-  given Factory = this
-
+class Factory(provider: CfgProvider):
   def parse(content: String): CfgNode = provider.parse(content)
 
   def apply(): CfgNode = provider()

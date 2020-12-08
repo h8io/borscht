@@ -1,6 +1,6 @@
 package io.h8.cfg
 
-trait ScalarNode(using factory: Factory) extends IterableNode:
+trait ScalarNode extends IterableNode:
   def unwrapped: AnyRef
   
   def asString: String = unwrapped.toString

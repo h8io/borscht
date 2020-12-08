@@ -7,9 +7,6 @@ import io.h8.cfg.{Node, Factory}
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.jdk.CollectionConverters._
-import scala.language.implicitConversions
-
-given NodeParserString(using factory: Factory) as NodeParser[String] = factory.NodeParserString
 
 given NodeParserBoolean as NodeParser[Boolean] = NodeParserScalarAnyRef andThen {
   case v: jBoolean => v.booleanValue

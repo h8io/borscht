@@ -7,7 +7,7 @@ type TemplateParser = String => Template
 type ParameterParser[T] = String => T
 
 def NodeParserTemplate(templateParser: TemplateParser,
-                       parameterParser: TemplateParameterValueParser): NodeParser[Template] =
+                       parameterParser: TemplateParameterValueParser = TemplateParameterValueParser()): NodeParser[Template] =
   def toMap(cfg: CfgNode): Map[String, AnyRef] = (cfg.iterator map (_ -> parameter(_))).toMap
 
   def parameter(node: Node): AnyRef = node match

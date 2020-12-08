@@ -1,15 +1,13 @@
 package io.h8.cfg.examples.typesafe
 
 import io.h8.cfg.parsers.given
+import io.h8.cfg.parsers.default.given
 import io.h8.cfg.{CfgNode, Factory}
-import io.h8.cfg.impl.typesafe.TypesafeFactory
+import io.h8.cfg.impl.typesafe.TypesafeFactory.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
 class NodeReferenceTest extends AnyFlatSpec with Matchers:
-  private val factory = TypesafeFactory()
-  import factory.given
-
   private val config =
     cfg"""
          |level1: true
