@@ -10,4 +10,4 @@ given NodeParserPattern(using parser: NodeParser[String]) as NodeParser[Pattern]
 
 given NodeParserRegex(using parser: NodeParser[String]) as NodeParser[Regex] =
   NodeParserPlainString andThen (Regex(_)) orElse
-    (NodeParserConfigNode andThen { cfg  => Regex(cfg[String]("pattern"), cfg.list[String]("groups"): _*) })
+    (NodeParserCfgNode andThen { cfg  => Regex(cfg[String]("pattern"), cfg.list[String]("groups"): _*) })

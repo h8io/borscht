@@ -18,7 +18,7 @@ def NodeParserTemplate(templateParser: TemplateParser,
     case cfg: CfgNode => toMap(cfg)
 
   NodeParserPlainString andThen templateParser orElse
-    (NodeParserConfigNode andThen { cfg =>
+    (NodeParserCfgNode andThen { cfg =>
       templateParser(NodeParserPlainString(cfg[ScalarNode]("template")))
         .set(toMap(cfg[CfgNode]("parameters")))
     })
