@@ -4,7 +4,7 @@ import java.nio.file.Path
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 import io.h8.cfg._
-import io.h8.cfg.impl.system.SystemProperties
+import io.h8.cfg.impl.system.SystemCfgNode
 
 import scala.collection.immutable.Queue
 
@@ -15,7 +15,7 @@ open class JacksonCfgProvider(mapper: ObjectMapper, defaultFileNames: List[Strin
   override def apply(): CfgNode =
     (defaultFileNames.iterator map ClassLoader.getSystemResource filter (_ != null)).nextOption map { url =>
       val src = JacksonSource.url(url)
-      asConfigNode(mapper.readTree(url), src) ++ SystemProperties
+      asConfigNode(mapper.readTree(url), src) ++ SystemCfgNode()
     } getOrElse {
       throw CfgException(s"A default file is not found",
         JacksonSource.oneOf(Queue.from(defaultFileNames map JacksonSource.resource.apply)))
@@ -24,7 +24,7 @@ open class JacksonCfgProvider(mapper: ObjectMapper, defaultFileNames: List[Strin
   override def apply(paths: Iterable[Path]): CfgNode =
     (paths.iterator map { path =>
       asConfigNode(mapper.readTree(path.toFile), JacksonSource.path(path))
-    } reduce (_ ++ _)) ++ SystemProperties
+    } reduce (_ ++ _)) ++ SystemCfgNode()
     
   private def asConfigNode(node: JsonNode, src: JacksonSource): CfgNode =
     JacksonCfgNode(asObjectNode(node, src), src)

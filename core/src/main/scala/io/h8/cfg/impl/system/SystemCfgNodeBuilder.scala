@@ -15,7 +15,7 @@ private[system] class SystemCfgNodeBuilder extends mutable.Builder[(String, Syst
     map += elem
     this
 
-  override def result: SystemCfgNode = SystemCfgNode(
+  override def result: SystemCfgNode = new SystemCfgNode(
     (map foldLeft immutable.HashMap.newBuilder[String, Node]) { (builder, kv) =>
       builder += (kv._1 -> (kv._2 match
         case node: SystemScalarNode => node
