@@ -3,8 +3,6 @@ package io.h8.cfg.examples.typesafe
 import io.h8.cfg.parsers.given
 import io.h8.cfg.{CfgNodeParserException, Factory}
 import io.h8.cfg.impl.typesafe.TypesafeFactory.given
-import io.h8.cfg.template.NodeParserTemplateString
-import io.h8.cfg.template.impl.st4.NodeParserST4TemplateString
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
@@ -21,21 +19,19 @@ class StringParserTest extends AnyFlatSpec with Matchers:
     |}"""
 
   "Plain string parser" should "return the string for the scalar node" in {
-    import io.h8.cfg.parsers.default.given
     config[String]("scalar") mustEqual "<value>"
   }
 
   it should "throw a parser exception for the config node" in {
-    import io.h8.cfg.parsers.default.given
     a[CfgNodeParserException] must be thrownBy (config[String]("object"))
   }
 
   "Template string parser" should "return the string for the scalar node" in {
-    import io.h8.cfg.examples.parsers.st4.default.given
+    import io.h8.cfg.examples.parsers.st4.given
     config[String]("scalar") mustEqual "<value>"
   }
 
-  it should "throw a parser exception for the config node" in {
-    import io.h8.cfg.examples.parsers.st4.default.given
+  it should "transform an object to string" in {
+    import io.h8.cfg.examples.parsers.st4.given
     config[String]("object") mustEqual "value: 42 (08.12.2020)"
   }

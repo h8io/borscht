@@ -34,17 +34,12 @@ lazy val `cfg-jackson-yaml` = project
     libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion)
   .dependsOn(`cfg-jackson`)
 
-lazy val `template-core` = project
-  .in(file("template/core"))
-  .settings(name := "cfg-template-core")
-  .dependsOn(core)
-
 lazy val `template-st4` = project
   .in(file("template/st4"))
   .settings(
       name := "cfg-template-st4",
       libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
-  .dependsOn(`template-core`)
+  .dependsOn(`core`)
 
 lazy val examples = project
   .in(file("examples"))
@@ -65,4 +60,4 @@ lazy val root = project
   .aggregate(
     core, examples,
     `cfg-typesafe`, `cfg-jackson`, `cfg-jackson-yaml`,
-    `template-core`, `template-st4`)
+    `template-st4`)

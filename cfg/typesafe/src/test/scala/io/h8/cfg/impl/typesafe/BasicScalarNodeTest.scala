@@ -1,7 +1,6 @@
 package io.h8.cfg.impl.typesafe
 
 import io.h8.cfg.parsers.given
-import io.h8.cfg.parsers.default.given
 import io.h8.cfg.{CfgNode, Factory, ScalarNode}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers

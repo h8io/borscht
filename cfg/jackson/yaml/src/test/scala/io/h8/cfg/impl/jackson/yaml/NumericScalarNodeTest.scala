@@ -1,7 +1,6 @@
 package io.h8.cfg.impl.jackson.yaml
 
 import io.h8.cfg.parsers.given
-import io.h8.cfg.parsers.default.given
 import io.h8.cfg.Factory
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers

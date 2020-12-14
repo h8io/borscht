@@ -2,11 +2,16 @@ package io.h8.cfg.parsers
 
 import java.lang.{Boolean => jBoolean}
 import io.h8.cfg._
-import io.h8.cfg.{Node, Factory}
+import io.h8.cfg.template.Template
+import io.h8.cfg.{Factory, Node}
 
 import scala.annotation.tailrec
 import scala.collection.mutable
+import scala.compiletime.summonFrom
 import scala.jdk.CollectionConverters._
+
+given NodeParserString(using parser: NodeParser[Template] = NodeParserNothing) as NodeParser[String] =
+  NodeParserPlainString orElse (parser andThen (_.render))
 
 given NodeParserBoolean as NodeParser[Boolean] = NodeParserScalarAnyRef andThen {
   case v: jBoolean => v.booleanValue

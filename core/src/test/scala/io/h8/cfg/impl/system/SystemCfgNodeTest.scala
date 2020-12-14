@@ -2,7 +2,6 @@ package io.h8.cfg.impl.system
 
 import io.h8.cfg.CfgNode
 import io.h8.cfg.parsers.given
-import io.h8.cfg.parsers.default.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
