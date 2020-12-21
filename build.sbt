@@ -1,6 +1,6 @@
 val JacksonVersion = "2.12.0"
 
-ThisBuild / organization := "io.h8.cfg"
+ThisBuild / organization := "io.h8"
 ThisBuild / scalaVersion := "3.0.0-M3"
 
 ThisBuild / libraryDependencies ++= Seq(
@@ -11,38 +11,38 @@ ThisBuild / libraryDependencies ++= Seq(
 
 lazy val core = project
   .in(file("core"))
-  .settings(name := "cfg-core")
+  .settings(name := "borscht-core")
 
-lazy val `cfg-typesafe` = project
-  .in(file("cfg/typesafe"))
+lazy val `provider-typesafe` = project
+  .in(file("provider/typesafe"))
   .settings(
-    name := "cfg-typesafe",
+    name := "borscht-typesafe",
     libraryDependencies += "com.typesafe" % "config" % "1.4.1")
   .dependsOn(core)
 
-lazy val `cfg-jackson` = project
-  .in(file("cfg/jackson"))
+lazy val `provider-jackson` = project
+  .in(file("provider/jackson"))
   .settings(
-      name := "cfg-jackson",
+      name := "borscht-jackson",
       libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion)
   .dependsOn(core)
 
-lazy val `cfg-jackson-yaml` = project
-  .in(file("cfg/jackson/yaml"))
+lazy val `provider-jackson-yaml` = project
+  .in(file("provider/jackson/yaml"))
   .settings(
-    name := "cfg-jackson",
+    name := "borscht-jackson",
     libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion)
-  .dependsOn(`cfg-jackson`)
+  .dependsOn(`provider-jackson`)
 
 lazy val `template-core` = project
   .in(file("template/core"))
-  .settings(name := "cfg-template-core")
+  .settings(name := "borscht-template-core")
   .dependsOn(`core`)
 
 lazy val `template-st4` = project
   .in(file("template/st4"))
   .settings(
-      name := "cfg-template-st4",
+      name := "borscht-template-st4",
       libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
   .dependsOn(`template-core`)
 
@@ -55,14 +55,14 @@ lazy val examples = project
       "org.antlr" % "ST4" % "4.3.1"),
     classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
-  .dependsOn(`cfg-typesafe`, `cfg-jackson-yaml`, `template-st4`)
+  .dependsOn(`provider-typesafe`, `provider-jackson-yaml`, `template-st4`)
 
 lazy val root = project
   .in(file("."))
   .settings(
-    name := "cfg",
+    name := "borscht",
     publishArtifact := false)
   .aggregate(
     core, examples,
-    `cfg-typesafe`, `cfg-jackson`, `cfg-jackson-yaml`,
+    `provider-typesafe`, `provider-jackson`, `provider-jackson-yaml`,
     `template-core`, `template-st4`)
