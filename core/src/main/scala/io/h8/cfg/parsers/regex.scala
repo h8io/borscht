@@ -6,8 +6,8 @@ import io.h8.cfg._
 //import scala.language.unsafeNulls
 import scala.util.matching.Regex
 
-given NodeParserPattern(using parser: NodeParser[String]) as NodeParser[Pattern] = parser andThen (Pattern.compile(_))
+given NodeParserPattern(using parser: NodeParser[String]): NodeParser[Pattern] = parser andThen (Pattern.compile(_))
 
-given NodeParserRegex(using parser: NodeParser[String]) as NodeParser[Regex] =
+given NodeParserRegex(using parser: NodeParser[String]): NodeParser[Regex] =
   NodeParserPlainString andThen (Regex(_)) orElse
     (NodeParserCfgNode andThen { cfg  => Regex(cfg[String]("pattern"), cfg.list[String]("groups"): _*) })

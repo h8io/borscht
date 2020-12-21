@@ -9,6 +9,6 @@ private[typesafe] trait TypesafeNode(value: ConfigValue) extends Node:
   override def toString: String = getClass.getSimpleName + "(" + value.render(ConfigRenderOptions.concise) + ")"
 
 private[typesafe] def wrap(value: ConfigValue): Node = value match
-  case list: ConfigList => TypesafeIterableNode(list)
+  case list: ConfigList => TypesafeSeqNode(list)
   case obj: ConfigObject => TypesafeCfgNode(obj)
   case scalar => TypesafeScalarNode(scalar)

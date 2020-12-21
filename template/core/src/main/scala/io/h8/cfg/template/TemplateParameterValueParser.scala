@@ -6,7 +6,7 @@ type TemplateParameterValueParser = PartialFunction[String, AnyRef]
 
 object TemplateParameterValueParser:
   def apply(parsers: Map[String, String => AnyRef] = DefaultParsers,
-            separator: String = "::"): TemplateParameterValueParser = new TemplateParameterValueParser:
+            separator: String = "::"): TemplateParameterValueParser = new TemplateParameterValueParser :
     def apply(value: String): AnyRef = parse(value) match {
       case (Some(parser), raw) => parser(raw)
       case (None, _) => throw IllegalArgumentException(s"Parser not found for $value")

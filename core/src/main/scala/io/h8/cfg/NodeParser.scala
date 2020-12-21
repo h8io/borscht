@@ -1,7 +1,6 @@
 package io.h8.cfg
 
 import io.h8.cfg.Node
-import io.h8.cfg.template.Template
 
 import scala.compiletime.summonFrom
 

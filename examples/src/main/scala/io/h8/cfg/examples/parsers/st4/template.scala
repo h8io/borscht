@@ -4,4 +4,4 @@ import io.h8.cfg.NodeParser
 import io.h8.cfg.template.impl.st4.ST4TemplateParser
 import io.h8.cfg.template.{NodeParserTemplate, Template}
 
-given NodeParserST4Template as NodeParser[Template] = NodeParserTemplate(ST4TemplateParser())
+given NodeParserST4Template: NodeParser[Template] = NodeParserTemplate(ST4TemplateParser())

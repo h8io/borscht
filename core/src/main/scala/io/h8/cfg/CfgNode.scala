@@ -38,7 +38,7 @@ trait CfgNode extends Node with Iterable[(String, Node)]:
       else next
     loop(this)
 
-  protected def child(key: String): Option[Node]
+  def child(key: String): Option[Node]
 
   override def toString = iterator.mkString(s"${getClass.getName}(", ", ", ")") 
 
@@ -49,7 +49,7 @@ object CfgNode:
     case _ => optMain
 
   private case class Merged(fallback: CfgNode, main: CfgNode) extends CfgNode with Node:
-    override protected def child(key: String): Option[Node] = merge(fallback.child(key), main.child(key))
+    override def child(key: String): Option[Node] = merge(fallback.child(key), main.child(key))
 
     override def iterator: Iterator[(String, Node)] =
       def updated = (fallback.iterator map { (key, node) =>

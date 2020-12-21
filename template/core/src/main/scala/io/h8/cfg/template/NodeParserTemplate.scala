@@ -14,11 +14,17 @@ def NodeParserTemplate(templateParser: TemplateParser,
     case scalar: ScalarNode => scalar.unwrapped match
       case value: String => parameterParser.lift(value) getOrElse value
       case value => value
-    case iterable: IterableNode => (iterable.iterator map parameter).toArray
+    case iterable: SeqNode => (iterable.iterator map parameter).toArray
     case cfg: CfgNode => toMap(cfg)
 
   NodeParserPlainString andThen templateParser orElse
-    (NodeParserCfgNode andThen { cfg =>
-      templateParser(NodeParserPlainString(cfg[ScalarNode]("template")))
-        .set(toMap(cfg[CfgNode]("parameters")))
+    (NodeParserCfgNode andThen new PartialFunction[CfgNode, Template] {
+      override def isDefinedAt(cfg: CfgNode): Boolean = cfg.child("parameters") map {
+        case _: CfgNode => true
+        case _ => false
+      } getOrElse true
+
+      override def apply(cfg: CfgNode): Template =
+        templateParser(NodeParserPlainString(cfg[ScalarNode]("template")))
+          .set(toMap(cfg[CfgNode]("parameters")))
     })

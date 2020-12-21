@@ -12,4 +12,4 @@ private[typesafe] final class TypesafeCfgNode(uc: ConfigObject) extends CfgNode 
   override def iterator: Iterator[(String, Node)] =
     uc.entrySet().iterator.asScala map { e => e.getKey -> wrap(e.getValue) }
 
-  override protected def child(key: String): Option[Node] = Option(uc.get(key)) map wrap
+  override def child(key: String): Option[Node] = Option(uc.get(key)) map wrap

@@ -11,6 +11,6 @@ private[jackson] trait JacksonNode(node: JsonNode, src: JacksonSource) extends N
 
 private[jackson] def wrap(src: JacksonSource): JsonNode => Node =
   case obj: ObjectNode => JacksonCfgNode(obj, src)
-  case array: ArrayNode => JacksonIterableNode(array, src)
+  case array: ArrayNode => JacksonSeqNode(array, src)
   case value: ValueNode => JacksonScalarNode(value, src)
   case node => throw new CfgNodeParserException(s"Unsupported Jackson node: $node", src)
