@@ -9,8 +9,8 @@ trait Template extends RenderableString :
 
   def set(parameters: (String, AnyRef)*): Template = set(parameters)
 
-  def render: String
+  override def apply(): String
 
-  def render(parameters: IterableOnce[(String, AnyRef)]): String = set(parameters).render
+  def apply(parameters: IterableOnce[(String, AnyRef)]): String = set(parameters)()
 
-  def render(parameters: (String, AnyRef)*): String = render(parameters)
+  def apply(parameters: (String, AnyRef)*): String = apply(parameters)

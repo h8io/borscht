@@ -13,4 +13,4 @@ private[st4] final class ST4Template private(underlying: ST, parameters: Map[Str
   override def set(parameters: IterableOnce[(String, AnyRef)]): Template =
     ST4Template(underlying, this.parameters ++ parameters)
 
-  override def render: String = (parameters foldLeft ST(underlying))((t, kv) => t.add(kv._1, kv._2)).render
+  override def apply(): String = (parameters foldLeft ST(underlying))((t, kv) => t.add(kv._1, kv._2)).render

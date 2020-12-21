@@ -1,4 +1,3 @@
 package borscht
 
-trait RenderableString:
-  def render: String
+trait RenderableString extends (() => String)
