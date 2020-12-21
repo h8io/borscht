@@ -1,7 +1,7 @@
 package borscht.examples.typesafe
 
 import borscht.CfgNodeParserException
-import borscht.impl.typesafe.TypesafeFactory.given
+import borscht.impl.typesafe.TypesafeRecipe$.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers

@@ -1,6 +1,6 @@
 package borscht.impl.jackson.yaml
 
-import borscht.Factory
+import borscht.Recipe
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
@@ -8,7 +8,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
 
 class IterableNodeTest extends AnyFlatSpec with Matchers:
-  import YamlFactory.given
+  import YamlRecipe$.given
 
   "Config" should "provide a list of strings" in {
     cfg"""

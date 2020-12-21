@@ -8,7 +8,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
 
 class BasicScalarNodeTest extends AnyFlatSpec with Matchers:
-  import YamlFactory.given
+  import YamlRecipe$.given
   
   "Config" should "provide a string value" in {
     cfg"key: value"[String]("key") mustEqual "value"

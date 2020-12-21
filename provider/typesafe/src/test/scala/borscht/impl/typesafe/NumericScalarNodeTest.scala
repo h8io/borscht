@@ -1,12 +1,12 @@
 package borscht.impl.typesafe
 
-import borscht.Factory
+import borscht.Recipe
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
 class NumericScalarNodeTest extends AnyFlatSpec with Matchers:
-  import TypesafeFactory.given
+  import TypesafeRecipe$.given
 
   "Config" should "provide a byte value" in {
     cfg"key: 42"[Byte]("key") mustEqual 42.toByte

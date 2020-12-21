@@ -1,7 +1,7 @@
 package borscht.examples.jackson.yaml
 
 import borscht.CfgNode
-import borscht.impl.jackson.yaml.YamlFactory.given
+import borscht.impl.jackson.yaml.YamlRecipe$.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers

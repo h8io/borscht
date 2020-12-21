@@ -2,7 +2,7 @@ package borscht
 
 import java.nio.file.Path
 
-class Factory(provider: CfgProvider):
+class Recipe(provider: CfgProvider):
   def parse(content: String): CfgNode = provider.parse(content)
 
   def apply(): CfgNode = provider()

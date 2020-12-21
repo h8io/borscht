@@ -1,6 +1,6 @@
 package borscht.impl.typesafe
 
-import borscht.Factory
+import borscht.Recipe
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
@@ -8,7 +8,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
 
 class IterableNodeTest extends AnyFlatSpec with Matchers:
-  import TypesafeFactory.given
+  import TypesafeRecipe$.given
 
   "Config" should "provide a list of strings" in {
     cfg"""key: [value1, value2]"""[List[String]]("key") must contain theSameElementsInOrderAs List("value1", "value2")
