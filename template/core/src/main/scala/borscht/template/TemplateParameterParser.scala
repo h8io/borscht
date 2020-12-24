@@ -2,11 +2,11 @@ package borscht.template
 
 import java.time.format.DateTimeFormatter
 
-type TemplateParameterValueParser = PartialFunction[String, AnyRef]
+type TemplateParameterParser = PartialFunction[String, AnyRef]
 
-object TemplateParameterValueParser:
+object TemplateParameterParser:
   def apply(parsers: Map[String, String => AnyRef] = DefaultParsers,
-            separator: String = "::"): TemplateParameterValueParser = new TemplateParameterValueParser :
+            separator: String = "::"): TemplateParameterParser = new TemplateParameterParser :
     def apply(value: String): AnyRef = parse(value) match {
       case (Some(parser), raw) => parser(raw)
       case (None, _) => throw IllegalArgumentException(s"Parser not found for $value")

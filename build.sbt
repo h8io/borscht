@@ -4,7 +4,7 @@ ThisBuild / organization := "io.h8"
 ThisBuild / scalaVersion := "3.0.0-M3"
 
 ThisBuild / libraryDependencies ++= Seq(
-    // "org.scalamock" %% "scalamock" % "5.0.0" % Test,
+    //"org.scalamock" %% "scalamock" % "5.1.+" % Test,
     "org.scalatest" %% "scalatest" % "3.2.+" % Test)
 
 //ThisBuild / scalacOptions += "-Yexplicit-nulls"
