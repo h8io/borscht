@@ -5,9 +5,9 @@ import borscht.parsers.given
 
 type ParameterParser[T] = String => T
 
-def NodeParserTemplate(defaultParser: TemplateParser,
-                       parameterParser: TemplateParameterParser = TemplateParameterParser())
-                      (using nodeParserTemplateParser: NodeParser[TemplateParser]): NodeParser[Template] =
+def createNodeParserTemplate(defaultParser: TemplateParser,
+                             parameterParser: TemplateParameterParser = TemplateParameterParser())
+                            (using nodeParserTemplateParser: NodeParser[TemplateParser]): NodeParser[Template] =
   def toMap(cfg: CfgNode): Map[String, AnyRef] = (cfg.iterator map (_ -> parameter(_))).toMap
 
   def parameter(node: Node): AnyRef = node match
