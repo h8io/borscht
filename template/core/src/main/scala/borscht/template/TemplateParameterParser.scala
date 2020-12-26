@@ -33,5 +33,9 @@ object TemplateParameterParser:
     "datetime" -> DateTimeFormatter.ISO_DATE_TIME.parse,
     "date" -> DateTimeFormatter.ISO_DATE.parse,
     "time" -> DateTimeFormatter.ISO_TIME.parse)
+  
+  val MiscParsers: Map[String, String => AnyRef] = Map(
+    "env" -> sys.env,
+    "prop" -> sys.props)
 
-  val DefaultParsers: Map[String, String => AnyRef] = NumericParsers ++ DateTimeParsers
+  val DefaultParsers: Map[String, String => AnyRef] = NumericParsers ++ DateTimeParsers ++ MiscParsers
