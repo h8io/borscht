@@ -6,7 +6,8 @@ type TemplateParameterParser = PartialFunction[String, AnyRef]
 
 object TemplateParameterParser:
   def apply(parsers: Map[String, String => AnyRef] = DefaultParsers,
-            separator: String = "::"): TemplateParameterParser = new TemplateParameterParser :
+            separator: String = "::",
+            chainSeparator: String = ">"): TemplateParameterParser = new TemplateParameterParser :
     def apply(value: String): AnyRef = parse(value) match {
       case (Some(parser), raw) => parser(raw)
       case (None, _) => throw IllegalArgumentException(s"Parser not found for $value")
@@ -14,9 +15,12 @@ object TemplateParameterParser:
 
     def isDefinedAt(value: String): Boolean = parse(value)._1.isDefined
 
-    private def parse(value: String): (Option[String => AnyRef], String) = value.split(separator, 2) match
-      case Array(v) => None -> v
-      case Array(t, v) => parsers.get(t) -> v
+    private def parse(value: String): (Option[String => _ <: AnyRef], String) = value.split(separator, 2) match
+      case Array(v) => Some(identity[String]) -> v
+      case Array(t, v) => (t.split(chainSeparator) map parsers.get reduce {
+        case (Some(p1), Some(p2)) => Some((w: String) => p2(p1(w).toString))
+        case _ => None
+      }) -> v
       case _ => throw IllegalStateException("It should not happen")
 
   val NumericParsers: Map[String, String => AnyRef] = Map(
@@ -33,7 +37,7 @@ object TemplateParameterParser:
     "datetime" -> DateTimeFormatter.ISO_DATE_TIME.parse,
     "date" -> DateTimeFormatter.ISO_DATE.parse,
     "time" -> DateTimeFormatter.ISO_TIME.parse)
-  
+
   val MiscParsers: Map[String, String => AnyRef] = Map(
     "env" -> sys.env,
     "prop" -> sys.props)
