@@ -1,5 +1,8 @@
 package borscht.template
 
+import borscht.time.DateTimeAdjuster
+
+import java.time.ZonedDateTime
 import java.time.format.DateTimeFormatter
 
 type TemplateParameterParser = PartialFunction[String, AnyRef]
@@ -36,7 +39,8 @@ object TemplateParameterParser:
   val DateTimeParsers: Map[String, String => AnyRef] = Map(
     "datetime" -> DateTimeFormatter.ISO_DATE_TIME.parse,
     "date" -> DateTimeFormatter.ISO_DATE.parse,
-    "time" -> DateTimeFormatter.ISO_TIME.parse)
+    "time" -> DateTimeFormatter.ISO_TIME.parse,
+    "now" -> { (adjuster: String) => ZonedDateTime.now().`with`(DateTimeAdjuster(adjuster)) })
 
   val MiscParsers: Map[String, String => AnyRef] = Map(
     "env" -> sys.env,
