@@ -18,8 +18,9 @@ private object ZeroDateTimeAdjuster extends DateTimeAdjuster:
 object DateTimeAdjuster extends (String => DateTimeAdjuster):
   private val Sign = "(\\+|-)"
 
-  private val DateFormat = s"${Sign}P?((\\d+)Y)?((\\d+)M)?((\\d+)D)?(T((\\d+)H)?((\\d+)M)?((\\d+)S)?)?".r
-  private val WeekFormat = s"${Sign}P?((\\d+)W)?".r
+  private val DateFormat =
+    s"${Sign}P?((\\d+)[Yy])?((\\d+)[Mm])?((\\d+)[Dd])?(T((\\d+)[Hh])?((\\d+)[Mm])?((\\d+)[Ss])?)?".r
+  private val WeekFormat = s"${Sign}P?((\\d+)[Ww])?".r
 
   private val BasicFormat = s"${Sign}P?(\\d{4})(\\d{2})(\\d{2})T(\\d{2})(\\d{2})(\\d{2})".r
   private val ExtendedFormat = s"${Sign}P?((\\d+)-(\\d+)-(\\d+))?(T(\\d+):(\\d+):(\\d+))?".r
@@ -52,4 +53,4 @@ object DateTimeAdjuster extends (String => DateTimeAdjuster):
   private def apply(sign: String, period: Period, duration: Duration): DateTimeAdjuster = sign match
     case "+" => PositiveDateTimeAdjuster(period, duration)
     case "-" => NegativeDateTimeAdjuster(period, duration)
-    case _ => throw IllegalStateException() 
+    case _ => throw IllegalStateException()

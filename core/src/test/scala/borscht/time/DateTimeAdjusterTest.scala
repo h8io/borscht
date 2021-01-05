@@ -15,23 +15,23 @@ class DateTimeAdjusterTest extends AnyFlatSpec with Matchers:
   }
 
   it should "parse date and time format without prefix" in {
-    DateTimeAdjuster("-1Y2M3DT4H5M6S").adjustInto(InitialDateTime) mustEqual InitialDateTime
+    DateTimeAdjuster("-1y2m3dT4h5m6s").adjustInto(InitialDateTime) mustEqual InitialDateTime
       .minusYears(1).minusMonths(2).minusDays(3)
       .minusHours(4).minusMinutes(5).minusSeconds(6)
   }
 
   it should "parse date format" in {
-    DateTimeAdjuster("-P2M3D").adjustInto(InitialDateTime) mustEqual InitialDateTime
+    DateTimeAdjuster("-P2M3d").adjustInto(InitialDateTime) mustEqual InitialDateTime
       .minusMonths(2).minusDays(3)
   }
 
   it should "parse time format" in {
-    DateTimeAdjuster("-T4H6S").adjustInto(InitialDateTime) mustEqual InitialDateTime
+    DateTimeAdjuster("-T4h6S").adjustInto(InitialDateTime) mustEqual InitialDateTime
       .minusHours(4).minusSeconds(6)
   }
 
   it should "parse week format with prefix" in {
-    DateTimeAdjuster("-P2W").adjustInto(InitialDateTime) mustEqual InitialDateTime.minusDays(14)
+    DateTimeAdjuster("-P2w").adjustInto(InitialDateTime) mustEqual InitialDateTime.minusDays(14)
   }
 
   it should "parse week format without prefix" in {
