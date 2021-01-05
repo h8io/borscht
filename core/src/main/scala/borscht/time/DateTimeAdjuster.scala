@@ -32,6 +32,7 @@ object DateTimeAdjuster extends (String => DateTimeAdjuster):
       apply(sign, years, months, days, hours, minutes, seconds)
     case ExtendedFormat(sign, _, years, months, days, _, hours, minutes, seconds) =>
       apply(sign, years, months, days, hours, minutes, seconds)
+    case _ => throw IllegalArgumentException(s"$value could not be parsed")
 
   private def apply(sign: String,
                     years: String | Null, months: String | Null, days: String | Null,
