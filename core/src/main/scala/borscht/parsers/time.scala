@@ -1,8 +1,8 @@
 package borscht.parsers
 
 import java.time._
-
 import borscht.NodeParser
+import borscht.time.DateTimeAdjuster
 
 //import scala.language.unsafeNulls
 
@@ -44,3 +44,6 @@ given NodeParserPeriod(using parser: NodeParser[String]): NodeParser[Period] =
 
 given NodeParserZoneId(using parser: NodeParser[String]): NodeParser[ZoneId] =
   parser andThen (ZoneId.of(_))
+
+given NodeParserDateTimeAdjuster(using parser: NodeParser[String]): NodeParser[DateTimeAdjuster] =
+  parser andThen DateTimeAdjuster
