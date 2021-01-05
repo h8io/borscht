@@ -50,7 +50,7 @@ class TemplateNumericParameterParserTest extends AnyFlatSpec with Matchers:
 
   "Int parser" should "return a correct value" in {
     val result = parser("int::-42")
-    result mustBe a[Int]
+    result mustBe an[Int]
     result mustEqual -42
   }
   
