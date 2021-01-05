@@ -22,4 +22,5 @@ private[text] final class ACTTemplate(substitutor: StringSubstitutor,
       true)
     new StringSubstitutor(substitutor).setVariableResolver(lookup).replace(template)
 
+  // TODO Add formatter
   override def lookup(key: String): String = parameters.get(key).map(_.toString).orNull
