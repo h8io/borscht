@@ -7,7 +7,7 @@ import scala.collection.mutable
 
 private[st4] final class ST4Template private(underlying: ST, parameters: Map[String, AnyRef]) extends Template:
   def this(underlying: ST) = this(underlying, Map.empty)
-  
+
   override def set(key: String, value: AnyRef): Template = ST4Template(underlying, parameters + (key -> value))
 
   override def set(parameters: IterableOnce[(String, AnyRef)]): Template =

@@ -46,16 +46,24 @@ lazy val `template-st4` = project
       libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
   .dependsOn(`template-core`)
 
+lazy val `template-apache-commons-text` = project
+  .in(file("template/apache-commons-text"))
+  .settings(
+    name := "borscht-template-apache-commons-text",
+    libraryDependencies += "org.apache.commons" % "commons-text" % "1.9")
+  .dependsOn(`template-core`)
+
 lazy val examples = project
   .in(file("examples"))
   .settings(
     name := "borscht-examples",
     libraryDependencies ++= Seq(  // for GitHub Scala CI
       "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion,
-      "org.antlr" % "ST4" % "4.3.1"),
+      "org.antlr" % "ST4" % "4.3.1",
+      "org.apache.commons" % "commons-text" % "1.9"),
     classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
-  .dependsOn(`provider-typesafe`, `provider-jackson-yaml`, `template-st4`)
+  .dependsOn(`provider-typesafe`, `provider-jackson-yaml`, `template-st4`, `template-apache-commons-text`)
 
 lazy val root = project
   .in(file("."))
@@ -65,4 +73,4 @@ lazy val root = project
   .aggregate(
     core, examples,
     `provider-typesafe`, `provider-jackson`, `provider-jackson-yaml`,
-    `template-core`, `template-st4`)
+    `template-core`, `template-st4`, `template-apache-commons-text`)
