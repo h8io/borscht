@@ -67,7 +67,7 @@ class DateTimeAdjusterTest extends AnyFlatSpec with Matchers:
       .minusYears(1).minusMonths(2).minusDays(3)
   }
 
-  it should "parse Th-m-s format" in {
+  it should "parse Th:m:s format" in {
     DateTimeAdjuster("+T4:5:6").adjustInto(InitialDateTime) mustEqual InitialDateTime
       .plusHours(4).plusMinutes(5).plusSeconds(6)
   }
