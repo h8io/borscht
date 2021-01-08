@@ -6,7 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
 class NumericScalarNodeTest extends AnyFlatSpec with Matchers:
-  import YamlRecipe$.given
+  import YamlRecipe.given
 
   "Config" should "provide a byte value" in {
     cfg"key: 42"[Byte]("key") mustEqual 42.toByte

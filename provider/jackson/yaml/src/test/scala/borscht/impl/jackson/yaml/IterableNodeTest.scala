@@ -8,7 +8,7 @@ import org.scalatest.matchers.must.Matchers
 import scala.language.implicitConversions
 
 class IterableNodeTest extends AnyFlatSpec with Matchers:
-  import YamlRecipe$.given
+  import YamlRecipe.given
 
   "Config" should "provide a list of strings" in {
     cfg"""

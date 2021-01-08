@@ -18,4 +18,4 @@ object ST4TemplateParser:
     renderers.iterator foreach (_(group))
     ST4TemplateParser(group)
 
-  val DefaultAttributeRenderers: List[Renderer[_]] = List(RendererTemporalAccessor)
+  val DefaultAttributeRenderers: List[Renderer[_]] = List(TemporalAccessorRenderer)

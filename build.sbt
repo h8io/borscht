@@ -44,14 +44,18 @@ lazy val `template-st4` = project
   .settings(
       name := "borscht-template-st4",
       libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
-  .dependsOn(`template-core`)
+  .dependsOn(`template-core`, util)
 
 lazy val `template-apache-commons-text` = project
   .in(file("template/apache-commons-text"))
   .settings(
     name := "borscht-template-apache-commons-text",
     libraryDependencies += "org.apache.commons" % "commons-text" % "1.9")
-  .dependsOn(`template-core`)
+  .dependsOn(`template-core`, util)
+
+lazy val util = project
+  .in(file("util"))
+  .settings(name := "borscht-util")
 
 lazy val examples = project
   .in(file("examples"))
@@ -71,6 +75,6 @@ lazy val root = project
     name := "borscht",
     publishArtifact := false)
   .aggregate(
-    core, examples,
+    core, util, examples,
     `provider-typesafe`, `provider-jackson`, `provider-jackson-yaml`,
     `template-core`, `template-st4`, `template-apache-commons-text`)

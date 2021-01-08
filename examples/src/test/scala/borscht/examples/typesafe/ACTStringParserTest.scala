@@ -1,16 +1,17 @@
 package borscht.examples.typesafe
 
 import borscht.CfgNodeParserException
-import borscht.impl.typesafe.TypesafeRecipe$.given
+import borscht.impl.typesafe.TypesafeRecipe.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
-class StringParserTest extends AnyFlatSpec with Matchers:
-  val config = cfg"""
+class ACTStringParserTest extends AnyFlatSpec with Matchers:
+  private val config = cfg"""
     |scalar: <value>
     |object {
-    |  template: "<name>: <value> (<date; format=\\"dd.MM.yyyy\\">)"
+    |  template: "$${ph:name}: $${ph:value} ($${ph:date format=\\"dd.MM.yyyy\\"})"
+    |  parser: act
     |  parameters {
     |    name: value
     |    value: 42
@@ -26,12 +27,12 @@ class StringParserTest extends AnyFlatSpec with Matchers:
     a[CfgNodeParserException] must be thrownBy (config[String]("object"))
   }
 
-  "Template string parser" should "return the string for the scalar node" in {
-    import borscht.examples.parsers.st4.given
+  "ACT template string parser" should "return the string for the scalar node" in {
+    import borscht.examples.parsers.given
     config[String]("scalar") mustEqual "<value>"
   }
 
   it should "transform an object to string" in {
-    import borscht.examples.parsers.st4.given
+    import borscht.examples.parsers.given
     config[String]("object") mustEqual "value: 42 (08.12.2020)"
   }
