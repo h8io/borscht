@@ -1,15 +1,14 @@
 package borscht.template.impl.apache.commons.text.ph
 
-import borscht.template.impl.apache.commons.text.ValueFormat
+import borscht.template.impl.apache.commons.text.{DefaultValueFormat, ValueFormat}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
 import java.util.Locale
-import javax.swing.JToolBar.Separator
 
 class ParserTest extends AnyFlatSpec with Matchers:
   "Parser" should "return a correct placeholder for simplest case" in {
-    Parser("PHKey format=FormatString separator=SeparatorString null=NullValue")() mustEqual
+    Parser("PHKey format=FormatString separator=SeparatorString null=NullValue")(DefaultValueFormat) mustEqual
       ("PHKey",
         ValueFormat(
           format = Some("FormatString"),
@@ -19,7 +18,7 @@ class ParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "return a correct placeholder for quoted key" in {
-    Parser("\"Quoted Key\" format=FormatString separator=SeparatorString null=NullValue")() mustEqual
+    Parser("\"Quoted Key\" format=FormatString separator=SeparatorString null=NullValue")(DefaultValueFormat) mustEqual
       ("Quoted Key",
         ValueFormat(
           format = Some("FormatString"),
@@ -29,7 +28,7 @@ class ParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "return a correct placeholder for quoted attribute values" in {
-    Parser("PHKey format=\"Format String\" separator=\"Separator String\" null=\"???\"")() mustEqual
+    Parser("PHKey format=\"Format String\" separator=\"Separator String\" null=\"???\"")(DefaultValueFormat) mustEqual
       ("PHKey",
         ValueFormat(
           format = Some("Format String"),
@@ -39,24 +38,24 @@ class ParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "return a correct placeholder for quoted attribute keys" in {
-    Parser("\"Quoted Key\" \"format\"=%02d \"separator\"=, \"null\"=none")() mustEqual
+    Parser("\"Quoted Key\" \"format\"=%02d \"separator\"=, \"null\"=none")(DefaultValueFormat) mustEqual
       ("Quoted Key",
         ValueFormat(format = Some("%02d"), seqSeparator = ",", productSeparator = ",", nullValue = "none"))
   }
 
   it should "return a correct placeholder for quoted characters" in {
     Parser("\"Quoted\\nKey\" \"\\u0066\\u006f\\u0072\\u006D\\u0061\\u0074\"=%02d" +
-      " \"separator\"=\"\\t\" \"null\"=\"\"")() mustEqual
+      " \"separator\"=\"\\t\" \"null\"=\"\"")(DefaultValueFormat) mustEqual
       ("Quoted\nKey",
         ValueFormat(format = Some("%02d"), seqSeparator = "\t", productSeparator = "\t", nullValue = ""))
   }
 
   it should "return a correct placeholder the single key" in {
-    Parser("PHKey")() mustEqual ("PHKey", ValueFormat())
+    Parser("PHKey")(DefaultValueFormat) mustEqual ("PHKey", ValueFormat())
   }
 
   it should "return a correct placeholder the single quoted key" in {
-    Parser("\"Quoted Key\"")() mustEqual ("Quoted Key", ValueFormat())
+    Parser("\"Quoted Key\"")(DefaultValueFormat) mustEqual ("Quoted Key", ValueFormat())
   }
 
   it should "parse all parameters" in {
@@ -70,7 +69,7 @@ class ParserTest extends AnyFlatSpec with Matchers:
       " product.separator=ProductSeparatorString" +
       " product.end=ProductEndString" +
       " null=NullValue" +
-      " locale=en_US")() mustEqual
+      " locale=en_US")(DefaultValueFormat) mustEqual
       ("Quoted Key",
         ValueFormat(
           format = Some("FormatString"),
@@ -82,4 +81,18 @@ class ParserTest extends AnyFlatSpec with Matchers:
           productEnd = "ProductEndString",
           nullValue = "NullValue",
           locale = Locale.US))
+  }
+
+  it should "use default value format" in {
+    val vf = ValueFormat(
+      format = Some("DefaultFormatString"),
+      seqStart = "DefaultSeqStartString",
+      seqSeparator = "DefaultSeqSeparatorString",
+      seqEnd = "DefaultSeqEndString",
+      productStart = "DefaultProductStartString",
+      productSeparator = "DefaultProductSeparatorString",
+      productEnd = "DefaultProductEndString",
+      nullValue = "DefaultNullValue",
+      locale = Locale.JAPAN)
+    Parser("\"Quoted\\u0020Key\"")(vf) mustEqual ("Quoted Key", vf)
   }

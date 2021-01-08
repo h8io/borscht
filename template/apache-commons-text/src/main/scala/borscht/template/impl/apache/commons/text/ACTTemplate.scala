@@ -11,13 +11,14 @@ import scala.jdk.CollectionConverters._
 
 private[text] final class ACTTemplate(substitutor: StringSubstitutor,
                                       template: String,
-                                      parameters: Map[String, AnyRef] = Map.empty,
-                                      renderer: Renderer = TemporalRenderer) extends Template with StringLookup:
+                                      renderer: Renderer,
+                                      valueFormat: ValueFormat,
+                                      parameters: Map[String, AnyRef] = Map.empty) extends Template with StringLookup:
   override def set(key: String, value: AnyRef): Template =
-    ACTTemplate(substitutor, template, parameters + (key -> value))
+    ACTTemplate(substitutor, template, renderer, valueFormat, parameters + (key -> value))
 
   override def set(parameters: IterableOnce[(String, AnyRef)]): Template =
-    ACTTemplate(substitutor, template, this.parameters ++ parameters)
+    ACTTemplate(substitutor, template, renderer, valueFormat, this.parameters ++ parameters)
 
   override def apply(): String =
     val lookup = StringLookupFactory.INSTANCE.interpolatorStringLookup(
@@ -27,6 +28,6 @@ private[text] final class ACTTemplate(substitutor: StringSubstitutor,
     new StringSubstitutor(substitutor).setVariableResolver(lookup).replace(template)
 
   override def lookup(ph: String): String =
-    val (key, vf) = parse(ph)
+    val (key, vf) = parse(ph, valueFormat)
     DefaultRenderer(renderer, vf, parameters.get(key).orNull)
   

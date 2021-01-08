@@ -7,8 +7,8 @@ import scala.annotation.tailrec
 private[ph] final class Parser(chars: String):
   private var i = 0
   
-  def apply(): (String, ValueFormat) = getString() match
-    case Some(key) => (key, getAttributes(ValueFormat()))
+  def apply(valueFormat: ValueFormat): (String, ValueFormat) = getString() match
+    case Some(key) => (key, getAttributes(valueFormat))
     case _ => error("Unexpected end of the placeholder definition (key expected)")
 
   @tailrec
