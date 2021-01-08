@@ -26,8 +26,7 @@ private[text] final class ACTTemplate(substitutor: StringSubstitutor,
       true)
     new StringSubstitutor(substitutor).setVariableResolver(lookup).replace(template)
 
-  // TODO Add formatter
-  override def lookup(key: String): String =
-    val ph = parse(key)
-    DefaultRenderer(renderer, ph, parameters.get(ph.key).orNull)
+  override def lookup(ph: String): String =
+    val (key, vf) = parse(ph)
+    DefaultRenderer(renderer, vf, parameters.get(key).orNull)
   

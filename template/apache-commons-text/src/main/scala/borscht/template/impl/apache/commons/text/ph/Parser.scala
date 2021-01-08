@@ -1,26 +1,25 @@
 package borscht.template.impl.apache.commons.text.ph
 
-import borscht.template.impl.apache.commons.text.Placeholder
+import borscht.template.impl.apache.commons.text.ValueFormat
 
 import scala.annotation.tailrec
 
 private[ph] final class Parser(chars: String):
   private var i = 0
   
-  def apply(): Placeholder = getAttributes(
-    getString() match
-      case Some(key) => Placeholder(key)
-      case _ => error("Unexpected end of the placeholder definition (key expected)"))
+  def apply(): (String, ValueFormat) = getString() match
+    case Some(key) => (key, getAttributes(ValueFormat()))
+    case _ => error("Unexpected end of the placeholder definition (key expected)")
 
   @tailrec
-  private def getAttributes(ph: Placeholder): Placeholder = getString() match
+  private def getAttributes(vf: ValueFormat): ValueFormat = getString() match
     case Some("") => error("Attribute name should not be empty")
     case Some(key) =>
       expectEqual()
       getString() match
-        case Some(value) => getAttributes(ph(key) = value)
+        case Some(value) => getAttributes(vf(key) = value)
         case _ => error("Unexpected end of the placeholder definition (attribute value expected)")
-    case _ => ph
+    case _ => vf
 
   private def hasNext: Boolean = i < chars.length
   

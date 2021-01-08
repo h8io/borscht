@@ -4,8 +4,7 @@ import org.apache.commons.lang3.LocaleUtils
 
 import java.util.Locale
 
-case class Placeholder(key: String,
-                       format: Option[String] = None,
+case class ValueFormat(format: Option[String] = None,
                        nullValue: String = "null",
                        seqStart: String = "[",
                        seqSeparator: String = ", ",
@@ -14,7 +13,7 @@ case class Placeholder(key: String,
                        productSeparator: String = ", ",
                        productEnd: String = ")",
                        locale: Locale = Locale.getDefault(Locale.Category.FORMAT)):
-  def update(name: String, value: String): Placeholder = name match
+  def update(name: String, value: String): ValueFormat = name match
     case "format" => copy(format = Some(value))
     case "null" => copy(nullValue = value)
     case "separator" => copy(seqSeparator = value, productSeparator = value)
