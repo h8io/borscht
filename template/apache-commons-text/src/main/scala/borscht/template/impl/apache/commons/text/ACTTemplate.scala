@@ -29,13 +29,5 @@ private[text] final class ACTTemplate(substitutor: StringSubstitutor,
   // TODO Add formatter
   override def lookup(key: String): String =
     val ph = parse(key)
-    render(ph, parameters.get(ph.key))
-
-  private def render(ph: Placeholder, value: Option[AnyRef]): String = value map {
-    case list: List[_] =>
-      list map { item => render(ph, Option(item.asInstanceOf[AnyRef])) } mkString (ph.separator getOrElse ", ")
-    case value =>
-      val locale = ph.locale getOrElse Locale.getDefault(Locale.Category.FORMAT)
-      renderer(value, ph.format, locale) getOrElse DefaultRenderer(value, ph.format, locale)
-  } getOrElse ph.nullValue.orNull
+    DefaultRenderer(renderer, ph, parameters.get(ph.key).orNull)
   

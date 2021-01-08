@@ -18,11 +18,22 @@ class ACTTemplateTest extends AnyFlatSpec with Matchers:
   }
 
   it should "accept keys with list parameters" in {
-    ACTTemplateParser()("p1 = ${ph:property1 format=\"%02d\" separator=\" | \"}")
+    ACTTemplateParser()("p1 = ${ph:property1 format=\"%02d\" seq.separator=\" | \" seq.start=\"\" seq.end=\"\"}")
       .apply("property1" -> List(1, 2, 3)) mustEqual "p1 = 01 | 02 | 03"
   }
 
   it should "accept keys with nullable list parameters" in {
     ACTTemplateParser()("p1 = ${ph:property1 format=\"%02d\" separator=\" # \" null=???}")
-      .apply("property1" -> List(1, null, 3)) mustEqual "p1 = 01 # ??? # 03"
+      .apply("property1" -> List(1, null, 3)) mustEqual "p1 = [01 # ??? # 03]"
+  }
+
+  it should "accept keys with product parameters" in {
+    ACTTemplateParser()("p1 = ${ph:property1 format=\"%02d\" product.separator=\" | \"}")
+      .apply("property1" -> (1, 2, 3)) mustEqual "p1 = (01 | 02 | 03)"
+  }
+
+  it should "accept keys with nullable product parameters" in {
+    ACTTemplateParser()(
+      "p1 = ${ph:property1 format=\"%02d\" product.separator=\" # \" product.start=\"\" product.end=\"\"}")
+      .apply("property1" -> (None, 2, 3)) mustEqual "p1 = null # 02 # 03"
   }
