@@ -8,7 +8,7 @@ import java.util.Locale
 
 class ParserTest extends AnyFlatSpec with Matchers:
   "Parser" should "return a correct placeholder for simplest case" in {
-    Parser("PHKey format=FormatString separator=SeparatorString null=NullValue")(DefaultValueFormat) mustEqual
+    parse("PHKey format=FormatString separator=SeparatorString null=NullValue", DefaultValueFormat) mustEqual
       ("PHKey",
         ValueFormat(
           format = Some("FormatString"),
@@ -18,48 +18,48 @@ class ParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "return a correct placeholder for quoted key" in {
-    Parser("\"Quoted Key\" format=FormatString separator=SeparatorString null=NullValue")(DefaultValueFormat) mustEqual
+    parse("\"Quoted Key\" format=FmtStr separator=SepStr null=NullValue", DefaultValueFormat) mustEqual
       ("Quoted Key",
         ValueFormat(
-          format = Some("FormatString"),
-          seqSeparator = "SeparatorString",
-          productSeparator = "SeparatorString",
+          format = Some("FmtStr"),
+          seqSeparator = "SepStr",
+          productSeparator = "SepStr",
           nullValue = "NullValue"))
   }
 
   it should "return a correct placeholder for quoted attribute values" in {
-    Parser("PHKey format=\"Format String\" separator=\"Separator String\" null=\"???\"")(DefaultValueFormat) mustEqual
+    parse("PHKey format=\"Format String\" separator=\"-\" null=\"???\"", DefaultValueFormat) mustEqual
       ("PHKey",
         ValueFormat(
           format = Some("Format String"),
-          seqSeparator = "Separator String",
-          productSeparator = "Separator String",
+          seqSeparator = "-",
+          productSeparator = "-",
           nullValue = "???"))
   }
 
   it should "return a correct placeholder for quoted attribute keys" in {
-    Parser("\"Quoted Key\" \"format\"=%02d \"separator\"=, \"null\"=none")(DefaultValueFormat) mustEqual
+    parse("\"Quoted Key\" \"format\"=%02d \"separator\"=, \"null\"=none", DefaultValueFormat) mustEqual
       ("Quoted Key",
         ValueFormat(format = Some("%02d"), seqSeparator = ",", productSeparator = ",", nullValue = "none"))
   }
 
   it should "return a correct placeholder for quoted characters" in {
-    Parser("\"Quoted\\nKey\" \"\\u0066\\u006f\\u0072\\u006D\\u0061\\u0074\"=%02d" +
-      " \"separator\"=\"\\t\" \"null\"=\"\"")(DefaultValueFormat) mustEqual
+    parse("\"Quoted\\nKey\" \"\\u0066\\u006f\\u0072\\u006D\\u0061\\u0074\"=%02d" +
+      " \"separator\"=\"\\t\" \"null\"=\"\"", DefaultValueFormat) mustEqual
       ("Quoted\nKey",
         ValueFormat(format = Some("%02d"), seqSeparator = "\t", productSeparator = "\t", nullValue = ""))
   }
 
   it should "return a correct placeholder the single key" in {
-    Parser("PHKey")(DefaultValueFormat) mustEqual ("PHKey", ValueFormat())
+    parse("PHKey", DefaultValueFormat) mustEqual ("PHKey", ValueFormat())
   }
 
   it should "return a correct placeholder the single quoted key" in {
-    Parser("\"Quoted Key\"")(DefaultValueFormat) mustEqual ("Quoted Key", ValueFormat())
+    parse("\"Quoted Key\"", DefaultValueFormat) mustEqual ("Quoted Key", ValueFormat())
   }
 
   it should "parse all parameters" in {
-    Parser("\"Quoted Key\"" +
+    parse("\"Quoted Key\"" +
       " format=FormatString" +
       " separator=SeparatorString" +
       " seq.start=SeqStartString" +
@@ -69,7 +69,7 @@ class ParserTest extends AnyFlatSpec with Matchers:
       " product.separator=ProductSeparatorString" +
       " product.end=ProductEndString" +
       " null=NullValue" +
-      " locale=en_US")(DefaultValueFormat) mustEqual
+      " locale=en_US", DefaultValueFormat) mustEqual
       ("Quoted Key",
         ValueFormat(
           format = Some("FormatString"),
@@ -94,5 +94,5 @@ class ParserTest extends AnyFlatSpec with Matchers:
       productEnd = "DefaultProductEndString",
       nullValue = "DefaultNullValue",
       locale = Locale.JAPAN)
-    Parser("\"Quoted\\u0020Key\"")(vf) mustEqual ("Quoted Key", vf)
+    parse("\"Quoted\\u0020Key\"", vf) mustEqual ("Quoted Key", vf)
   }
