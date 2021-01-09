@@ -26,6 +26,7 @@ def parse(chars: String, valueFormat: ValueFormat): (String, ValueFormat) =
     i += 1
     c
 
+  @tailrec
   def skipWS(): Unit = if hasNext && chars(i).isWhitespace then
     i += 1
     skipWS()
@@ -54,6 +55,7 @@ def parse(chars: String, valueFormat: ValueFormat): (String, ValueFormat) =
 
   def isValidBareChar(c: Char): Boolean = c != '\\' && c != '"'
 
+  @tailrec
   def getQuotedString(sb: StringBuilder): StringBuilder = if hasNext then next() match
     case '"' => sb
     case '\\' => getQuotedString(sb += quotedChar())
