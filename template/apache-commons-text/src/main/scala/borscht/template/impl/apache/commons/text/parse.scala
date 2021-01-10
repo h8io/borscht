@@ -26,10 +26,7 @@ private[text] def parse(chars: String, valueFormat: ValueFormat): (String, Value
     i += 1
     c
 
-  @tailrec
-  def skipWS(): Unit = if hasNext && chars(i).isWhitespace then
-    i += 1
-    skipWS()
+  def skipWS(): Unit = if (hasNext) i = chars.indexWhere(!_.isWhitespace, i)
 
   def expectEqual(): Unit =
     skipWS()
