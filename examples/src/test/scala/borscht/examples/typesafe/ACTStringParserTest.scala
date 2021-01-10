@@ -15,7 +15,7 @@ class ACTStringParserTest extends AnyFlatSpec with Matchers:
     |  parameters {
     |    name: value
     |    value: 42
-    |    date: "date::2020-12-08"
+    |    date: "date:2020-12-08"
     |  }
     |}"""
 

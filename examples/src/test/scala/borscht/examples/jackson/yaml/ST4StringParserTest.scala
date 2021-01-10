@@ -14,7 +14,7 @@ class ST4StringParserTest extends AnyFlatSpec with Matchers:
     |  parameters:
     |    name: value
     |    value: 42
-    |    date: "date::2020-12-08""""
+    |    date: "date:2020-12-08""""
 
   "Plain string parser" should "return the string for the scalar node" in {
     config[String]("scalar") mustEqual "<value>"

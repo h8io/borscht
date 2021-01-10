@@ -11,10 +11,10 @@ class TemplateMiscParameterParserTest extends AnyFlatSpec with Matchers:
   }
   
   "System properties parser" should "return a correct value" in {
-    parser("prop::java.version") mustEqual sys.props("java.version") 
+    parser("prop:java.version") mustEqual sys.props("java.version") 
   }
 
   "Environment variables parser" should "return a correct value" in {
-    parser("env::USER") mustEqual sys.env("USER")
+    parser("env:USER") mustEqual sys.env("USER")
   } 
 
