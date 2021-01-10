@@ -1,4 +1,4 @@
-package borscht.template.impl.apache.commons.text.ph
+package borscht.template.impl.apache.commons.text
 
 import borscht.template.impl.apache.commons.text.{DefaultValueFormat, ValueFormat}
 import org.scalatest.flatspec.AnyFlatSpec

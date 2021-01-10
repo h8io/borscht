@@ -1,10 +1,10 @@
-package borscht.template.impl.apache.commons.text.ph
+package borscht.template.impl.apache.commons.text
 
 import borscht.template.impl.apache.commons.text.ValueFormat
 
 import scala.annotation.tailrec
 
-def parse(chars: String, valueFormat: ValueFormat): (String, ValueFormat) =
+private[text] def parse(chars: String, valueFormat: ValueFormat): (String, ValueFormat) =
   var i = 0
 
   inline def error(msg: String) = throw PlaceholderParserException(msg, i - 1, chars)

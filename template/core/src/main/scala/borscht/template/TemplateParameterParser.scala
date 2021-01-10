@@ -10,11 +10,10 @@ type TemplateParameterParser = PartialFunction[String, AnyRef]
 object TemplateParameterParser:
   def apply(parsers: Map[String, String => AnyRef] = DefaultParsers,
             separator: String = "::",
-            chainSeparator: String = ">"): TemplateParameterParser = new TemplateParameterParser :
-    def apply(value: String): AnyRef = parse(value) match {
+            chainSeparator: String = ">"): TemplateParameterParser = new TemplateParameterParser:
+    def apply(value: String): AnyRef = parse(value) match
       case (Some(parser), raw) => parser(raw)
       case (None, _) => throw IllegalArgumentException(s"Parser not found for $value")
-    }
 
     def isDefinedAt(value: String): Boolean = parse(value)._1.isDefined
 

@@ -1,4 +1,4 @@
-package borscht.template.impl.apache.commons.text.ph
+package borscht.template.impl.apache.commons.text
 
 import scala.annotation.tailrec
 

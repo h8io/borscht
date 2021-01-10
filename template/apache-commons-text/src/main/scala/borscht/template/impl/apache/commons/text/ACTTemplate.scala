@@ -1,7 +1,6 @@
 package borscht.template.impl.apache.commons.text
 
 import borscht.template.Template
-import borscht.template.impl.apache.commons.text.ph.parse
 import borscht.template.impl.apache.commons.text.renderers.{Renderer, TemporalRenderer}
 import org.apache.commons.text.StringSubstitutor
 import org.apache.commons.text.lookup.{StringLookup, StringLookupFactory}
