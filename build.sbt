@@ -1,7 +1,7 @@
 val JacksonVersion = "2.12.0"
 
 ThisBuild / organization := "io.h8"
-ThisBuild / scalaVersion := "3.0.0-M3"
+ThisBuild / scalaVersion := "3.0.0-RC1"
 
 ThisBuild / libraryDependencies ++= Seq(
     //"org.scalamock" %% "scalamock" % "5.1.+" % Test,
