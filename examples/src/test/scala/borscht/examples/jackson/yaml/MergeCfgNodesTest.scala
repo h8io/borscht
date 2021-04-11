@@ -48,4 +48,3 @@ class MergeCfgNodesTest extends AnyFlatSpec with Matchers:
     merged.map[String]("merged-property", "deep") mustEqual
       Map("name" -> "Lovecraft", "city" -> "Innsmouth", "race" -> "Deep Ones")
     merged.get[String]("merged-property", "deep", "city", "name") mustBe None
-    

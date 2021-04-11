@@ -1,13 +1,15 @@
 val JacksonVersion = "2.12.0"
 
 ThisBuild / organization := "io.h8"
-ThisBuild / scalaVersion := "3.0.0-RC1"
+ThisBuild / scalaVersion := "3.0.0-RC2"
 
 ThisBuild / libraryDependencies ++= Seq(
-    //"org.scalamock" %% "scalamock" % "5.1.+" % Test,
-    "org.scalatest" %% "scalatest" % "3.2.+" % Test)
+  //"org.scalamock" %% "scalamock" % "5.1.+" % Test,
+  "org.scalatest" %% "scalatest" % "3.2.+" % Test)
 
-//ThisBuild / scalacOptions += "-Yexplicit-nulls"
+ThisBuild / scalacOptions ++= Seq(
+  //"-Yexplicit-nulls",
+  "-Ysafe-init")
 
 lazy val core = project
   .in(file("core"))
@@ -23,8 +25,8 @@ lazy val `provider-typesafe` = project
 lazy val `provider-jackson` = project
   .in(file("provider/jackson"))
   .settings(
-      name := "borscht-jackson",
-      libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion)
+    name := "borscht-jackson",
+    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion)
   .dependsOn(core)
 
 lazy val `provider-jackson-yaml` = project
@@ -42,8 +44,8 @@ lazy val `template-core` = project
 lazy val `template-st4` = project
   .in(file("template/st4"))
   .settings(
-      name := "borscht-template-st4",
-      libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
+    name := "borscht-template-st4",
+    libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
   .dependsOn(`template-core`, util)
 
 lazy val `template-apache-commons-text` = project
@@ -61,7 +63,7 @@ lazy val examples = project
   .in(file("examples"))
   .settings(
     name := "borscht-examples",
-    libraryDependencies ++= Seq(  // for GitHub Scala CI
+    libraryDependencies ++= Seq( // for GitHub Scala CI
       "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion,
       "org.antlr" % "ST4" % "4.3.1",
       "org.apache.commons" % "commons-text" % "1.9"),
