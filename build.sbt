@@ -1,11 +1,11 @@
 val JacksonVersion = "2.12.0"
 
 ThisBuild / organization := "io.h8"
-ThisBuild / scalaVersion := "3.0.0-RC2"
+ThisBuild / scalaVersion := "3.0.0-RC3"
 
 ThisBuild / libraryDependencies ++= Seq(
   //"org.scalamock" %% "scalamock" % "5.1.+" % Test,
-  "org.scalatest" %% "scalatest" % "3.2.+" % Test)
+  "org.scalatest" %% "scalatest" % "3.2.8" % Test)
 
 ThisBuild / scalacOptions ++= Seq(
   //"-Yexplicit-nulls",
@@ -35,6 +35,10 @@ lazy val `provider-jackson-yaml` = project
     name := "borscht-jackson",
     libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion)
   .dependsOn(`provider-jackson`)
+
+lazy val `typed-core` = project
+  .in(file("typed/core"))
+  .settings(name := "borscht-typed-core")
 
 lazy val `template-core` = project
   .in(file("template/core"))
@@ -79,4 +83,5 @@ lazy val root = project
   .aggregate(
     core, util, examples,
     `provider-typesafe`, `provider-jackson`, `provider-jackson-yaml`,
+    `typed-core`,
     `template-core`, `template-st4`, `template-apache-commons-text`)
