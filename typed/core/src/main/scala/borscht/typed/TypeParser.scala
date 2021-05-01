@@ -1,9 +1,9 @@
-package borscht.typed.parsers
+package borscht.typed
 
 import borscht.typed.{ValueType, ValueTypeConstructor}
 
-private[parsers] class TypeParser(parent: UpdatableParser[ValueType],
-                                  types: Map[String, ValueTypeConstructor]) extends Parser :
+private[typed] class TypeParser(parent: UpdatableParser[ValueType],
+                                types: Map[String, ValueTypeConstructor]) extends Parser :
   override def apply(event: Event): Parser = event match
     case Event.TypeName(name, position) =>
       val constructor = types.get(name) getOrElse {

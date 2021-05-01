@@ -1,6 +1,5 @@
-package borscht.typed.parsers
+package borscht.typed
 
-import borscht.typed.{TestValueType, TestValueTypeConstructor, ValueType, ValueTypeConstructor}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

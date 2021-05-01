@@ -1,10 +1,10 @@
-package borscht.typed.parsers
+package borscht.typed
 
 import borscht.typed.{ValueType, ValueTypeConstructor}
 
-private[parsers] final class ParametersParser(parent: UpdatableParser[ValueType],
-                                              constructor: ValueTypeConstructor,
-                                              types: Map[String, ValueTypeConstructor])
+private[typed] final class ParametersParser(parent: UpdatableParser[ValueType],
+                                            constructor: ValueTypeConstructor,
+                                            types: Map[String, ValueTypeConstructor])
   extends UpdatableParser[List[ValueType]] :
 
   private var result: List[ValueType] = Nil

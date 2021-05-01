@@ -1,6 +1,6 @@
-package borscht.typed.parsers
+package borscht.typed
 
-private[parsers] enum Event(val position: Int):
+private[typed] enum Event(val position: Int):
   case TypeName(value: String, override val position: Int) extends Event(position)
   case TypeListStart(override val position: Int) extends Event(position)
   case TypeListEnd(override val position: Int) extends Event(position)

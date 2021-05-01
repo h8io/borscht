@@ -1,4 +1,4 @@
-package borscht.typed.parsers
+package borscht.typed
 
 import scala.annotation.tailrec
 
@@ -27,7 +27,7 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Even
 
   private def isTypeNameStart(char: Char) = char.isLetter || char == '_'
 
-  private def isTypeNameChar(char: Char) = char.isLetterOrDigit || char == '_'
+  private def isTypeNameChar(char: Char) = char.isLetterOrDigit || char == '_' || char == '-'
 
   @tailrec
   private def typeName(builder: StringBuilder, i: Int): Event =
