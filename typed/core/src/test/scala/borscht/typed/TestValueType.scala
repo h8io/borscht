@@ -1,4 +1,4 @@
-package borscht.typed.parsers
+package borscht.typed
 
 import borscht.typed.{ValueType, ValueTypeConstructor}
 

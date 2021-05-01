@@ -1,6 +1,6 @@
 package borscht.typed.parsers
 
-import borscht.typed.{ValueType, ValueTypeConstructor}
+import borscht.typed.{TestValueType, TestValueTypeConstructor, ValueType, ValueTypeConstructor}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -8,7 +8,7 @@ class RootTypeParserTest extends AnyFlatSpec with Matchers {
   private val types: Map[String, ValueTypeConstructor] =
     Iterator("abc", "def", "ghi", "jkl", "mno").map(name => name -> TestValueTypeConstructor(name)).toMap
 
-  "Value type parser" should "parse a parameterless definition" in {
+  "Root type parser" should "parse a parameterless definition" in {
     val events = Events("abc")
     val parser = RootTypeParser(types)
     val result = events.foldLeft[Parser](parser) { (p, event) => p(event) }
