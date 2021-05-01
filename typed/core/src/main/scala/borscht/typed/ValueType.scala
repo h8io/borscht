@@ -1,4 +1,4 @@
-package borscht.typed.types
+package borscht.typed
 
 type ValueType = String => AnyRef
 
@@ -7,4 +7,4 @@ trait ValueTypeConstructor extends (List[ValueType] => ValueType):
 
   protected def create(typeParameters: List[ValueType]): ValueType
 
-  override def apply(typeParameters: List[ValueType]): ValueType = create(validate(typeParameters))
+  override final def apply(typeParameters: List[ValueType]): ValueType = create(validate(typeParameters))
