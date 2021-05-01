@@ -10,7 +10,7 @@ private[parsers] class ValueTypeListParser(parent: UpdatableParser[List[ValueTyp
       parent(Event.None(event))
     case event: Event.TypeName =>
       val tailParser = new ValueTypeListTailParser(parent, types)
-      ValueTypeParser(tailParser, types)(event)
+      TypeParser(tailParser, types)(event)
     case unexpected => throw UnexpectedEventException(unexpected)
 
 private class ValueTypeListTailParser(parent: UpdatableParser[List[ValueType]],
@@ -21,7 +21,7 @@ private class ValueTypeListTailParser(parent: UpdatableParser[List[ValueType]],
     case Event.TypeListEnd(_) =>
       parent.update(builder.result)
       parent(Event.None(event))
-    case Event.TypeListSeparator(_) => ValueTypeParser(this, types)
+    case Event.TypeListSeparator(_) => TypeParser(this, types)
     case Event.None(_) => this
     case event => throw UnexpectedEventException(event)
 
