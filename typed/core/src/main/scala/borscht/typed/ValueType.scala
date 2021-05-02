@@ -1,7 +1,8 @@
-package borscht.typed.types
+package borscht.typed
 
 import borscht.typed.Position
 
+@FunctionalInterface
 trait ValueType extends (String => AnyRef)
 
 trait ValueTypeConstructor extends ((List[ValueType], Position) => ValueType):

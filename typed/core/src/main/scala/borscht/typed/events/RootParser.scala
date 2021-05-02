@@ -1,6 +1,6 @@
 package borscht.typed.events
 
-import borscht.typed.types.{ValueType, ValueTypeConstructor}
+import borscht.typed.{ValueType, ValueTypeConstructor}
 
 private[typed] final class RootParser(types: PartialFunction[String, ValueTypeConstructor])
   extends UpdatableParser[ValueType] :

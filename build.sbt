@@ -1,11 +1,9 @@
-val JacksonVersion = "2.12.0"
-
 ThisBuild / organization := "io.h8"
 ThisBuild / scalaVersion := "3.0.0-RC3"
 
 ThisBuild / libraryDependencies ++= Seq(
-  //"org.scalamock" %% "scalamock" % "5.1.+" % Test,
-  "org.scalatest" %% "scalatest" % "3.2.8" % Test)
+  //Dependencies.ScalaMock % Test,
+  Dependencies.ScalaTest % Test)
 
 ThisBuild / scalacOptions ++= Seq(
   //"-Yexplicit-nulls",
@@ -19,26 +17,27 @@ lazy val `provider-typesafe` = project
   .in(file("provider/typesafe"))
   .settings(
     name := "borscht-typesafe",
-    libraryDependencies += "com.typesafe" % "config" % "1.4.1")
+    libraryDependencies += Dependencies.TypesafeConfig)
   .dependsOn(core)
 
 lazy val `provider-jackson` = project
   .in(file("provider/jackson"))
   .settings(
     name := "borscht-jackson",
-    libraryDependencies += "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion)
+    libraryDependencies += Dependencies.JacksonDatabind)
   .dependsOn(core)
 
 lazy val `provider-jackson-yaml` = project
   .in(file("provider/jackson/yaml"))
   .settings(
     name := "borscht-jackson",
-    libraryDependencies += "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion)
+    libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`provider-jackson`)
 
 lazy val `typed-core` = project
   .in(file("typed/core"))
   .settings(name := "borscht-typed-core")
+  .dependsOn(`core`)
 
 lazy val `template-core` = project
   .in(file("template/core"))
@@ -49,14 +48,14 @@ lazy val `template-st4` = project
   .in(file("template/st4"))
   .settings(
     name := "borscht-template-st4",
-    libraryDependencies += "org.antlr" % "ST4" % "4.3.1")
+    libraryDependencies += Dependencies.ST4)
   .dependsOn(`template-core`, util)
 
 lazy val `template-apache-commons-text` = project
   .in(file("template/apache-commons-text"))
   .settings(
     name := "borscht-template-apache-commons-text",
-    libraryDependencies += "org.apache.commons" % "commons-text" % "1.9")
+    libraryDependencies += Dependencies.ApacheCommonsText)
   .dependsOn(`template-core`, util)
 
 lazy val util = project
@@ -68,9 +67,9 @@ lazy val examples = project
   .settings(
     name := "borscht-examples",
     libraryDependencies ++= Seq( // for GitHub Scala CI
-      "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion,
-      "org.antlr" % "ST4" % "4.3.1",
-      "org.apache.commons" % "commons-text" % "1.9"),
+      Dependencies.JacksonDataformatYAML,
+      Dependencies.ST4,
+      Dependencies.ApacheCommonsText),
     classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
   .dependsOn(`provider-typesafe`, `provider-jackson-yaml`, `template-st4`, `template-apache-commons-text`)

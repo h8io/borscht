@@ -4,8 +4,6 @@ import java.time._
 import borscht.NodeParser
 import borscht.time.DateTimeAdjuster
 
-//import scala.language.unsafeNulls
-
 given NodeParserZonedDateTime(using parser: NodeParser[String]): NodeParser[ZonedDateTime] =
   parser andThen (ZonedDateTime.parse(_))
 
