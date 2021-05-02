@@ -20,7 +20,7 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Even
         case ']' => TypeListEnd(i)
         case ',' | ';' => TypeListSeparator(i)
         case char if isTypeNameChar(char) => typeName(StringBuilder() += char, i)
-        case char => Error(s"unexpected character $char (${char.toInt.toHexString})", i)
+        case char => InvalidCharacter(char, i)
     } else
       _hasNext = false
       End(index)

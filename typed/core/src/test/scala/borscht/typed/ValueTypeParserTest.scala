@@ -57,3 +57,8 @@ class ValueTypeParserTest extends AnyFlatSpec with Matchers :
   it should "throw exception for an unknown type" in {
     (the[UnknownValueType] thrownBy ValueTypeParser(types)("abc[def, xyz]")).event shouldBe Event.TypeName("xyz", 9)
   }
+
+  it should "throw exception for an invalid character" in {
+    (the[UnexpectedEvent] thrownBy ValueTypeParser(types)("abc[def, ghi, %]")).event shouldBe
+      Event.InvalidCharacter('%', 14)
+  }
