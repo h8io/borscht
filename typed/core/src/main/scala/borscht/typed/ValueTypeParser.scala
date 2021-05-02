@@ -2,7 +2,7 @@ package borscht.typed
 
 import borscht.typed.events.{Events, Parser, RootParser}
 
-final class ValueTypeParser(types: PartialFunction[String, ValueTypeConstructor]):
+final class ValueTypeParser(types: PartialFunction[String, ValueTypeConstructor]) extends (String => ValueType):
   def apply(definition: String): ValueType =
     val events = Events(definition)
     val rootParser = RootParser(types)
