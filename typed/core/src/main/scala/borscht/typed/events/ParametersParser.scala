@@ -1,12 +1,10 @@
-package borscht.typed
+package borscht.typed.events
 
 import borscht.typed.types.{ValueType, ValueTypeConstructor}
 
-import java.rmi.UnexpectedException
-
-private[typed] final class ParametersParser(parent: UpdatableParser[ValueType],
-                                            constructor: ValueTypeConstructor,
-                                            types: Map[String, ValueTypeConstructor])
+private[events] final class ParametersParser(parent: UpdatableParser[ValueType],
+                                             constructor: ValueTypeConstructor,
+                                             types: Map[String, ValueTypeConstructor])
   extends UpdatableParser[List[ValueType]] :
 
   private var result: List[ValueType] = Nil

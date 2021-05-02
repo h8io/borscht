@@ -1,5 +1,6 @@
 package borscht.typed
 
+import borscht.typed.events.{Event, UnexpectedEvent, UnknownValueType}
 import borscht.typed.types.{TestValueType, TestValueTypeConstructor, ValueTypeConstructor}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

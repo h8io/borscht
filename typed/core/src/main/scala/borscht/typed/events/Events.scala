@@ -1,8 +1,8 @@
-package borscht.typed
+package borscht.typed.events
 
 import scala.annotation.tailrec
 
-private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Event]:
+private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Event] :
   private var index = 0
   private var _hasNext = true
 

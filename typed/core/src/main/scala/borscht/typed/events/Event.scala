@@ -1,4 +1,4 @@
-package borscht.typed
+package borscht.typed.events
 
 sealed trait ErrorEvent
 

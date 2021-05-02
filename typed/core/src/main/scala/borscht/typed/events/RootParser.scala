@@ -1,8 +1,8 @@
-package borscht.typed
+package borscht.typed.events
 
 import borscht.typed.types.{ValueType, ValueTypeConstructor}
 
-private[typed] final class RootTypeParser(types: Map[String, ValueTypeConstructor])
+private[typed] final class RootParser(types: Map[String, ValueTypeConstructor])
   extends UpdatableParser[ValueType] :
 
   private var optResult: Option[ValueType] = None

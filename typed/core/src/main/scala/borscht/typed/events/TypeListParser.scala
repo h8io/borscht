@@ -1,9 +1,9 @@
-package borscht.typed
+package borscht.typed.events
 
 import borscht.typed.types.{ValueType, ValueTypeConstructor}
 
-private[typed] class ValueTypeListParser(parent: UpdatableParser[List[ValueType]],
-                                         types: Map[String, ValueTypeConstructor]) extends Parser :
+private[events] class ValueTypeListParser(parent: UpdatableParser[List[ValueType]],
+                                          types: Map[String, ValueTypeConstructor]) extends Parser :
   override def apply(event: Event): Parser = event match
     case Event.TypeListEnd(_) =>
       parent.update(Nil)
