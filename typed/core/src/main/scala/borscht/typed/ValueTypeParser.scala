@@ -1,5 +1,7 @@
 package borscht.typed
 
+import borscht.typed.types.{ValueType, ValueTypeConstructor}
+
 final class ValueTypeParser(types: Map[String, ValueTypeConstructor]):
   def apply(definition: String): ValueType =
     val events = Events(definition)

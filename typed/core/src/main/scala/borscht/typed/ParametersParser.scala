@@ -1,6 +1,8 @@
 package borscht.typed
 
-import borscht.typed.{ValueType, ValueTypeConstructor}
+import borscht.typed.types.{ValueType, ValueTypeConstructor}
+
+import java.rmi.UnexpectedException
 
 private[typed] final class ParametersParser(parent: UpdatableParser[ValueType],
                                             constructor: ValueTypeConstructor,
@@ -11,8 +13,9 @@ private[typed] final class ParametersParser(parent: UpdatableParser[ValueType],
 
   override def apply(event: Event): Parser = event match
     case Event.TypeListStart(_) => ValueTypeListParser(this, types)
+    case event: (Event.TypeName | Event.TypeName) => throw UnexpectedEvent(event)
     case event =>
-      parent.update(constructor(result))
+      parent.update(constructor(result, event.position))
       parent(event)
 
   override def update(value: List[ValueType]): Unit = result = value

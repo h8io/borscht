@@ -1,6 +1,6 @@
 package borscht.typed
 
-import borscht.typed.{ValueType, ValueTypeConstructor}
+import borscht.typed.types.{ValueType, ValueTypeConstructor}
 
 private[typed] final class RootTypeParser(types: Map[String, ValueTypeConstructor])
   extends UpdatableParser[ValueType] :
@@ -11,7 +11,7 @@ private[typed] final class RootTypeParser(types: Map[String, ValueTypeConstructo
     case event: Event.TypeName => TypeParser(this, types)(event)
     case _: Event.None => this
     case event: Event.End => this
-    case unexpected => throw UnexpectedEventException(unexpected)
+    case unexpected => throw UnexpectedEvent(unexpected)
 
   override def update(value: ValueType): Unit = optResult = Some(value)
 

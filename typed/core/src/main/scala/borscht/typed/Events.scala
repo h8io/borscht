@@ -18,16 +18,15 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Even
         case char if char.isWhitespace => next()
         case '[' => TypeListStart(i)
         case ']' => TypeListEnd(i)
-        case ',' => TypeListSeparator(i)
-        case char if isTypeNameStart(char) => typeName(StringBuilder() += char, i)
+        case ',' | ';' => TypeListSeparator(i)
+        case char if isTypeNameChar(char) => typeName(StringBuilder() += char, i)
         case char => Error(s"unexpected character $char (${char.toInt.toHexString})", i)
     } else
       _hasNext = false
       End(index)
 
-  private def isTypeNameStart(char: Char) = char.isLetter || char == '_'
-
-  private def isTypeNameChar(char: Char) = char.isLetterOrDigit || char == '_' || char == '-'
+  private def isTypeNameChar(char: Char) =
+    char.isLetterOrDigit || char == '_' || char == '-' || char == '.' || char == '$'
 
   @tailrec
   private def typeName(builder: StringBuilder, i: Int): Event =

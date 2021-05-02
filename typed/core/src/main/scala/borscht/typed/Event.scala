@@ -7,4 +7,4 @@ private[typed] enum Event(val position: Int):
   case TypeListSeparator(override val position: Int) extends Event(position)
   case End(override val position: Int) extends Event(position)
   case Error(message: String, override val position: Int) extends Event(position)
-  case None(previous: Event) extends Event(previous.position)
+  case None(val previous: Event) extends Event(previous.position)
