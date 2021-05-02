@@ -3,7 +3,7 @@ package borscht.typed.events
 import borscht.typed.types.{ValueType, ValueTypeConstructor}
 
 private[events] class ValueTypeListParser(parent: UpdatableParser[List[ValueType]],
-                                          types: Map[String, ValueTypeConstructor]) extends Parser :
+                                          types: PartialFunction[String, ValueTypeConstructor]) extends Parser :
   override def apply(event: Event): Parser = event match
     case Event.TypeListEnd(_) =>
       parent.update(Nil)
@@ -14,7 +14,9 @@ private[events] class ValueTypeListParser(parent: UpdatableParser[List[ValueType
     case unexpected => throw UnexpectedEvent(unexpected)
 
 private class ValueTypeListTailParser(parent: UpdatableParser[List[ValueType]],
-                                      types: Map[String, ValueTypeConstructor]) extends UpdatableParser[ValueType] :
+                                      types: PartialFunction[String, ValueTypeConstructor])
+  extends UpdatableParser[ValueType] :
+
   private val builder = List.newBuilder[ValueType]
 
   override def apply(event: Event): Parser = event match

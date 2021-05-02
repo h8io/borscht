@@ -1,6 +1,6 @@
 package borscht.typed
 
-import borscht.typed.events.{Event, UnexpectedEvent, UnknownValueType}
+import borscht.typed.events.{Event, UnexpectedEvent, UnknownType}
 import borscht.typed.types.{TestValueType, TestValueTypeConstructor, ValueTypeConstructor}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
@@ -56,7 +56,7 @@ class ValueTypeParserTest extends AnyFlatSpec with Matchers :
   }
 
   it should "throw exception for an unknown type" in {
-    (the[UnknownValueType] thrownBy ValueTypeParser(types)("abc[def, xyz]")).event shouldBe Event.TypeName("xyz", 9)
+    (the[UnknownType] thrownBy ValueTypeParser(types)("abc[def, xyz]")).event shouldBe Event.TypeName("xyz", 9)
   }
 
   it should "throw exception for an invalid character" in {

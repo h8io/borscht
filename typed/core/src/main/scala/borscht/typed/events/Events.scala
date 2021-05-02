@@ -1,9 +1,11 @@
 package borscht.typed.events
 
+import borscht.typed.Position
+
 import scala.annotation.tailrec
 
 private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Event] :
-  private var index = 0
+  private var index: Position = 0
   private var _hasNext = true
 
   override def hasNext: Boolean = _hasNext

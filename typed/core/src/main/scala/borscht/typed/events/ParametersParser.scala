@@ -4,7 +4,7 @@ import borscht.typed.types.{ValueType, ValueTypeConstructor}
 
 private[events] final class ParametersParser(parent: UpdatableParser[ValueType],
                                              constructor: ValueTypeConstructor,
-                                             types: Map[String, ValueTypeConstructor])
+                                             types: PartialFunction[String, ValueTypeConstructor])
   extends UpdatableParser[List[ValueType]] :
 
   private var result: List[ValueType] = Nil

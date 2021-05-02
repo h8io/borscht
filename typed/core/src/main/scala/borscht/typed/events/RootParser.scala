@@ -2,9 +2,9 @@ package borscht.typed.events
 
 import borscht.typed.types.{ValueType, ValueTypeConstructor}
 
-private[typed] final class RootParser(types: Map[String, ValueTypeConstructor])
+private[typed] final class RootParser(types: PartialFunction[String, ValueTypeConstructor])
   extends UpdatableParser[ValueType] :
-
+  
   private var optResult: Option[ValueType] = None
 
   override def apply(event: Event): Parser = event match
