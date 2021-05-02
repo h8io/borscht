@@ -1,7 +1,11 @@
 package borscht.typed.events
 
+import borscht.typed.Position
+import borscht.typed.given Conversion[Int, Position]
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
+
+import scala.language.implicitConversions
 
 class EventsTest extends AnyFlatSpec with Matchers :
 

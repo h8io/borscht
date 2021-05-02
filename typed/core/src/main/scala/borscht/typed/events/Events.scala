@@ -5,7 +5,7 @@ import borscht.typed.Position
 import scala.annotation.tailrec
 
 private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Event] :
-  private var index: Position = 0
+  private var index = 0
   private var _hasNext = true
 
   override def hasNext: Boolean = _hasNext
@@ -18,14 +18,14 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Even
       index += 1
       chars(i) match
         case char if char.isWhitespace => next()
-        case '[' => TypeListStart(i)
-        case ']' => TypeListEnd(i)
-        case ',' | ';' => TypeListSeparator(i)
+        case '[' => TypeListStart(Position(i))
+        case ']' => TypeListEnd(Position(i))
+        case ',' | ';' => TypeListSeparator(Position(i))
         case char if isTypeNameChar(char) => typeName(StringBuilder() += char, i)
-        case char => InvalidCharacter(char, i)
+        case char => InvalidCharacter(char, Position(i))
     } else
       _hasNext = false
-      End(index)
+      End(Position(index))
 
   private def isTypeNameChar(char: Char) =
     char.isLetterOrDigit || char == '_' || char == '-' || char == '.' || char == '$'
@@ -37,5 +37,5 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Even
       if (isTypeNameChar(char))
         index += 1
         typeName(builder += char, i)
-      else Event.TypeName(builder.result, i)
-    else Event.TypeName(builder.result, i)
+      else Event.TypeName(builder.result, Position(i))
+    else Event.TypeName(builder.result, Position(i))

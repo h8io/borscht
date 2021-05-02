@@ -5,6 +5,8 @@ import borscht.typed.types.{TestValueType, TestValueTypeConstructor, ValueTypeCo
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.language.implicitConversions
+
 class ValueTypeParserTest extends AnyFlatSpec with Matchers :
   private val types: Map[String, ValueTypeConstructor] =
     Iterator("abc", "def", "ghi", "jkl", "mno").map(name => name -> TestValueTypeConstructor(name)).toMap
