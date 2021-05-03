@@ -3,12 +3,12 @@ package borscht.typed
 import borscht.typed.types.{DefaultTypes, ValueTypeString}
 import borscht.{NodeParser, NodeParserPlainString}
 
-def DefaultValueTypeParser = ValueTypeParser(DefaultTypes)
+lazy val DefaultValueTypeParser = ValueTypeParser(DefaultTypes)
 
-def createNodeParserValueType(using parser: ValueTypeParser): NodeParser[ValueType] =
+def createNodeParserValueTypeParser(using parser: ValueTypeParser): NodeParser[ValueType] =
   NodeParserPlainString andThen parser
 
-def createNodeParserTypedValue(using parser: ValueTypeParser): NodeParser[TypedValue] =
+def createNodeParserTypedValueParser(using parser: ValueTypeParser): NodeParser[TypedValue] =
   NodeParserPlainString andThen { value =>
     value.split(":", 2) match
       case Array(value) => TypedValue(ValueTypeString, value)

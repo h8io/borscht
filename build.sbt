@@ -36,13 +36,14 @@ lazy val `provider-jackson-yaml` = project
 
 lazy val `typed-core` = project
   .in(file("typed/core"))
-  .settings(name := "borscht-typed-core")
-  .dependsOn(`core`)
+  .settings(
+    name := "borscht-typed-core")
+  .dependsOn(`core`, `provider-typesafe` % "test -> compile")
 
 lazy val `template-core` = project
   .in(file("template/core"))
   .settings(name := "borscht-template-core")
-  .dependsOn(`core`)
+  .dependsOn(`core`, `typed-core`)
 
 lazy val `template-st4` = project
   .in(file("template/st4"))
