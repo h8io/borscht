@@ -29,7 +29,7 @@ ThisBuild / publishTo := {
   else Some("releases" at nexus + "service/local/staging/deploy/maven2")
 }
 ThisBuild / publishMavenStyle := true
-ThisBuild / versionScheme := Some("early-semver")
+ThisBuild / versionScheme := Some("semver-spec")
 
 ThisBuild / scalaVersion := "3.0.0-RC3"
 
