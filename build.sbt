@@ -1,4 +1,37 @@
 ThisBuild / organization := "io.h8"
+ThisBuild / organizationName := "H8IO"
+ThisBuild / organizationHomepage := Some(url("https://github.com/h8io/"))
+
+ThisBuild / scmInfo := Some(
+  ScmInfo(
+    url("https://github.com/h8io/borscht"),
+    "scm:git@github.com:h8io/borscht.git"
+  )
+)
+ThisBuild / developers := List(
+  Developer(
+    id    = "eshu",
+    name  = "Pavel Parkhomenko",
+    email = "tjano.xibalba@gmail.com",
+    url   = url("https://github.com/h8io/")
+  )
+)
+
+ThisBuild / description := "Borscht: Scala 3 configuration liblrary"
+ThisBuild / licenses := List("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt"))
+ThisBuild / homepage := Some(url("https://github.com/h8io/borscht"))
+
+// Remove all additional repository other than Maven Central from POM
+ThisBuild / pomIncludeRepository := { _ => false }
+ThisBuild / publishTo := {
+  val nexus = "https://s01.oss.sonatype.org/"
+  if (isSnapshot.value) Some("snapshots" at nexus + "content/repositories/snapshots")
+  else Some("releases" at nexus + "service/local/staging/deploy/maven2")
+}
+ThisBuild / publishMavenStyle := true
+ThisBuild / versionScheme := Some("early-semver")
+ThisBuild / version := "1.0.0-RC1"
+
 ThisBuild / scalaVersion := "3.0.0-RC3"
 
 ThisBuild / libraryDependencies ++= Seq(
@@ -30,7 +63,7 @@ lazy val `provider-jackson` = project
 lazy val `provider-jackson-yaml` = project
   .in(file("provider/jackson/yaml"))
   .settings(
-    name := "borscht-jackson",
+    name := "borscht-jackson-yaml",
     libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`provider-jackson`)
 
