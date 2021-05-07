@@ -1,2 +1,4 @@
 language: scala
+scala:
+  - 3.0.0-RC3
 jdk: openjdk11
