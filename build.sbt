@@ -30,7 +30,6 @@ ThisBuild / publishTo := {
 }
 ThisBuild / publishMavenStyle := true
 ThisBuild / versionScheme := Some("early-semver")
-ThisBuild / version := "1.0.0-RC1"
 
 ThisBuild / scalaVersion := "3.0.0-RC3"
 
