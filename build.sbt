@@ -1,4 +1,4 @@
-ThisBuild / organization := "io.h8"
+ThisBuild / organization := "io.h8.borscht"
 ThisBuild / organizationName := "H8IO"
 ThisBuild / organizationHomepage := Some(url("https://github.com/h8io/"))
 
@@ -20,12 +20,14 @@ ThisBuild / developers := List(
 ThisBuild / description := "Borscht: Scala 3 configuration liblrary"
 ThisBuild / licenses := List("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 ThisBuild / homepage := Some(url("https://github.com/h8io/borscht"))
+ThisBuild / versionScheme := Some("semver-spec")
 
 // Remove all additional repository other than Maven Central from POM
 pomIncludeRepository := { _ => false }
+sonatypeProfileName := "io.h8"
 sonatypeCredentialHost := "s01.oss.sonatype.org"
 sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
-publishTo := sonatypePublishToBundle.value
+ThisBuild / publishTo := sonatypePublishToBundle.value
 
 import ReleaseTransformations._
 releaseProcess := Seq[ReleaseStep](
