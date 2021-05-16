@@ -10,9 +10,9 @@ import java.time.{LocalDate, LocalTime, ZonedDateTime}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
 
-class NodeParserTypedParsersTest extends AnyFlatSpec with Matchers :
+class TypedNodeParsersTest extends AnyFlatSpec with Matchers :
   given ValueTypeParser = DefaultValueTypeParser
-  given NodeParser[TypedValue] = createNodeParserTypedValueParser
+  given NodeParser[TypedValue] = createNodeParserTypedValue
 
   "Typed value node parser" should "return correct values" in {
     System.setProperty("prayer", "Cthulhu fhtagn")
