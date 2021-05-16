@@ -58,3 +58,10 @@ object CfgNode:
       updated.iterator ++ (main.iterator filterNot { (key, _) => updated.contains(key) })
 
     override def position: Position = fallback.position + main.position
+
+  object Empty extends CfgNode with Node:
+    override def child(key: String): Option[Node] = None
+
+    override def iterator: Iterator[(String, Node)] = Iterator.empty
+
+    override def position: Position = Position.None

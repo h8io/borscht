@@ -6,7 +6,7 @@ import java.net.URL
 import java.nio.file.Path
 import scala.collection.immutable.Queue
 
-private[jackson] enum JacksonSource extends Position:
+private[jackson] enum JacksonSource extends Position.Some:
   case raw
   case resource(name: String)
   case path(path: Path)

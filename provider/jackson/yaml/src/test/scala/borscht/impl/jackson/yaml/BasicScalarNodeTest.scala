@@ -2,6 +2,7 @@ package borscht.impl.jackson.yaml
 
 import borscht.{CfgNode, ScalarNode}
 import borscht.parsers.given
+import borscht.parsers.static.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 

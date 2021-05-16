@@ -10,9 +10,6 @@ import scala.collection.mutable
 import scala.compiletime.summonFrom
 import scala.jdk.CollectionConverters._
 
-given NodeParserString(using parser: NodeParser[RenderableString] = NodeParserNothing): NodeParser[String] =
-  NodeParserPlainString orElse (parser andThen (_()))
-
 given NodeParserBoolean: NodeParser[Boolean] = NodeParserScalarAnyRef andThen {
   case v: jBoolean => v.booleanValue
   case v: String => jBoolean.parseBoolean(v)
