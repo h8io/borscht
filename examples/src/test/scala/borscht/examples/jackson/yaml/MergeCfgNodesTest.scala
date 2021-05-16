@@ -3,7 +3,6 @@ package borscht.examples.jackson.yaml
 import borscht.CfgNode
 import borscht.impl.jackson.yaml.YamlRecipe._
 import borscht.parsers.given
-import borscht.parsers.static.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 

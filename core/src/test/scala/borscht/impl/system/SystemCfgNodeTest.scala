@@ -2,7 +2,6 @@ package borscht.impl.system
 
 import borscht.CfgNode
 import borscht.parsers.given
-import borscht.parsers.static.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 

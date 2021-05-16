@@ -3,7 +3,6 @@ package borscht.examples.act
 import borscht.{CfgNodeParserException, parsers}
 import borscht.impl.typesafe.TypesafeRecipe.given
 import borscht.parsers.given
-import borscht.parsers.static.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
