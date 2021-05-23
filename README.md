@@ -4,7 +4,7 @@
 [![Build Status](https://api.travis-ci.com/h8io/borscht.svg?branch=master)](https://travis-ci.com/h8io/borscht)
 
 ## Overview
-  * supports (configuration files)
+  * supports configuration files
     * [HOCON](https://github.com/lightbend/config/blob/main/README.md)
     * [YAML](https://yaml.org/) ([Jackson YAML](https://github.com/FasterXML/jackson-dataformats-text/tree/master/yaml) is the underlying library)
   * merges configurations of all formats
