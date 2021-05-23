@@ -1,7 +1,7 @@
 package borscht.typed
 
-import borscht.impl.typesafe.TypesafeRecipe.given
 import borscht.NodeParser
+import borscht.impl.typesafe.TypesafeRecipe.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

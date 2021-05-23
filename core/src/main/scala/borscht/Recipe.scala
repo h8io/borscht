@@ -2,13 +2,15 @@ package borscht
 
 import java.nio.file.Path
 
-class Recipe(provider: CfgProvider):
-  def parse(content: String): CfgNode = provider.parse(content)
+trait Recipe:
+  def parse(content: String): CfgNode
 
-  def apply(): CfgNode = provider()
+  def apply(): CfgNode
 
-  def apply(paths: Iterable[Path]): CfgNode = if (paths.isEmpty) apply() else provider(paths)
+  def apply(paths: Iterable[Path]): CfgNode = if (paths.isEmpty) apply() else load(paths)
 
+  def load(paths: Iterable[Path]): CfgNode
+  
   def apply(paths: Path*): CfgNode = apply(paths)
 
   implicit final class CfgStringContext(sc: StringContext):

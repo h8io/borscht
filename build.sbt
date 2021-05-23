@@ -60,32 +60,32 @@ lazy val core = project
   .in(file("core"))
   .settings(name := "borscht-core")
 
-lazy val `provider-typesafe` = project
-  .in(file("provider/typesafe"))
+lazy val `recipe-typesafe` = project
+  .in(file("recipe/typesafe"))
   .settings(
     name := "borscht-typesafe",
     libraryDependencies += Dependencies.TypesafeConfig)
   .dependsOn(core)
 
-lazy val `provider-jackson` = project
-  .in(file("provider/jackson"))
+lazy val `recipe-jackson` = project
+  .in(file("recipe/jackson"))
   .settings(
     name := "borscht-jackson",
     libraryDependencies += Dependencies.JacksonDatabind)
   .dependsOn(core)
 
-lazy val `provider-jackson-yaml` = project
-  .in(file("provider/jackson/yaml"))
+lazy val `recipe-jackson-yaml` = project
+  .in(file("recipe/jackson/yaml"))
   .settings(
     name := "borscht-jackson-yaml",
     libraryDependencies += Dependencies.JacksonDataformatYAML)
-  .dependsOn(`provider-jackson`)
+  .dependsOn(`recipe-jackson`)
 
 lazy val `typed-core` = project
   .in(file("typed/core"))
   .settings(
     name := "borscht-typed-core")
-  .dependsOn(`core`, `provider-typesafe` % "test -> compile")
+  .dependsOn(`core`, `recipe-typesafe` % "test -> compile")
 
 lazy val `template-core` = project
   .in(file("template/core"))
@@ -120,7 +120,7 @@ lazy val examples = project
       Dependencies.ApacheCommonsText),
     classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
-  .dependsOn(`provider-typesafe`, `provider-jackson-yaml`, `template-st4`, `template-apache-commons-text`)
+  .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`)
 
 lazy val root = project
   .in(file("."))
@@ -129,6 +129,6 @@ lazy val root = project
     publishArtifact := false)
   .aggregate(
     core, util, examples,
-    `provider-typesafe`, `provider-jackson`, `provider-jackson-yaml`,
+    `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`,
     `typed-core`,
     `template-core`, `template-st4`, `template-apache-commons-text`)
