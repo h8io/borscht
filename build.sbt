@@ -46,7 +46,7 @@ releaseProcess := Seq[ReleaseStep](
   pushChanges
 )
 
-ThisBuild / scalaVersion := "3.0.0"
+ThisBuild / scalaVersion := "3.0.1"
 
 ThisBuild / libraryDependencies ++= Seq(
   //Dependencies.ScalaMock % Test,
