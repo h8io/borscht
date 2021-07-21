@@ -7,7 +7,7 @@ import scala.compiletime._
 
 trait CfgNode extends Node with Iterable[(String, Node)]:
   @targetName("merge")
-  def ++(that: CfgNode): CfgNode = CfgNode.Merged(this, that)
+  def ++(that: CfgNode): CfgNode = new CfgNode.Merged(this, that)
 
   final def apply[T: NodeParser](ref: String*): T =
     get[T](ref: _*) getOrElse { throw NodeNotFoundException(ref, position) }
@@ -40,15 +40,19 @@ trait CfgNode extends Node with Iterable[(String, Node)]:
 
   def child(key: String): Option[Node]
 
-  override def toString = iterator.mkString(s"${getClass.getName}(", ", ", ")") 
+  def withMeta(meta: Meta): CfgNode
+
+  override def toString = iterator.mkString(s"${getClass.getName}(", ", ", ")")
 
 object CfgNode:
   private def merge(optFallback: Option[Node], optMain: Option[Node]): Option[Node] = (optFallback, optMain) match
-    case (Some(fallback: CfgNode), Some(main: CfgNode)) => Some(Merged(fallback, main))
+    case (Some(fallback: CfgNode), Some(main: CfgNode)) => Some(new Merged(fallback, main))
     case (_, None) => optFallback
     case _ => optMain
 
-  private case class Merged(fallback: CfgNode, main: CfgNode) extends CfgNode with Node:
+  private case class Merged(fallback: CfgNode, main: CfgNode) extends CfgNode:
+    val meta = fallback.meta ++ main.meta
+
     override def child(key: String): Option[Node] = merge(fallback.child(key), main.child(key))
 
     override def iterator: Iterator[(String, Node)] =
@@ -57,11 +61,17 @@ object CfgNode:
       }).toMap
       updated.iterator ++ (main.iterator filterNot { (key, _) => updated.contains(key) })
 
+    override def withMeta(meta: Meta): Merged = Merged(fallback withMeta meta, main withMeta meta)
+
     override def position: Position = fallback.position + main.position
 
-  object Empty extends CfgNode with Node:
+  case class Empty(val meta: Meta) extends CfgNode:
     override def child(key: String): Option[Node] = None
 
     override def iterator: Iterator[(String, Node)] = Iterator.empty
 
+    override def withMeta(meta: Meta): Empty = new Empty(meta)
+
     override def position: Position = Position.None
+
+  object Empty extends Empty(Meta.Empty)

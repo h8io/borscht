@@ -5,7 +5,7 @@ import scala.annotation.targetName
 sealed trait Position:
   @targetName("merge")
   def +(that: Position): Position
-  
+
   override def toString: String
 
 object Position:
