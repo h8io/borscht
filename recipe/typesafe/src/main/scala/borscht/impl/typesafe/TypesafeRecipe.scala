@@ -1,6 +1,6 @@
 package borscht.impl.typesafe
 
-import borscht.{CfgNode, Recipe}
+import borscht.{CfgNode, Meta, Recipe}
 import com.typesafe.config.ConfigFactory
 
 import java.nio.file.Path
