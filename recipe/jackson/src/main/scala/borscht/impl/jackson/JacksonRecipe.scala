@@ -1,7 +1,7 @@
 package borscht.impl.jackson
 
 import borscht.impl.system.SystemCfgNode
-import borscht.{CfgException, CfgNode, Recipe}
+import borscht.{CfgException, CfgNode, Meta, Recipe}
 
 import java.nio.file.Path
 import com.fasterxml.jackson.databind.node.ObjectNode
@@ -28,7 +28,7 @@ open class JacksonRecipe(mapper: ObjectMapper, defaultFileNames: List[String] = 
     } reduce (_ ++ _)) ++ SystemCfgNode()
     
   private def asConfigNode(node: JsonNode, src: JacksonSource): CfgNode =
-    JacksonCfgNode(asObjectNode(node, src), src)
+    JacksonCfgNode(asObjectNode(node, src), src, Meta.Empty)
 
   private def asObjectNode(node: JsonNode, src: JacksonSource): ObjectNode = node match
     case node: ObjectNode => node
