@@ -17,13 +17,13 @@ given NodeParserString: NodeParser[String] =
     }
   }
 
-given NodeParserBoolean: NodeParser[Boolean] = NodeParserScalarAnyRef andThen {
+given NodeParserBoolean: NodeParser[Boolean] = NodeParserScalarAny andThen {
   case v: jBoolean => v.booleanValue
   case v: String => jBoolean.parseBoolean(v)
   case v: Number => v != 0
 }
 
-given NodeParserNumber: NodeParser[Number] = NodeParserScalarAnyRef andThen {
+given NodeParserNumber: NodeParser[Number] = NodeParserScalarAny andThen {
   case v: Number => v
   case v: String => BigDecimal(v)
 }

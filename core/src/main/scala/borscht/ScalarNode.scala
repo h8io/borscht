@@ -1,7 +1,7 @@
 package borscht
 
 trait ScalarNode extends Node:
-  def value: AnyRef
+  def value: Any
   
   def asString: String = value.toString
 
