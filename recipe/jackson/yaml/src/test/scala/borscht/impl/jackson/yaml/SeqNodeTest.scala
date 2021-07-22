@@ -1,21 +1,23 @@
-package borscht.impl.typesafe
+package borscht.impl.jackson.yaml
 
 import borscht.Recipe
-import borscht.impl.typesafe.TypesafeRecipe.given
+import borscht.impl.jackson.yaml.YamlRecipe.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
 import scala.language.implicitConversions
 
-class IterableNodeTest extends AnyFlatSpec with Matchers:
-
-  it should "provide a singleton list of strings" in {
+class SeqNodeTest extends AnyFlatSpec with Matchers:
+  "Sequence node accessor" should "provide a singleton list of strings" in {
     cfg"key: value"[List[String]]("key") must contain theSameElementsInOrderAs List("value")
   }
 
   it should "provide a list of numbers" in {
-    cfg"key: [42, 2.66]"[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
+    cfg"""
+         |key:
+         | - 42
+         | - 2.66"""[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers" in {
@@ -23,7 +25,10 @@ class IterableNodeTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide a list of numbers from a string sequence" in {
-    cfg"""key: ["42", "2.66"]"""[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
+    cfg"""
+         |key:
+         |  - "42"
+         |  - "2.66""""[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers from a string value" in {
@@ -31,10 +36,18 @@ class IterableNodeTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide a list of booleans" in {
-    cfg"key: [true, true, false]"[List[Boolean]]("key") must contain theSameElementsInOrderAs List(true, true, false)
+    cfg"""
+         |key:
+         |  - true
+         |  - true
+         |  - false"""[List[Boolean]]("key") must contain theSameElementsInOrderAs List(true, true, false)
   }
 
   it should "provide a list of booleans from a string sequence" in {
-    cfg"""key: ["false", "true", "false"]"""[List[Boolean]]("key") must contain theSameElementsInOrderAs
+    cfg"""
+         |key:
+         |  - "false"
+         |  - "true"
+         |  - "false""""[List[Boolean]]("key") must contain theSameElementsInOrderAs
       List(false, true, false)
   }

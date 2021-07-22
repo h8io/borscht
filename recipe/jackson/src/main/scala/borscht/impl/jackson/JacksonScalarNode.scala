@@ -17,10 +17,10 @@ private[jackson] object JacksonScalarNode:
     new JacksonScalarNode(unwrapped, node, src, meta)
 
 
-private[jackson] final class JacksonScalarNode(val unwrapped: AnyRef,
+private[jackson] final class JacksonScalarNode(val value: AnyRef,
                                                node: JsonNode,
                                                src: JacksonSource,
                                                val meta: Meta)
   extends ScalarNode with JacksonNode(node, src):
 
-  override def withMeta(meta: Meta): ScalarNode = new JacksonScalarNode(unwrapped, node, src, meta)
+  override def withMeta(meta: Meta): ScalarNode = new JacksonScalarNode(value, node, src, meta)
