@@ -1,11 +1,11 @@
 package borscht.impl.typesafe
 
-import borscht.{CfgNode, Meta, Recipe}
+import borscht.{CfgNode, CfgProvider, Meta, Recipe}
 import com.typesafe.config.ConfigFactory
 
 import java.nio.file.Path
 
-object TypesafeRecipe extends Recipe:
+private object TypesafeCfgProvider extends CfgProvider:
   override def parse(content: String): CfgNode = new TypesafeCfgNode(ConfigFactory.parseString(content))
 
   override def apply(): CfgNode = new TypesafeCfgNode(ConfigFactory.load)
@@ -14,3 +14,5 @@ object TypesafeRecipe extends Recipe:
     (paths.iterator map { path =>
       ConfigFactory.parseFile(path.toFile)
     } reduce { (prev, next) => next withFallback prev }).resolve)
+
+object TypesafeRecipe extends Recipe(TypesafeCfgProvider)

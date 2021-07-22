@@ -1,5 +1,6 @@
 package borscht.impl.jackson.yaml
 
+import borscht.Recipe
 import borscht.impl.jackson.JacksonRecipe
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory
