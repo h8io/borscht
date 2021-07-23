@@ -3,17 +3,15 @@ package borscht.parsers
 import borscht.{CfgNode, ScalarNode}
 import borscht.test.cfg
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.must.Matchers
-
-import scala.language.implicitConversions
+import org.scalatest.matchers.should.Matchers
 
 class BasicScalarNodeTest extends AnyFlatSpec with Matchers :
   "Scalar node accessor" should "provide a numeric value" in {
-    cfg("key" -> 42)[Number]("key") mustEqual 42
+    cfg("key" -> 42)[Number]("key") shouldEqual 42
   }
 
   it should "provide a numeric value from string" in {
-    cfg("key" -> "42")[Number]("key") mustEqual 42
+    cfg("key" -> "42")[Number]("key") shouldEqual 42
   }
 
   it should "provide a nested config" in {
@@ -22,5 +20,5 @@ class BasicScalarNodeTest extends AnyFlatSpec with Matchers :
       key -> (node match
         case scalar: ScalarNode => scalar.value
         case other => fail(s"Invalid node class ${other.getClass}"))
-    } must contain theSameElementsAs Map("property1" -> "value1", "property2" -> 2)
+    } should contain theSameElementsAs Map("property1" -> "value1", "property2" -> 2)
   }
