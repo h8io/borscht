@@ -6,9 +6,8 @@ import borscht.test._
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class NodeParserSubtypeTest extends AnyFlatSpec with Matchers :
-  // It works because of type erasure
-  "Subtype node parser" should "return the correct subclass object" in {
+class NodeParserSubclassTest extends AnyFlatSpec with Matchers:
+  "Subclass node parser" should "return the correct subclass object" in {
     cfg("key" -> "java.lang.Integer")[Subclass[Number]]("key") shouldEqual
       Subclass(classOf[Integer], classOf[Number])
   }
