@@ -6,7 +6,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class BasicScalarNodeTest extends AnyFlatSpec with Matchers :
-  "Scalar node accessor" should "provide a numeric value" in {
+  "Scalar node parser" should "provide a numeric value" in {
     cfg("key" -> 42)[Number]("key") shouldEqual 42
   }
 

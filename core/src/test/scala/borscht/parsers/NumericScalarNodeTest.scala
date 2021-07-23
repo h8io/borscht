@@ -5,7 +5,7 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class NumericScalarNodeTest extends AnyFlatSpec with Matchers:
-  "Numeric node accessor" should "provide a byte value from a string" in {
+  "Numeric node parser" should "provide a byte value from a string" in {
     cfg("key" -> "42")[Byte]("key") shouldEqual 42.toByte
   }
 

@@ -4,35 +4,35 @@ import borscht.Recipe
 import borscht.impl.jackson.yaml.YamlRecipe.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers
 
 import scala.language.implicitConversions
 
 class SeqNodeTest extends AnyFlatSpec with Matchers:
-  "Sequence node accessor" should "provide a singleton list of strings" in {
-    cfg"key: value"[List[String]]("key") must contain theSameElementsInOrderAs List("value")
+  "Sequence node parser" should "provide a singleton list of strings" in {
+    cfg"key: value"[List[String]]("key") should contain theSameElementsInOrderAs List("value")
   }
 
   it should "provide a list of numbers" in {
     cfg"""
          |key:
          | - 42
-         | - 2.66"""[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
+         | - 2.66"""[List[Number]]("key") should contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers" in {
-    cfg"key: ${Long.MaxValue}"[List[Number]]("key") must contain theSameElementsInOrderAs List(Long.MaxValue)
+    cfg"key: ${Long.MaxValue}"[List[Number]]("key") should contain theSameElementsInOrderAs List(Long.MaxValue)
   }
 
   it should "provide a list of numbers from a string sequence" in {
     cfg"""
          |key:
          |  - "42"
-         |  - "2.66""""[List[Number]]("key") must contain theSameElementsInOrderAs List(42, 2.66)
+         |  - "2.66""""[List[Number]]("key") should contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers from a string value" in {
-    cfg"""key: "${Long.MaxValue}""""[List[Number]]("key") must contain theSameElementsInOrderAs List(Long.MaxValue)
+    cfg"""key: "${Long.MaxValue}""""[List[Number]]("key") should contain theSameElementsInOrderAs List(Long.MaxValue)
   }
 
   it should "provide a list of booleans" in {
@@ -40,7 +40,7 @@ class SeqNodeTest extends AnyFlatSpec with Matchers:
          |key:
          |  - true
          |  - true
-         |  - false"""[List[Boolean]]("key") must contain theSameElementsInOrderAs List(true, true, false)
+         |  - false"""[List[Boolean]]("key") should contain theSameElementsInOrderAs List(true, true, false)
   }
 
   it should "provide a list of booleans from a string sequence" in {
@@ -48,6 +48,6 @@ class SeqNodeTest extends AnyFlatSpec with Matchers:
          |key:
          |  - "false"
          |  - "true"
-         |  - "false""""[List[Boolean]]("key") must contain theSameElementsInOrderAs
+         |  - "false""""[List[Boolean]]("key") should contain theSameElementsInOrderAs
       List(false, true, false)
   }
