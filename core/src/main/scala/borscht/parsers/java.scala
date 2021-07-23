@@ -6,9 +6,6 @@ import java.text.MessageFormat
 import java.util.Locale
 import scala.reflect.ClassTag
 
-given NodeParserClass[T](using tag: ClassTag[T]): NodeParser[Class[T]] =
-  NodeParserString andThen { name => Class.forName(name).asSubclass(tag.runtimeClass).asInstanceOf[Class[T]] }
-
 given NodeParserLocale: NodeParser[Locale] =
   NodeParserString andThen (new Locale.Builder().setLanguageTag(_).build()) orElse (NodeParserCfgNode andThen { cfg =>
     cfg.get[String]("variant") map { variant =>
