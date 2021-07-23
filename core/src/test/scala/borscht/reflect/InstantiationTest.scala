@@ -5,7 +5,7 @@ import borscht.test.cfg
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class InstantiateTest extends AnyFlatSpec with Matchers:
+class InstantiationTest extends AnyFlatSpec with Matchers:
   private val config = cfg("parameter" -> "value")
 
   "Parameterless instantiation" should "return a correct object with parameterless constructor" in {
