@@ -1,10 +1,12 @@
 package borscht.parsers
 
-import borscht.NodeParser
-import borscht.reflect.Subclass
+import borscht._
+import borscht.reflect._
 
 import scala.reflect.ClassTag
 
 given NodeParserClass: NodeParser[Class[_]] = NodeParserString andThen Class.forName
 
-given NodeParserSubclass[T: ClassTag]: NodeParser[Subclass[T]] = NodeParserString andThen Subclass[T]
+given NodeParserComponent[T: ClassTag]: NodeParser[Component[T]] =
+  case scalar: ScalarNode => Component(instantiate(cast[T](NodeParserClass(scalar))))
+  case cfg: CfgNode => Component(instantiate(cast[T](cfg[Class[_]]("class")), cfg.get[CfgNode]("cfg")))

@@ -9,21 +9,21 @@ class InstantiationTest extends AnyFlatSpec with Matchers:
   private val config = cfg("parameter" -> "value")
 
   "Parameterless instantiation" should "return a correct object with parameterless constructor" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithParameterlessConstructor], classOf[Superclass]))
+    val instance = instantiate[Superclass](classOf[ConfigurableWithParameterlessConstructor])
     instance shouldBe a[ConfigurableWithParameterlessConstructor]
     instance.isParameterless shouldBe true
     instance.optCfg shouldBe None
   }
 
   it should "return a correct object with configuration constructor" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithCfgConstructor], classOf[Superclass]))
+    val instance = instantiate[Superclass](classOf[ConfigurableWithCfgConstructor])
     instance shouldBe a[ConfigurableWithCfgConstructor]
     instance.isParameterless shouldBe false
     instance.optCfg shouldBe None
   }
 
   it should "return a correct object with both constructors" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithBothConstructors], classOf[Superclass]))
+    val instance = instantiate[Superclass](classOf[ConfigurableWithBothConstructors])
     instance shouldBe a[ConfigurableWithBothConstructors]
     instance.isParameterless shouldBe true
     instance.optCfg shouldBe None
@@ -31,25 +31,25 @@ class InstantiationTest extends AnyFlatSpec with Matchers:
 
   it should "fail without an appropriate constructor" in {
     a[NoSuchMethodException] should be thrownBy
-      instantiate(Subclass(classOf[ConfigurableWithoutAppropriateConstructor], classOf[Superclass]))
+      instantiate[Superclass](classOf[ConfigurableWithoutAppropriateConstructor])
   }
 
   "None configuration instantiation" should "return a correct object with parameterless constructor" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithParameterlessConstructor], classOf[Superclass]), None)
+    val instance = instantiate[Superclass](classOf[ConfigurableWithParameterlessConstructor], None)
     instance shouldBe a[ConfigurableWithParameterlessConstructor]
     instance.isParameterless shouldBe true
     instance.optCfg shouldBe None
   }
 
   it should "return a correct object with configuration constructor" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithCfgConstructor], classOf[Superclass]), None)
+    val instance = instantiate[Superclass](classOf[ConfigurableWithCfgConstructor], None)
     instance shouldBe a[ConfigurableWithCfgConstructor]
     instance.isParameterless shouldBe false
     instance.optCfg shouldBe None
   }
 
   it should "return a correct object with both constructors" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithBothConstructors], classOf[Superclass]), None)
+    val instance = instantiate[Superclass](classOf[ConfigurableWithBothConstructors], None)
     instance shouldBe a[ConfigurableWithBothConstructors]
     instance.isParameterless shouldBe true
     instance.optCfg shouldBe None
@@ -57,23 +57,23 @@ class InstantiationTest extends AnyFlatSpec with Matchers:
 
   it should "fail without an appropriate constructor" in {
     a[NoSuchMethodException] should be thrownBy
-      instantiate(Subclass(classOf[ConfigurableWithoutAppropriateConstructor], classOf[Superclass]), None)
+      instantiate[Superclass](classOf[ConfigurableWithoutAppropriateConstructor], None)
   }
 
   "Some configuration instantiation" should "fail without configuration constructor" in {
     a[NoSuchMethodException] should be thrownBy
-      instantiate(Subclass(classOf[ConfigurableWithParameterlessConstructor], classOf[Superclass]), Some(config))
+      instantiate[Superclass](classOf[ConfigurableWithParameterlessConstructor], Some(config))
   }
 
   it should "return a correct object with configuration constructor" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithCfgConstructor], classOf[Superclass]), Some(config))
+    val instance = instantiate[Superclass](classOf[ConfigurableWithCfgConstructor], Some(config))
     instance shouldBe a[ConfigurableWithCfgConstructor]
     instance.isParameterless shouldBe false
     instance.optCfg shouldBe Some(config)
   }
 
   it should "return a correct object with both constructors" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithBothConstructors], classOf[Superclass]), Some(config))
+    val instance = instantiate[Superclass](classOf[ConfigurableWithBothConstructors], Some(config))
     instance shouldBe a[ConfigurableWithBothConstructors]
     instance.isParameterless shouldBe false
     instance.optCfg shouldBe Some(config)
@@ -81,23 +81,23 @@ class InstantiationTest extends AnyFlatSpec with Matchers:
 
   it should "fail without an appropriate constructor" in {
     a[NoSuchMethodException] should be thrownBy
-      instantiate(Subclass(classOf[ConfigurableWithoutAppropriateConstructor], classOf[Superclass]), Some(config))
+      instantiate[Superclass](classOf[ConfigurableWithoutAppropriateConstructor], Some(config))
   }
 
   "Configuration instantiation" should "fail without configuration constructor" in {
     a[NoSuchMethodException] should be thrownBy
-      instantiate(Subclass(classOf[ConfigurableWithParameterlessConstructor], classOf[Superclass]), config)
+      instantiate[Superclass](classOf[ConfigurableWithParameterlessConstructor], config)
   }
 
   it should "return a correct object with configuration constructor" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithCfgConstructor], classOf[Superclass]), config)
+    val instance = instantiate[Superclass](classOf[ConfigurableWithCfgConstructor], config)
     instance shouldBe a[ConfigurableWithCfgConstructor]
     instance.isParameterless shouldBe false
     instance.optCfg shouldBe Some(config)
   }
 
   it should "return a correct object with both constructors" in {
-    val instance = instantiate(Subclass(classOf[ConfigurableWithBothConstructors], classOf[Superclass]), config)
+    val instance = instantiate[Superclass](classOf[ConfigurableWithBothConstructors], config)
     instance shouldBe a[ConfigurableWithBothConstructors]
     instance.isParameterless shouldBe false
     instance.optCfg shouldBe Some(config)
@@ -105,32 +105,5 @@ class InstantiationTest extends AnyFlatSpec with Matchers:
 
   it should "fail without an appropriate constructor" in {
     a[NoSuchMethodException] should be thrownBy
-      instantiate(Subclass(classOf[ConfigurableWithoutAppropriateConstructor], classOf[Superclass]), config)
+      instantiate[Superclass](classOf[ConfigurableWithoutAppropriateConstructor], config)
   }
-
-trait Superclass:
-  def isParameterless: Boolean
-
-  def optCfg: Option[CfgNode]
-
-class ConfigurableWithParameterlessConstructor() extends Superclass:
-  override def isParameterless: Boolean = true
-
-  override def optCfg: Option[CfgNode] = None
-
-class ConfigurableWithCfgConstructor(cfg: CfgNode) extends Superclass:
-  override def isParameterless: Boolean = false
-
-  override val optCfg: Option[CfgNode] = if (cfg == CfgNode.Empty) None else Some(cfg)
-
-class ConfigurableWithBothConstructors(val cfg: CfgNode, val isParameterless: Boolean) extends Superclass:
-  def this() = this(CfgNode.Empty, true)
-
-  def this(cfg: CfgNode) = this(cfg, false)
-
-  override val optCfg: Option[CfgNode] = if (cfg == CfgNode.Empty) None else Some(cfg)
-
-class ConfigurableWithoutAppropriateConstructor(value: Int) extends Superclass:
-  override def isParameterless: Boolean = false
-
-  override def optCfg: Option[CfgNode] = None
