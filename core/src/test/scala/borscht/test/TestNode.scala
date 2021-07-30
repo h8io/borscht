@@ -1,6 +1,6 @@
 package borscht.test
 
-import borscht._
+import borscht.*
 
 private[test] trait TestNode(value: Any):
   self: Node =>

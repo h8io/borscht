@@ -1,6 +1,6 @@
 package borscht.parsers
 
-import borscht.test._
+import borscht.test.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

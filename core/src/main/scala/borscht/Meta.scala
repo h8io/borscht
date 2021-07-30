@@ -2,7 +2,7 @@ package borscht
 
 import borscht.parsers.given
 import borscht.reflect.ComponentRef
-import borscht.typed._
+import borscht.typed.*
 
 import scala.annotation.targetName
 

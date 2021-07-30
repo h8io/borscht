@@ -1,7 +1,7 @@
 package borscht.reflect
 
 import borscht.CfgNode
-import borscht.test._
+import borscht.test.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

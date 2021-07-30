@@ -1,6 +1,6 @@
 package borscht.parsers
 
-import borscht._
+import borscht.*
 
 given NodeParserScalarNode: NodeParser[ScalarNode] = { case node: ScalarNode => node }
 

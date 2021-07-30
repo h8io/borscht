@@ -1,6 +1,6 @@
 package borscht.impl.system
 
-import borscht._
+import borscht.*
 
 import scala.annotation.tailrec
 

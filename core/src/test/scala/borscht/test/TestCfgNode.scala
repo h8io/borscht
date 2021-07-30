@@ -1,6 +1,6 @@
 package borscht.test
 
-import borscht._
+import borscht.*
 
 private[test] class TestCfgNode(value: Map[String, Node],
                                 val meta: Meta = Meta.Empty) extends CfgNode with TestNode(value):

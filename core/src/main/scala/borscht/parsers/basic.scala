@@ -3,12 +3,12 @@ package borscht.parsers
 import borscht.{Node, RenderableString}
 
 import java.lang.{Boolean => jBoolean}
-import borscht._
+import borscht.*
 
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.compiletime.summonFrom
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 given NodeParserString: NodeParser[String] =
   NodeParserPlainString orElse { case node =>

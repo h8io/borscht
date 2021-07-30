@@ -1,6 +1,6 @@
 package borscht.test
 
-import borscht.{CfgNode, _}
+import borscht.*
 
 def cfg(entries: (String, Any)*): CfgNode = TestCfgNode((entries map { (key, value) => value match
   case node: Node => key -> node

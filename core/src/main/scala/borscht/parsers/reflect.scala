@@ -1,7 +1,7 @@
 package borscht.parsers
 
-import borscht._
-import borscht.reflect._
+import borscht.*
+import borscht.reflect.*
 
 import scala.reflect.ClassTag
 

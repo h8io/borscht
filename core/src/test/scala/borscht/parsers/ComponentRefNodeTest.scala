@@ -1,8 +1,8 @@
 package borscht.parsers
 
 import borscht.CfgNodeParserException
-import borscht.reflect._
-import borscht.test._
+import borscht.reflect.*
+import borscht.test.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

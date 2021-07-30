@@ -1,6 +1,6 @@
 package borscht.typed
 
-import borscht._
+import borscht.*
 
 object BaseValueType extends ValueType:
   override def isDefinedAt(node: Node): Boolean = true

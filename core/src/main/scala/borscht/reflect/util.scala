@@ -1,6 +1,6 @@
 package borscht.reflect
 
-import borscht._
+import borscht.*
 import borscht.parsers.given
 
 import java.lang.reflect.Constructor

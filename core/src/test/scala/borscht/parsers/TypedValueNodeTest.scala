@@ -1,8 +1,8 @@
 package borscht.parsers
 
-import borscht._
-import borscht.test._
-import borscht.typed._
+import borscht.*
+import borscht.test.*
+import borscht.typed.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
