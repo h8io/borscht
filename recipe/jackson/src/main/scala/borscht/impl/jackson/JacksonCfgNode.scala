@@ -3,7 +3,7 @@ package borscht.impl.jackson
 import borscht.{CfgNode, Meta, Node}
 import com.fasterxml.jackson.databind.node.{MissingNode, ObjectNode}
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 private[jackson] final class JacksonCfgNode(node: ObjectNode,
                                             src: JacksonSource,

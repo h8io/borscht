@@ -2,7 +2,7 @@ package borscht.impl.jackson
 
 import borscht.{CfgNodeParserException, Meta, ScalarNode}
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node._
+import com.fasterxml.jackson.databind.node.*
 
 private[jackson] object JacksonScalarNode:
   def apply(node: ValueNode, src: JacksonSource, meta: Meta): ScalarNode =

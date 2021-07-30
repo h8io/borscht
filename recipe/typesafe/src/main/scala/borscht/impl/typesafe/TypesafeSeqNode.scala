@@ -3,7 +3,7 @@ package borscht.impl.typesafe
 import borscht.{Meta, Node, SeqNode}
 import com.typesafe.config.ConfigList
 
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 private[typesafe] final class TypesafeSeqNode(list: ConfigList, val meta: Meta) extends SeqNode with TypesafeNode(list):
   override def withMeta(meta: Meta): SeqNode = TypesafeSeqNode(list, meta)

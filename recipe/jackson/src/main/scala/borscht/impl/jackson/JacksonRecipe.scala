@@ -1,7 +1,7 @@
 package borscht.impl.jackson
 
+import borscht.*
 import borscht.impl.system.SystemCfgNode
-import borscht._
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 

@@ -4,7 +4,7 @@ import borscht.{CfgNode, Meta, Node}
 import com.typesafe.config.{Config, ConfigObject, ConfigValue}
 
 import scala.annotation.tailrec
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
 private[typesafe] final class TypesafeCfgNode(uc: ConfigObject, val meta: Meta) extends CfgNode with TypesafeNode(uc):
   def this(cfg: Config) = this(cfg.root, Meta.Empty)

@@ -2,7 +2,7 @@ package borscht.impl.jackson
 
 import borscht.{CfgNodeParserException, Meta, Node, Position}
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node._
+import com.fasterxml.jackson.databind.node.*
 
 private[jackson] trait JacksonNode(node: JsonNode, src: JacksonSource):
   self: Node =>
