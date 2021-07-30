@@ -11,3 +11,5 @@ def seq(entries: Any*): SeqNode = TestSeqNode((entries map {
   case node: Node => node
   case value: Any => TestScalarNode(value)
 }).toList)
+
+def scalar(value: Any): ScalarNode = TestScalarNode(value)

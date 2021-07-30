@@ -13,5 +13,4 @@ given NodeParserSeqNode: NodeParser[SeqNode] =
       override def position: Position = node.position
     SingletonSeqNode()
 
-
 given NodeParserCfgNode: NodeParser[CfgNode] = { case node: CfgNode => node }

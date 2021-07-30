@@ -4,7 +4,9 @@ import borscht.{CfgNodeParserException, Meta, Node, Position}
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node._
 
-private[jackson] trait JacksonNode(node: JsonNode, src: JacksonSource) extends Node:
+private[jackson] trait JacksonNode(node: JsonNode, src: JacksonSource):
+  self: Node =>
+  
   override def position: Position = src
   
   override def toString: String = s"${getClass.getName}(${node.toString})"

@@ -7,24 +7,26 @@ trait Superclass:
 
   def optCfg: Option[CfgNode]
 
-class ConfigurableWithParameterlessConstructor() extends Superclass:
+class ComponentWithParameterlessConstructor() extends Superclass:
   override def isParameterless: Boolean = true
 
   override def optCfg: Option[CfgNode] = None
 
-class ConfigurableWithCfgConstructor(cfg: CfgNode) extends Superclass:
+class ComponentWithCfgConstructor(cfg: CfgNode) extends Superclass:
   override def isParameterless: Boolean = false
 
   override val optCfg: Option[CfgNode] = if (cfg == CfgNode.Empty) None else Some(cfg)
 
-class ConfigurableWithBothConstructors(val cfg: CfgNode, val isParameterless: Boolean) extends Superclass:
+class ComponentWithBothConstructors(val cfg: CfgNode, val isParameterless: Boolean) extends Superclass:
   def this() = this(CfgNode.Empty, true)
 
   def this(cfg: CfgNode) = this(cfg, false)
 
   override val optCfg: Option[CfgNode] = if (cfg == CfgNode.Empty) None else Some(cfg)
 
-class ConfigurableWithoutAppropriateConstructor(value: Int) extends Superclass:
+case class ComponentWithoutAppropriateConstructor(value: Integer) extends Superclass:
   override def isParameterless: Boolean = false
 
   override def optCfg: Option[CfgNode] = None
+
+case class ComponentWithMultipleParameters(cfg: CfgNode, str: String, value: Integer, is: java.lang.Boolean)
