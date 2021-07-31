@@ -1,6 +1,6 @@
 package borscht.typed.types
 
-import borscht.typed.{AbstractValueType, Position, ValueParser}
+import borscht.typed.{AbstractValueType, ValueParser}
 
 class TestValueType(name: String) extends AbstractValueType:
   override protected def prepare(parameters: List[ValueParser]): List[ValueParser] = parameters

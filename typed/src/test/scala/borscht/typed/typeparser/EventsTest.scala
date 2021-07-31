@@ -1,14 +1,14 @@
-package borscht.typed.events
+package borscht.typed.typeparser
 
 import borscht.typed.*
-import borscht.typed.events.Event.*
-import borscht.typed.test.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 import scala.language.implicitConversions
 
 class EventsTest extends AnyFlatSpec with Matchers :
+  import Event.*
+
   "Events" should "parse an empty string" in {
     Events("".toIndexedSeq).toList should contain theSameElementsAs List(End(0))
   }

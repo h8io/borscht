@@ -1,4 +1,4 @@
-package borscht.typed.events
+package borscht.typed.typeparser
 
 import borscht.typed.ValueType
 import borscht.typed.types.{TestValueParser, TestValueType}
@@ -8,21 +8,18 @@ import org.scalatest.matchers.should.Matchers
 import scala.annotation.tailrec
 
 class RootParserTest extends AnyFlatSpec with Matchers:
-  private val types: Map[String, ValueType] =
-    Iterator("abc", "def", "ghi", "jkl", "mno").map(name => name -> TestValueType(name)).toMap
+  private val types = Iterator("abc", "def", "ghi", "jkl", "mno").map(name => name -> TestValueType(name)).toMap
 
   "Root type parser" should "parse a parameterless definition" in {
     val events = Events("abc")
-    val parser = RootParser(types)
-    val afterParser = events.apply(parser).get
+    val afterParser = events.apply(RootParser(types)).get
     afterParser shouldBe an[AfterParser]
     afterParser.result shouldEqual Some(TestValueParser("abc", Nil))
   }
 
   it should "parse definition with parameters" in {
     val events = Events("abc[abc[], def[abc, ghi[jkl]], mno]")
-    val parser = RootParser(types)
-    val afterParser = events.apply(parser).get
+    val afterParser = events.apply(RootParser(types)).get
     afterParser shouldBe an[AfterParser]
     afterParser.result shouldEqual
       Some(TestValueParser("abc", List(
@@ -31,4 +28,9 @@ class RootParserTest extends AnyFlatSpec with Matchers:
           TestValueParser("abc", Nil),
           TestValueParser("ghi", List(TestValueParser("jkl", Nil))))),
         TestValueParser("mno", Nil))))
+  }
+
+  it should "return None on a missed type" in {
+    val events = Events("abc[abc[], def[abc, ghi[jkl]], miss]")
+    events.apply(RootParser(types)) shouldBe None
   }

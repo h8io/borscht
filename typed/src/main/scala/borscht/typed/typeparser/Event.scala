@@ -1,8 +1,6 @@
-package borscht.typed.events
+package borscht.typed.typeparser
 
-import borscht.typed.Position
-
-private[typed] enum Event(val position: Position):
+private[typeparser] enum Event(val position: Position):
   case TypeName(value: String, override val position: Position) extends Event(position)
   case TypeListStart(override val position: Position) extends Event(position)
   case TypeListEnd(override val position: Position) extends Event(position)
@@ -14,4 +12,3 @@ private[typed] enum Event(val position: Position):
   case ValueParser(parser: borscht.typed.ValueParser, override val position: Position) extends Event(position)
   case TypeParameters(parameters: List[borscht.typed.ValueParser], override val position: Position)
     extends Event(position)
-  

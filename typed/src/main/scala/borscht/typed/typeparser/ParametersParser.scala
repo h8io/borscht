@@ -1,10 +1,10 @@
-package borscht.typed.events
+package borscht.typed.typeparser
 
 import borscht.typed.{ValueParser, ValueType}
 
-private[events] final class ParametersParser(parent: Parser,
-                                             `type`: ValueType,
-                                             types: Map[String, ValueType]) extends Parser:
+private[typeparser] final class ParametersParser(parent: Parser,
+                                                 `type`: ValueType,
+                                                 types: Map[String, ValueType]) extends Parser:
   override protected def parse: PartialFunction[Event, Option[Parser]] = {
     case Event.TypeListStart(_) => Some(ValueTypeListParser(this, types))
     case event: (Event.TypeListEnd | Event.TypeListSeparator | Event.End) =>

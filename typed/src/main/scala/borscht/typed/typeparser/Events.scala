@@ -1,11 +1,8 @@
-package borscht.typed.events
-
-import borscht.typed.Position
+package borscht.typed.typeparser
 
 import scala.annotation.tailrec
 
-private[typed] final class Events(chars: IndexedSeq[Char]) extends (Parser => Option[Parser]) with Iterator[Event]:
-
+private[typeparser] final class Events(chars: IndexedSeq[Char]) extends (Parser => Option[Parser]) with Iterator[Event]:
   private var index = 0
   private var _hasNext = true
 

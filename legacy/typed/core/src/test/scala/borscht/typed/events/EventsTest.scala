@@ -9,8 +9,6 @@ import scala.language.implicitConversions
 
 class EventsTest extends AnyFlatSpec with Matchers :
 
-  import borscht.typed.events.Event._
-
   "Events" should "parse an empty string" in {
     Events("".toIndexedSeq).toList should contain theSameElementsAs List(End(0))
   }
