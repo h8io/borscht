@@ -81,16 +81,20 @@ lazy val `recipe-jackson-yaml` = project
     libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`recipe-jackson`)
 
-lazy val `typed-core` = project
-  .in(file("typed/core"))
+lazy val `legacy-typed-core` = project
+  .in(file("legacy/typed/core"))
+  .dependsOn(core, `recipe-typesafe` % "test -> compile")
+
+lazy val typed = project
+  .in(file("typed"))
   .settings(
-    name := "borscht-typed-core")
-  .dependsOn(`core`, `recipe-typesafe` % "test -> compile")
+    name := "borscht-typed")
+  .dependsOn(core, `recipe-typesafe` % "test -> compile")
 
 lazy val `template-core` = project
   .in(file("template/core"))
   .settings(name := "borscht-template-core")
-  .dependsOn(`core`, `typed-core`)
+  .dependsOn(core, typed)
 
 lazy val `template-st4` = project
   .in(file("template/st4"))
@@ -130,5 +134,5 @@ lazy val root = project
   .aggregate(
     core, util, examples,
     `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`,
-    `typed-core`,
+    typed,
     `template-core`, `template-st4`, `template-apache-commons-text`)

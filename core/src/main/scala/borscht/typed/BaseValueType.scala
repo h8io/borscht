@@ -2,7 +2,7 @@ package borscht.typed
 
 import borscht.*
 
-object BaseValueType extends ValueType:
+object BaseValueType extends ValueParser:
   override def isDefinedAt(node: Node): Boolean = true
 
   override def apply(node: Node): Any = node match

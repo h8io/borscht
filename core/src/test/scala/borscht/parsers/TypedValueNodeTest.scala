@@ -14,7 +14,7 @@ class TypedValueNodeTest extends AnyFlatSpec with Matchers:
     "seq" -> seq(1, 2, 3),
     "cfg" -> cfg("key" -> "value"))
 
-  private object TestValueType extends ValueType:
+  private object TestValueParser extends ValueParser:
     override def isDefinedAt(node: Node): Boolean = node match
       case node: ScalarNode => node.value.isInstanceOf[String]
       case _ => false
@@ -23,8 +23,8 @@ class TypedValueNodeTest extends AnyFlatSpec with Matchers:
       case scalar: ScalarNode if scalar.value.isInstanceOf[String] => scalar.value.toString + "!"
       case _ => throw MatchError(node)
 
-  private val testMeta = new Meta(None, Some(NodeParserScalarNode andThen TestValueType andThen { value =>
-    TypedValue(TestValueType, value)
+  private val testMeta = new Meta(None, Some(NodeParserScalarNode andThen TestValueParser andThen { value =>
+    TypedValue(TestValueParser, value)
   }))
 
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
@@ -35,7 +35,7 @@ class TypedValueNodeTest extends AnyFlatSpec with Matchers:
 
   it should "return a correct value for the test value type parser" in {
     val cfgWithMeta = config withMeta testMeta
-    cfgWithMeta[TypedValue]("str") shouldEqual TypedValue(TestValueType, "The Answer!")
+    cfgWithMeta[TypedValue]("str") shouldEqual TypedValue(TestValueParser, "The Answer!")
     cfgWithMeta[TypedValue]("num") shouldEqual TypedValue(BaseValueType, 42)
     cfgWithMeta[TypedValue]("bool") shouldEqual TypedValue(BaseValueType, true)
   }

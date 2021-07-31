@@ -2,6 +2,6 @@ package borscht.typed
 
 import borscht.Node
 
-type ValueType = PartialFunction[Node, Any]
+type ValueParser = PartialFunction[Node, Any]
 
-case class TypedValue(`type`: ValueType, value: Any)
+case class TypedValue(`type`: ValueParser, value: Any)
