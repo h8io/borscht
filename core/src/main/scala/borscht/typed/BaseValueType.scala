@@ -10,4 +10,4 @@ object BaseValueType extends ValueParser:
     case seq: SeqNode => seq
     case scalar: ScalarNode => scalar.value
 
-val BaseNodeParserTypedValue: NodeParser[TypedValue] = BaseValueType andThen (TypedValue(BaseValueType, _))
+val BaseNodeParserValueRef: NodeParser[ValueRef] = BaseValueType andThen (ValueRef(_))

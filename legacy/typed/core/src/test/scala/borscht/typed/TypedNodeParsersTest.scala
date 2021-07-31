@@ -12,7 +12,7 @@ import java.time.temporal.TemporalAccessor
 
 class TypedNodeParsersTest extends AnyFlatSpec with Matchers :
   given ValueTypeParser = DefaultValueTypeParser
-  given NodeParser[TypedValue] = createNodeParserTypedValue
+  given NodeParser[ValueRef] = createNodeParserTypedValue
 
   "Typed value node parser" should "return correct values" in {
     System.setProperty("prayer", "Cthulhu fhtagn")
@@ -30,7 +30,7 @@ class TypedNodeParsersTest extends AnyFlatSpec with Matchers :
          |string-property2: "prop[str]:city"
          |bigint-property: "prop[bigint]:factorial"
          |secret-property: "prop[prop[long]]:secret-ref"
-         |"""[Map[String, TypedValue]]() map { (key, value) => key -> value.value } shouldEqual Map(
+         |"""[Map[String, ValueRef]]() map { (key, value) => key -> value.value } shouldEqual Map(
       "untyped-value" -> "Plain string",
       "underline" -> "String with underline prefix",
       "str" -> """String with "str" prefix""",
@@ -48,7 +48,7 @@ class TypedNodeParsersTest extends AnyFlatSpec with Matchers :
          |date: "date:2021-05-03"
          |time: "time:12:19:11"
          |datetime: "datetime:2021-05-03T12:20:27+09:00"
-         |"""[Map[String, TypedValue]]() map { (key, value) => key -> value.value }
+         |"""[Map[String, ValueRef]]() map { (key, value) => key -> value.value }
 
     LocalDate.from(config("date").asInstanceOf[TemporalAccessor]) shouldEqual LocalDate.parse("2021-05-03")
     LocalTime.from(config("time").asInstanceOf[TemporalAccessor]) shouldEqual LocalTime.parse("12:19:11")

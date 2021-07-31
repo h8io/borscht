@@ -8,7 +8,7 @@ lazy val DefaultValueTypeParser = ValueTypeParser(DefaultTypes)
 def createNodeParserValueType(using parser: ValueTypeParser): NodeParser[ValueParser] =
   NodeParserPlainString andThen parser
 
-def createNodeParserTypedValue(using parser: ValueTypeParser): NodeParser[TypedValue] =
+def createNodeParserTypedValue(using parser: ValueTypeParser): NodeParser[ValueRef] =
   NodeParserPlainString andThen { value =>
     value.split(":", 2) match
       case Array(value) => TypedValue(ValueTypeString, value)

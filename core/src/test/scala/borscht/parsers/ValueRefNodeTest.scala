@@ -6,7 +6,7 @@ import borscht.typed.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class TypedValueNodeTest extends AnyFlatSpec with Matchers:
+class ValueRefNodeTest extends AnyFlatSpec with Matchers:
   private val config = cfg(
     "str" -> "The Answer",
     "num" -> 42,
@@ -23,41 +23,37 @@ class TypedValueNodeTest extends AnyFlatSpec with Matchers:
       case scalar: ScalarNode if scalar.value.isInstanceOf[String] => scalar.value.toString + "!"
       case _ => throw MatchError(node)
 
-  private val testMeta = new Meta(None, Some(NodeParserScalarNode andThen TestValueParser andThen { value =>
-    TypedValue(TestValueParser, value)
-  }))
+  private val testMeta = new Meta(None, Some(NodeParserScalarNode andThen TestValueParser andThen (ValueRef(_))))
 
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
-    config[TypedValue]("str") shouldEqual TypedValue(BaseValueType, "The Answer")
-    config[TypedValue]("num") shouldEqual TypedValue(BaseValueType, 42)
-    config[TypedValue]("bool") shouldEqual TypedValue(BaseValueType, true)
+    config[ValueRef]("str") shouldEqual ValueRef("The Answer")
+    config[ValueRef]("num") shouldEqual ValueRef(42)
+    config[ValueRef]("bool") shouldEqual ValueRef(true)
   }
 
   it should "return a correct value for the test value type parser" in {
     val cfgWithMeta = config withMeta testMeta
-    cfgWithMeta[TypedValue]("str") shouldEqual TypedValue(TestValueParser, "The Answer!")
-    cfgWithMeta[TypedValue]("num") shouldEqual TypedValue(BaseValueType, 42)
-    cfgWithMeta[TypedValue]("bool") shouldEqual TypedValue(BaseValueType, true)
+    cfgWithMeta[ValueRef]("str") shouldEqual ValueRef("The Answer!")
+    cfgWithMeta[ValueRef]("num") shouldEqual ValueRef(42)
+    cfgWithMeta[ValueRef]("bool") shouldEqual ValueRef(true)
   }
 
   "Sequence typed value node parser" should "return a correct value for the base value type parser" in {
-    val tv = config[TypedValue]("seq")
-    tv.`type` shouldBe BaseValueType
+    val tv = config[ValueRef]("seq")
     tv.value match
       case value: SeqNode => (value.iterator map {
         case node: ScalarNode => node.value
         case node => node
       }).toList should contain theSameElementsInOrderAs List(1, 2, 3)
-      case _ => fail(s"Invalid node type: ${tv.`type`} (seq expected)")
+      case value: Node => fail(s"Invalid node type: ${value.`type`} (seq expected)")
   }
 
   "Configuration typed value node parser" should "return a correct value for the base value type parser" in {
-    val tv = config[TypedValue]("cfg")
-    tv.`type` shouldBe BaseValueType
+    val tv = config[ValueRef]("cfg")
     tv.value match
       case value: CfgNode => (value.iterator map {
         case (key: String, node: ScalarNode) => key -> node.value
         case entry => entry
       }).toMap shouldEqual Map("key" -> "value")
-      case _ => fail(s"Invalid node type: ${tv.`type`} (cfg expected)")
+      case value: Node => fail(s"Invalid node type: ${value.`type`} (cfg expected)")
   }
