@@ -1,7 +1,11 @@
 package borscht.typed.events
 
-private[typed] trait Parser:
-  def apply(event: Event): Parser
+import borscht.typed.ValueParser
 
-private[events] trait UpdatableParser[T] extends Parser:
-  def update(value: T): Unit
+private[typed] trait Parser extends (Event => Option[Parser]):
+  protected def parse: PartialFunction[Event, Option[Parser]]
+
+  final def apply(event: Event): Option[Parser] =
+    (parse orElse { case unexpected => throw UnexpectedEventException(unexpected) })(event)
+
+  def result: Option[ValueParser] = None

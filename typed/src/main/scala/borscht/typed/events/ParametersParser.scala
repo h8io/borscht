@@ -2,43 +2,32 @@ package borscht.typed.events
 
 import borscht.typed.{ValueParser, ValueType}
 
-private[events] final class ParametersParser(parent: UpdatableParser[ValueParser],
+private[events] final class ParametersParser(parent: Parser,
                                              `type`: ValueType,
-                                             types: PartialFunction[String, ValueType])
-  extends UpdatableParser[List[ValueParser]] :
+                                             types: Map[String, ValueType]) extends Parser:
+  override protected def parse: PartialFunction[Event, Option[Parser]] = {
+    case Event.TypeListStart(_) => Some(ValueTypeListParser(this, types))
+    case event: (Event.TypeListEnd | Event.TypeListSeparator | Event.End) =>
+      parent(Event.ValueParser(`type`(Nil), event.position)) flatMap (_(event))
+    case Event.TypeParameters(parameters, position) => parent(Event.ValueParser(`type`(parameters), position))
+  }
 
-  private var result: List[ValueParser] = Nil
-
-  override def apply(event: Event): Parser = event match
-    case Event.TypeListStart(_) => ValueTypeListParser(this, types)
-    case event: (Event.None | Event.TypeListSeparator | Event.TypeListEnd | Event.End) =>
-      parent.update(`type`(result))
-      parent(event)
-    case event => throw UnexpectedEvent(event)
-
-  override def update(value: List[ValueParser]): Unit = result = value
-
-private class ValueTypeListParser(parent: UpdatableParser[List[ValueParser]],
-                                  types: PartialFunction[String, ValueType]) extends Parser:
-  override def apply(event: Event): Parser = event match
-    case Event.TypeListEnd(_) =>
-      parent.update(Nil)
-      parent(Event.None(event))
+private class ValueTypeListParser(parent: ParametersParser, types: Map[String, ValueType]) extends Parser:
+  override protected def parse: PartialFunction[Event, Option[Parser]] = {
+    case event: Event.TypeListEnd => parent(Event.TypeParameters(Nil, event.position))
     case event: Event.TypeName =>
-      val tailParser = new ValueTypeListTailParser(parent, types)
+      val tailParser = ValueTypeListTailParser(parent, types)
       TypeParser(tailParser, types)(event)
-    case unexpected => throw UnexpectedEvent(unexpected)
+  }
 
-private class ValueTypeListTailParser(parent: UpdatableParser[List[ValueParser]],
-                                      types: PartialFunction[String, ValueType]) extends UpdatableParser[ValueParser]:
+private class ValueTypeListTailParser(parent: ParametersParser, types: Map[String, ValueType]) extends Parser:
   private val builder = List.newBuilder[ValueParser]
 
-  override def apply(event: Event): Parser = event match
-    case Event.TypeListEnd(_) =>
-      parent.update(builder.result)
-      parent(Event.None(event))
-    case Event.TypeListSeparator(_) => TypeParser(this, types)
-    case _: Event.None => this
-    case event => throw UnexpectedEvent(event)
-
-  override def update(value: ValueParser): Unit = builder += value
+  override def parse: PartialFunction[Event, Option[Parser]] = {
+    case Event.TypeListEnd(position) => parent(Event.TypeParameters(builder.result, position))
+    case Event.ValueParser(parser, _) =>
+      builder += parser
+      Some(this)
+    case Event.TypeListSeparator(_) => Some(TypeParser(this, types))
+    case _: Event.None => Some(this)
+  }

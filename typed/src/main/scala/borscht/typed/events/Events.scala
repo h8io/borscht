@@ -4,7 +4,8 @@ import borscht.typed.Position
 
 import scala.annotation.tailrec
 
-private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Event] :
+private[typed] final class Events(chars: IndexedSeq[Char]) extends (Parser => Option[Parser]) with Iterator[Event]:
+
   private var index = 0
   private var _hasNext = true
 
@@ -39,3 +40,13 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends Iterator[Even
         typeName(builder += char, i)
       else Event.TypeName(builder.result, Position(i))
     else Event.TypeName(builder.result, Position(i))
+
+  override def apply(parser: Parser): Option[Parser] = apply(Some(parser))
+
+  @tailrec
+  private def apply(parser: Option[Parser]): Option[Parser] =
+    if (hasNext)
+      parser match
+        case None => None
+        case Some(parser) => apply(parser(next))
+    else parser

@@ -10,3 +10,8 @@ private[typed] enum Event(val position: Position):
   case End(override val position: Position) extends Event(position)
   case InvalidCharacter(char: Char, override val position: Position) extends Event(position)
   case None(val previous: Event) extends Event(previous.position)
+
+  case ValueParser(parser: borscht.typed.ValueParser, override val position: Position) extends Event(position)
+  case TypeParameters(parameters: List[borscht.typed.ValueParser], override val position: Position)
+    extends Event(position)
+  
