@@ -1,4 +1,4 @@
-package borscht.typed.typeparser
+package borscht.typed.valueparser
 
 import borscht.typed.*
 import org.scalatest.flatspec.AnyFlatSpec

@@ -1,8 +1,8 @@
-package borscht.typed.typeparser
+package borscht.typed.valueparser
 
 import scala.annotation.tailrec
 
-private[typeparser] final class Events(chars: IndexedSeq[Char]) extends (Parser => Option[Parser]) with Iterator[Event]:
+private[valueparser] final class Events(chars: IndexedSeq[Char]) extends (Parser => Option[Parser]) with Iterator[Event]:
   private var index = 0
   private var _hasNext = true
 

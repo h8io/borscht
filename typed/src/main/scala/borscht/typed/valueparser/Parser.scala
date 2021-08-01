@@ -1,8 +1,8 @@
-package borscht.typed.typeparser
+package borscht.typed.valueparser
 
 import borscht.typed.ValueParser
 
-private[typeparser] trait Parser extends (Event => Option[Parser]):
+private[valueparser] trait Parser extends (Event => Option[Parser]):
   protected def parse: PartialFunction[Event, Option[Parser]]
 
   final def apply(event: Event): Option[Parser] =
