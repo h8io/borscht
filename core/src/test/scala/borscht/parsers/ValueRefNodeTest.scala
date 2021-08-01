@@ -14,16 +14,16 @@ class ValueRefNodeTest extends AnyFlatSpec with Matchers:
     "seq" -> seq(1, 2, 3),
     "cfg" -> cfg("key" -> "value"))
 
-  private object TestValueParser extends ValueParser:
+  private object TestNodeParserValueRef extends NodeParser[ValueRef]:
     override def isDefinedAt(node: Node): Boolean = node match
-      case node: ScalarNode => node.value.isInstanceOf[String]
+      case scalar: ScalarNode => scalar.value.isInstanceOf[String]
       case _ => false
 
-    override def apply(node: Node): Any = node match
-      case scalar: ScalarNode if scalar.value.isInstanceOf[String] => scalar.value.toString + "!"
-      case _ => throw MatchError(node)
+    override def apply(node: Node): ValueRef = (node: @unchecked) match
+      case scalar: ScalarNode  => (scalar.value: @unchecked) match
+        case value: String => ValueRef(value + "!")
 
-  private val testMeta = new Meta(None, Some(NodeParserScalarNode andThen TestValueParser andThen (ValueRef(_))))
+  private val testMeta = new Meta(None, Some(TestNodeParserValueRef))
 
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
     config[ValueRef]("str") shouldEqual ValueRef("The Answer")
