@@ -1,11 +1,9 @@
 package borscht.typed
 
-import borscht.*
+import borscht.{CfgNode, Node, ScalarNode, SeqNode}
 
-object BaseValueType extends ValueParser:
+object BaseValueParser extends ValueParser:
   override def apply(node: Node): Any = node match
     case cfg: CfgNode => cfg
     case seq: SeqNode => seq
     case scalar: ScalarNode => scalar.value
-
-val BaseNodeParserValueRef: NodeParser[ValueRef] = PartialFunction.fromFunction(BaseValueType andThen (ValueRef(_)))
