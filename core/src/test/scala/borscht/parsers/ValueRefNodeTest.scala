@@ -23,7 +23,7 @@ class ValueRefNodeTest extends AnyFlatSpec with Matchers:
       case scalar: ScalarNode  => (scalar.value: @unchecked) match
         case value: String => ValueRef(value + "!")
 
-  private val testMeta = new Meta(None, Some(TestNodeParserValueRef))
+  private val testMeta = new Meta(None, None, Some(TestNodeParserValueRef))
 
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
     config[ValueRef]("str") shouldEqual ValueRef("The Answer")
