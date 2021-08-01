@@ -4,7 +4,7 @@ import borscht.*
 import borscht.parsers.given
 import borscht.reflect.ComponentRef
 
-class StringNodeParserValueParser(val types: Map[String, ValueType]) extends NodeParser[ValueParser]:
+final class DefaultNodeParserValueParser(val types: Map[String, ValueType]) extends NodeParser[ValueParser]:
   def this(types: CfgNode) = this(types[Map[String, ComponentRef[ValueType]]]() map (_ -> _.get))
 
   override def isDefinedAt(node: Node): Boolean = node match
@@ -18,5 +18,5 @@ class StringNodeParserValueParser(val types: Map[String, ValueType]) extends Nod
       case value: String => valueparser.parse(value, types) getOrElse { throw MatchError(value) }
 
   override def orElse[N <: Node, V >: ValueParser](that: PartialFunction[N, V]): PartialFunction[N, V] = that match
-    case that: StringNodeParserValueParser => StringNodeParserValueParser(that.types ++ types)
+    case that: DefaultNodeParserValueParser => DefaultNodeParserValueParser(that.types ++ types)
     case _ => super.orElse(that)
