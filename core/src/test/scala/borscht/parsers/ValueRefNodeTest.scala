@@ -20,7 +20,7 @@ class ValueRefNodeTest extends AnyFlatSpec with Matchers:
       case _ => false
 
     override def apply(node: Node): ValueRef = (node: @unchecked) match
-      case scalar: ScalarNode  => (scalar.value: @unchecked) match
+      case scalar: ScalarNode => (scalar.value: @unchecked) match
         case value: String => ValueRef(value + "!")
 
   private val testMeta = new Meta(None, None, Some(TestNodeParserValueRef))
