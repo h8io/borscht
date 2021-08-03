@@ -1,7 +1,7 @@
 package borscht.parsers
 
-import borscht.{CfgNode, ScalarNode}
 import borscht.test.cfg
+import borscht.{CfgNode, ScalarNode}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

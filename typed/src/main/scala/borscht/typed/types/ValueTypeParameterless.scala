@@ -2,6 +2,6 @@ package borscht.typed.types
 
 import borscht.typed.{AbstractValueType, ValueParser}
 
-trait ValueTypeParameterless extends AbstractValueType:
-  override protected def prepare(parsers: List[ValueParser]): List[ValueParser] =
-    if (parsers.isEmpty) Nil else throw WrongParameterNumber(parsers, "nothing")
+trait ValueTypeParameterless extends AbstractValueType[Unit]:
+  override protected def prepare(parameters: List[ValueParser]): Either[String, Unit] =
+    if (parameters.isEmpty) Right(()) else Left("no parameters expected")

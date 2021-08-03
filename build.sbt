@@ -1,3 +1,5 @@
+import sbt.Test
+
 ThisBuild / organization := "io.h8.borscht"
 ThisBuild / organizationName := "H8IO"
 ThisBuild / organizationHomepage := Some(url("https://github.com/h8io/"))
@@ -59,6 +61,10 @@ ThisBuild / scalacOptions ++= Seq(
 lazy val core = project
   .in(file("core"))
   .settings(name := "borscht-core")
+
+lazy val test: Project = project
+  .in(file("test"))
+  .dependsOn(core)
 
 lazy val `recipe-typesafe` = project
   .in(file("recipe/typesafe"))

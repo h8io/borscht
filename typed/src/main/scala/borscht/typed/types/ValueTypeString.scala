@@ -4,5 +4,9 @@ import borscht.Node
 import borscht.parsers.NodeParserString
 import borscht.typed.ValueParser
 
-final class ValueTypeString extends ValueTypeParameterless:
-  override def parser(parsers: List[ValueParser]): ValueParser = _.parse[String]
+final class ValueTypeString extends ValueTypeParameterless with StringParser[String]:
+  override def parser(nothing: Unit): ValueParser = _.parse[String]
+
+  override def parse(value: String): String = value
+
+val ValueParserString: Either[String, ValueParser] = ValueTypeString()(Nil)

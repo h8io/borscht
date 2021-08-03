@@ -22,7 +22,7 @@ sealed trait Node:
 
   final def parse[T](using parser: NodeParser[T]) = parser(this)
 
-trait ScalarNode extends Node :
+trait ScalarNode extends Node:
   def value: Any
 
   def asString: String = value.toString

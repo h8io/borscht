@@ -1,10 +1,10 @@
 package borscht.typed
 
-trait ValueType extends (List[ValueParser] => ValueParser)
+trait ValueType extends (List[ValueParser] => Either[String, ValueParser])
 
-trait AbstractValueType extends ValueType:
-  protected def prepare(parsers: List[ValueParser]): List[ValueParser]
+trait AbstractValueType[T] extends ValueType:
+  protected def prepare(parameters: List[ValueParser]): Either[String, T]
 
-  protected def parser(parsers: List[ValueParser]): ValueParser
+  protected def parser(parameter: T): ValueParser
 
-  override def apply(parsers: List[ValueParser]): ValueParser = parser(prepare(parsers))
+  override def apply(parameters: List[ValueParser]): Either[String, ValueParser] = prepare(parameters) map parser
