@@ -64,6 +64,7 @@ lazy val core = project
 
 lazy val test: Project = project
   .in(file("test"))
+  .settings(publishArtifact := false)
   .dependsOn(core)
 
 lazy val `recipe-typesafe` = project
@@ -95,7 +96,7 @@ lazy val typed = project
   .in(file("typed"))
   .settings(
     name := "borscht-typed")
-  .dependsOn(core, `recipe-typesafe` % "test -> compile")
+  .dependsOn(core, test % "test -> compile")
 
 lazy val `template-core` = project
   .in(file("template/core"))
