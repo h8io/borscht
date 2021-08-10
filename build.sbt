@@ -88,10 +88,6 @@ lazy val `recipe-jackson-yaml` = project
     libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`recipe-jackson`)
 
-lazy val `legacy-typed-core` = project
-  .in(file("legacy/typed/core"))
-  .dependsOn(core, `recipe-typesafe` % "test -> compile")
-
 lazy val typed = project
   .in(file("typed"))
   .settings(
