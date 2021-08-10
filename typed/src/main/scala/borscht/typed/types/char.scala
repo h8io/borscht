@@ -1,13 +1,13 @@
 package borscht.typed.types
 
-import borscht.ScalarNode
+import borscht.{Node, ScalarNode}
 import borscht.parsers.NodeParserString
 import borscht.typed.ValueParser
 
 private val EncodedCharPattern = raw"\\u([\d+A-Fa-f]{4})".r
 
 private object CharParser:
-  def parser: ValueParser = node => node match
+  def parse(node: Node): Char = node match
     case scalar: ScalarNode => scalar.value match
       case value: Char => value
       case value: Character => value.charValue
@@ -20,11 +20,11 @@ private object CharParser:
     case _ => throw MatchError(value)
 
 final class ValueTypeChar extends ValueTypeParameterless with StringParser[Char]:
-  override protected def parser(nothing: Unit): ValueParser = CharParser.parser
+  override def apply(node: Node): Char = CharParser.parse(node)
 
   override def parse(value: String): Char = CharParser.parse(value)
 
 final class ValueTypeJChar extends ValueTypeParameterless with StringParser[Character]:
-  override protected def parser(nothing: Unit): ValueParser = CharParser.parser
+  override def apply(node: Node): Character = CharParser.parse(node)
 
   override def parse(value: String): Character = CharParser.parse(value)

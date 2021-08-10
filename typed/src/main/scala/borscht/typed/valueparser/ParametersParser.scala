@@ -33,6 +33,6 @@ private class ValueTypeListTailParser(parent: ParametersParser, types: Map[Strin
   }
 
 private def instantiate(event: Event, `type`: ValueType, parameters: List[ValueParser]): Event.ValueParser =
-  `type`(parameters) match
+  `type`.parser(parameters) match
     case Right(parser) => Event.ValueParser(parser, event.position)
     case Left(message) => throw ValueParserInstantiationException(s"Value parser instantiation error: $message", event)
