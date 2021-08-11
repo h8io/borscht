@@ -1,3 +1,5 @@
 package borscht.template
 
-type TemplateParser = String => Template
+import borscht.Node
+
+trait TemplateParser extends (Node => Template)
