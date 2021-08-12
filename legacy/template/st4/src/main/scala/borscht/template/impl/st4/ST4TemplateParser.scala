@@ -2,12 +2,12 @@ package borscht.template.impl.st4
 
 import borscht.template.Template
 import borscht.template.impl.st4.renderers._
-import borscht.template.TemplateParser
+import borscht.template.TemplateEngine
 import org.stringtemplate.v4.{AttributeRenderer, ST, STGroup}
 
 import java.time.temporal.TemporalAccessor
 
-final class ST4TemplateParser(group: STGroup) extends TemplateParser:
+final class ST4TemplateParser(group: STGroup) extends TemplateEngine:
   override def apply(template: String): Template = ST4Template(ST(group, template))
 
 object ST4TemplateParser:

@@ -12,7 +12,7 @@ import scala.jdk.CollectionConverters.*
 
 given NodeParserString: NodeParser[String] =
   NodeParserPlainString orElse { case node =>
-    node.meta.nodeParserRenderableString map (_(node)()) getOrElse {
+    node.meta.nodeParserRenderableString map (_(node).render) getOrElse {
       throw IllegalStateException("Renderable string parser is not defined")
     }
   }

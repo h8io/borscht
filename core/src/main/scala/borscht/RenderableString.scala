@@ -1,3 +1,5 @@
 package borscht
 
-trait RenderableString extends (() => String)
+@FunctionalInterface
+trait RenderableString:
+  def render: String
