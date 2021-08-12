@@ -1,3 +1,5 @@
+import sbt.Test
+
 ThisBuild / organization := "io.h8.borscht"
 ThisBuild / organizationName := "H8IO"
 ThisBuild / organizationHomepage := Some(url("https://github.com/h8io/"))
@@ -60,6 +62,11 @@ lazy val core = project
   .in(file("core"))
   .settings(name := "borscht-core")
 
+lazy val test: Project = project
+  .in(file("test"))
+  .settings(publishArtifact := false)
+  .dependsOn(core)
+
 lazy val `recipe-typesafe` = project
   .in(file("recipe/typesafe"))
   .settings(
@@ -81,16 +88,16 @@ lazy val `recipe-jackson-yaml` = project
     libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`recipe-jackson`)
 
-lazy val `typed-core` = project
-  .in(file("typed/core"))
+lazy val typed = project
+  .in(file("typed"))
   .settings(
-    name := "borscht-typed-core")
-  .dependsOn(`core`, `recipe-typesafe` % "test -> compile")
+    name := "borscht-typed")
+  .dependsOn(core, test % "test -> compile")
 
 lazy val `template-core` = project
   .in(file("template/core"))
   .settings(name := "borscht-template-core")
-  .dependsOn(`core`, `typed-core`)
+  .dependsOn(core, typed)
 
 lazy val `template-st4` = project
   .in(file("template/st4"))
@@ -130,5 +137,5 @@ lazy val root = project
   .aggregate(
     core, util, examples,
     `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`,
-    `typed-core`,
+    typed,
     `template-core`, `template-st4`, `template-apache-commons-text`)

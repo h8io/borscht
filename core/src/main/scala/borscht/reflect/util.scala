@@ -21,7 +21,7 @@ def creator[T](`class`: Class[? <: T]): () => T =
   () => constructor.newInstance()
 
 def creator[T](`class`: Class[? <: T], named: CfgNode): () => T =
-  val parameters = (named.iterator map { (key, node) => key -> NodeParserTypedValue(node).value }).toMap
+  val parameters = (named.iterator map { (key, node) => key -> NodeParserValueRef(node).value }).toMap
   val types = parameters map (_ -> _.getClass)
   getConstructors(`class`, types.size) find { constructor =>
     constructor.getParameters.iterator forall { parameter =>
@@ -34,7 +34,7 @@ def creator[T](`class`: Class[? <: T], named: CfgNode): () => T =
   }
 
 def creator[T](`class`: Class[? <: T], unnamed: Iterable[Node]): () => T =
-  val parameters = (unnamed.iterator map { node => NodeParserTypedValue(node).value }).toArray
+  val parameters = (unnamed.iterator map { node => NodeParserValueRef(node).value }).toArray
   val types = parameters map (_.getClass)
   getConstructors(`class`, types.size) find { constructor =>
     constructor.getParameterTypes.iterator zip types forall (_ isAssignableFrom _)
