@@ -1,7 +1,7 @@
 package borscht.template
 
-import borscht.{CfgNode, Node, ScalarNode}
-import borscht.parsers.given
+import borscht.{CfgNode, CfgNodeParserException, Node, ScalarNode}
+import borscht.parsers.{NodeParserComponentRef, NodeParserString}
 import borscht.reflect.ComponentRef
 
 class DefaultTemplateEngine(default: Option[TemplateEngine],
@@ -12,7 +12,10 @@ class DefaultTemplateEngine(default: Option[TemplateEngine],
     cfg.map[ComponentRef[TemplateEngine]]("underlying") map { (key, value) => key -> value.get },
     cfg.get[String]("default"))
 
-  def apply(node: Node): Template = node match
-    case scalar: ScalarNode => ???
-    case cfg: CfgNode => ???
-    case _ => ???
+  def apply(node: Node): Template = (node match
+    case cfg: CfgNode => cfg.get[String]("engine") map underlying getOrElse {
+        throw TemplateEngineException("Both \"engine\" property and default engine are not defined", node.position)
+      }
+    case _ => default getOrElse {
+      throw TemplateEngineException("Default template engine is not defined", node.position)
+    })(node)
