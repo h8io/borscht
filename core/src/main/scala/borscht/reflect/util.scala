@@ -2,6 +2,7 @@ package borscht.reflect
 
 import borscht.*
 import borscht.parsers.given
+import borscht.typed.*
 
 import java.lang.reflect.Constructor
 import scala.reflect.ClassTag
@@ -13,15 +14,14 @@ def creator[T](`class`: Class[? <: T], optParameters: Option[Node]): () => T = o
   case None => creator(`class`)
   case Some(parameters) => parameters match
     case named: CfgNode => creator(`class`, named)
-    case unnamed: SeqNode => creator(`class`, unnamed)
-    case unnamed: ScalarNode => creator(`class`, Iterable[Node](unnamed))
+    case unnamed => creator(`class`, unnamed)
 
 def creator[T](`class`: Class[? <: T]): () => T =
   val constructor = `class`.getConstructor()
   () => constructor.newInstance()
 
 def creator[T](`class`: Class[? <: T], named: CfgNode): () => T =
-  val parameters = (named.iterator map { (key, node) => key -> NodeParserValueRef(node).value }).toMap
+  val parameters = ValueRefEntries(named).toMap
   val types = parameters map (_ -> _.getClass)
   getConstructors(`class`, types.size) find { constructor =>
     constructor.getParameters.iterator forall { parameter =>
@@ -33,8 +33,8 @@ def creator[T](`class`: Class[? <: T], named: CfgNode): () => T =
     throw NoSuchMethodException(s"A suitable constructor with parameters (${types.mkString(", ")}) not found")
   }
 
-def creator[T](`class`: Class[? <: T], unnamed: Iterable[Node]): () => T =
-  val parameters = (unnamed.iterator map { node => NodeParserValueRef(node).value }).toArray
+def creator[T](`class`: Class[? <: T], unnamed: Node): () => T =
+  val parameters = ValueRefs(unnamed.parse[SeqNode]).toArray
   val types = parameters map (_.getClass)
   getConstructors(`class`, types.size) find { constructor =>
     constructor.getParameterTypes.iterator zip types forall (_ isAssignableFrom _)

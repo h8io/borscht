@@ -40,5 +40,3 @@ given NodeParserMap[T] (using parser: NodeParser[T]): NodeParser[Map[String, T]]
   NodeParserCfgNode andThen { cfg =>
     (cfg.iterator map { (key: String, value: Node) => key -> parser(value) }).toMap
   }
-
-given NodeParserEntries[T: NodeParser]: NodeParser[Entries[T]] = NodeParserCfgNode andThen (Entries(_))
