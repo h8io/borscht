@@ -28,14 +28,14 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
     tmpl.parameters shouldBe empty
   }
 
-  it should "parse a cfg value without a defined engine" in {
+  it should "parse a cfg value without defined engine" in {
     val tmpl = parserWithDefault.test(cfg("template" -> "template text"))
     tmpl.engine shouldBe "test1"
     tmpl.template shouldBe "template text"
     tmpl.parameters shouldBe empty
   }
 
-  it should "parse a cfg value with a defined engine" in {
+  it should "parse a cfg value with defined engine" in {
     val tmpl = parserWithDefault.test(cfg("template" -> "template text", "engine" -> "test2"))
     tmpl.engine shouldBe "test2"
     tmpl.template shouldBe "template text"
@@ -46,13 +46,33 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
     a[TemplateEngineException] should be thrownBy parserWithoutDefault(scalar("template text"))
   }
 
-  it should "fail on a cfg value without a defined engine" in {
+  it should "fail on a cfg value without defined engine" in {
     a[TemplateEngineException] should be thrownBy parserWithoutDefault(cfg("template" -> "template text"))
   }
 
-  it should "parse a cfg value with a defined engine" in {
+  it should "parse a cfg value with defined engine" in {
     val tmpl = parserWithoutDefault.test(cfg("template" -> "template text", "engine" -> "test2"))
     tmpl.engine shouldBe "test2"
     tmpl.template shouldBe "template text"
     tmpl.parameters shouldBe empty
   }
+
+  "Default template parser" should "parse a template with parameters" in {
+    val tmpl = parserWithDefault.test(
+      cfg("template" -> "template text", "parameters" -> cfg("a" -> "b", "x" -> "y")))
+    tmpl.engine shouldBe "test1"
+    tmpl.template shouldBe "template text"
+    tmpl.parameters shouldEqual Map("a" -> "b", "x" -> "y")
+  }
+
+  it should "fail if there is no template definition" in {
+    a[TemplateEngineException] should be thrownBy
+      parserWithDefault(cfg("parameters" -> cfg("a" -> "b", "x" -> "y")))
+  }
+
+  it should "fail on creation if default engine is not defined" in {
+    a[TemplateEngineException] should be thrownBy
+      DefaultNodeParserTemplate(cfg("default" -> "test3" :: enginesCfg.toList: _*))
+  }
+
+

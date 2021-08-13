@@ -7,11 +7,15 @@ import borscht.typed.ValueRefEntries
 
 class DefaultNodeParserTemplate(default: Option[TemplateEngine],
                                 underlying: Map[String, TemplateEngine]) extends NodeParser[Template]:
-  def this(underlying: Map[String, TemplateEngine], default: Option[String]) = this(default map underlying, underlying)
+  private def this(underlying: Map[String, TemplateEngine], default: Option[Node]) = this(
+    default map { node =>
+      val engine = node.parse[String]
+      underlying.get(engine) getOrElse (throw TemplateEngineException("Unknown default engine", node.position))
+    }, underlying)
 
   def this(cfg: CfgNode) = this(
     cfg.map[ComponentRef[TemplateEngine]]("underlying") map { (key, value) => key -> value.get },
-    cfg.get[String]("default"))
+    cfg.child("default"))
 
   given NodeParserTemplateEngine: NodeParser[TemplateEngine] = NodeParserString andThen underlying
 
