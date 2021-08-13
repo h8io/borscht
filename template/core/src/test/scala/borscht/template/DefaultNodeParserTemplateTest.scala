@@ -46,11 +46,11 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
     a[TemplateEngineException] should be thrownBy parserWithoutDefault(scalar("template text"))
   }
 
-  it should "parse cfg value without defined engine" in {
-    a[TemplateEngineException] should be thrownBy parserWithDefault(cfg("template" -> "template text"))
+  it should "fail on a cfg value without a defined engine" in {
+    a[TemplateEngineException] should be thrownBy parserWithoutDefault(cfg("template" -> "template text"))
   }
 
-  it should "parse cfg value with defined engine" in {
+  it should "parse a cfg value with a defined engine" in {
     val tmpl = parserWithoutDefault.test(cfg("template" -> "template text", "engine" -> "test2"))
     tmpl.engine shouldBe "test2"
     tmpl.template shouldBe "template text"
