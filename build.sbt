@@ -101,12 +101,12 @@ lazy val `legacy-template-core` = project
 lazy val `legacy-template-st4` = project
   .in(file("legacy/template/st4"))
   .settings(libraryDependencies += Dependencies.ST4)
-  .dependsOn(`template-core`, util)
+  .dependsOn(`template-core`)
 
 lazy val `legacy-template-apache-commons-text` = project
   .in(file("legacy/template/apache-commons-text"))
   .settings(libraryDependencies += Dependencies.ApacheCommonsText)
-  .dependsOn(`template-core`, util)
+  .dependsOn(`template-core`)
 
 lazy val `template-core` = project
   .in(file("template/core"))
@@ -127,10 +127,6 @@ lazy val `template-apache-commons-text` = project
     libraryDependencies += Dependencies.ApacheCommonsText)
   .dependsOn(`template-core`, test % "test -> compile", typed % "test -> compile")
 
-lazy val util = project
-  .in(file("util"))
-  .settings(name := "borscht-util")
-
 lazy val examples = project
   .in(file("examples"))
   .settings(
@@ -149,7 +145,7 @@ lazy val root = project
     name := "borscht",
     publishArtifact := false)
   .aggregate(
-    core, util, examples,
+    core, examples,
     `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`,
     typed,
     `template-core`, `template-st4`, `template-apache-commons-text`)
