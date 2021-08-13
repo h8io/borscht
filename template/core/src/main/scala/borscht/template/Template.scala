@@ -11,7 +11,3 @@ trait Template extends RenderableString:
   }
 
   final def set(parameters: (String, Any)*): Template = set(parameters)
-
-  final def apply(parameters: IterableOnce[(String, Any)]): String = set(parameters)()
-
-  final def apply(parameters: (String, Any)*): String = apply(parameters)

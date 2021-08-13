@@ -118,7 +118,7 @@ lazy val `template-st4` = project
   .settings(
     name := "borscht-template-st4",
     libraryDependencies += Dependencies.ST4)
-  .dependsOn(`template-core`, util, test % "test -> compile", typed % "test -> compile")
+  .dependsOn(`template-core`, test % "test -> compile", typed % "test -> compile")
 
 lazy val `template-apache-commons-text` = project
   .in(file("template/apache-commons-text"))

@@ -1,21 +1,19 @@
 package borscht.template.impl.st4
 
-import borscht.template.Template
-import borscht.template.impl.st4.renderers._
+import borscht.{CfgNode, Node}
+import borscht.parsers.{NodeParserComponentRef, NodeParserList, NodeParserString}
+import borscht.reflect.ComponentRef
+import borscht.template.impl.st4.renderers.Renderer
 import borscht.template.TemplateEngine
-import org.stringtemplate.v4.{AttributeRenderer, ST, STGroup}
+import org.stringtemplate.v4.{ST, STGroup}
 
 import java.time.temporal.TemporalAccessor
 
 final class ST4TemplateEngine(group: STGroup) extends TemplateEngine:
-  override def apply(template: String): Template = ST4Template(ST(group, template))
-
-object ST4TemplateEngine:
-  def apply(group: STGroup): ST4TemplateEngine = new ST4TemplateEngine(group)
-
-  def apply(renderers: IterableOnce[Renderer[_]] = DefaultAttributeRenderers): ST4TemplateEngine =
+  def this(cfg: CfgNode) = this {
     val group = STGroup()
-    renderers.iterator foreach (_(group))
-    ST4TemplateEngine(group)
+    cfg.list[ComponentRef[Renderer[?]]]("renderers") foreach (_.get(group))
+    group
+  }
 
-  val DefaultAttributeRenderers: List[Renderer[_]] = List(TemporalAccessorRenderer)
+  override def apply(node: Node): ST4Template = ST4Template(ST(group, node.parse[String]))
