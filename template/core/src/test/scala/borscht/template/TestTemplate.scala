@@ -2,7 +2,13 @@ package borscht.template
 
 import borscht.*
 
-class TestTemplate(template: String) extends Template:
-  override def render: String = ???
+import scala.collection.mutable
 
-  override def set(key: String, value: Any): TestTemplate = ???
+class TestTemplate(engine: String, template: String) extends Template:
+  private val parameters = mutable.SortedMap[String, Any]()
+
+  override def render: String = s"$engine -> $template: ${parameters.mkString("{", ", ", "}")}"
+
+  override def set(key: String, value: Any): TestTemplate =
+    parameters += key -> value
+    this

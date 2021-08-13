@@ -1,6 +1,6 @@
 package borscht.parsers
 
-import borscht.{Node, RenderableString}
+import borscht.{Entries, Node, RenderableString}
 
 import java.lang.{Boolean => jBoolean}
 import borscht.*
@@ -31,8 +31,7 @@ given NodeParserNumber: NodeParser[Number] = NodeParserScalarAny andThen {
 given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =
   NodeParserSeqNode andThen { node => node.iterator map parser }
 
-given NodeParserList[T](using parser: NodeParser[T]): NodeParser[List[T]] =
-  NodeParserIterator andThen (_.toList)
+given NodeParserList[T: NodeParser]: NodeParser[List[T]] = NodeParserIterator[T] andThen (_.toList)
 
 given NodeParserSet[T] (using parser: NodeParser[T]): NodeParser[Set[T]] =
   NodeParserSeqNode andThen { node => (node.iterator map parser).toSet }
@@ -41,3 +40,5 @@ given NodeParserMap[T] (using parser: NodeParser[T]): NodeParser[Map[String, T]]
   NodeParserCfgNode andThen { cfg =>
     (cfg.iterator map { (key: String, value: Node) => key -> parser(value) }).toMap
   }
+
+given NodeParserEntries[T: NodeParser]: NodeParser[Entries[T]] = NodeParserCfgNode andThen (Entries(_))

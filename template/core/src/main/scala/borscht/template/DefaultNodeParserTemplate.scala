@@ -1,7 +1,7 @@
 package borscht.template
 
 import borscht.*
-import borscht.parsers.{NodeParserComponentRef, NodeParserMap, NodeParserString, NodeParserValueRef}
+import borscht.parsers.{NodeParserComponentRef, NodeParserEntries, NodeParserString, NodeParserValueRef}
 import borscht.reflect.ComponentRef
 import borscht.typed.ValueRef
 
@@ -25,13 +25,13 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
         throw TemplateEngineException("Both \"engine\" property and default engine are not defined", node.position)
       }
       cfg.child(Template) map { template =>
-        (cfg.get[Map[String, ValueRef]](Parameters) foldLeft engine(template)) { (t, p) =>
-          t.set(p.iterator map { (k, v) => k -> v.value })
+        (cfg.get[Entries[ValueRef]](Parameters) foldLeft engine(template)) { (t, p) =>
+          t.set(p map { (k, v) => k -> v.value })
         }
       } getOrElse {
         throw TemplateEngineException("Template is not defined", node.position)
       }
-    case _ => default map (_(node)) getOrElse {
+    case _ => default map (_ (node)) getOrElse {
       throw TemplateEngineException("Default template engine is not defined", node.position)
     }
 
