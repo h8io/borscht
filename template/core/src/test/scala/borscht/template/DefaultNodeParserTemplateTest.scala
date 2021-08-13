@@ -21,22 +21,37 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
   extension (parser: DefaultNodeParserTemplate)
     def test(node: Node): TestTemplate = parser.apply(node).asInstanceOf[TestTemplate]
 
-  "Default template parser with default engine" should "parse scalar value" in {
+  "Default template parser with default engine" should "parse a scalar value" in {
     val tmpl = parserWithDefault.test(scalar("template text"))
     tmpl.engine shouldBe "test1"
     tmpl.template shouldBe "template text"
     tmpl.parameters shouldBe empty
   }
 
-  it should "parse cfg value without defined engine" in {
+  it should "parse a cfg value without a defined engine" in {
     val tmpl = parserWithDefault.test(cfg("template" -> "template text"))
     tmpl.engine shouldBe "test1"
     tmpl.template shouldBe "template text"
     tmpl.parameters shouldBe empty
   }
 
-  it should "parse cfg value with defined engine" in {
+  it should "parse a cfg value with a defined engine" in {
     val tmpl = parserWithDefault.test(cfg("template" -> "template text", "engine" -> "test2"))
+    tmpl.engine shouldBe "test2"
+    tmpl.template shouldBe "template text"
+    tmpl.parameters shouldBe empty
+  }
+
+  "Default template parser without default engine" should "fail on a scalar value" in {
+    a[TemplateEngineException] should be thrownBy parserWithoutDefault(scalar("template text"))
+  }
+
+  it should "parse cfg value without defined engine" in {
+    a[TemplateEngineException] should be thrownBy parserWithDefault(cfg("template" -> "template text"))
+  }
+
+  it should "parse cfg value with defined engine" in {
+    val tmpl = parserWithoutDefault.test(cfg("template" -> "template text", "engine" -> "test2"))
     tmpl.engine shouldBe "test2"
     tmpl.template shouldBe "template text"
     tmpl.parameters shouldBe empty
