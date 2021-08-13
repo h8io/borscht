@@ -125,7 +125,7 @@ lazy val `template-apache-commons-text` = project
   .settings(
     name := "borscht-template-apache-commons-text",
     libraryDependencies += Dependencies.ApacheCommonsText)
-  .dependsOn(`template-core`, util, test % "test -> compile", typed % "test -> compile")
+  .dependsOn(`template-core`, test % "test -> compile", typed % "test -> compile")
 
 lazy val util = project
   .in(file("util"))

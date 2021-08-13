@@ -26,4 +26,4 @@ case class ValueFormat(format: Option[String] = None,
     case "locale" => copy(locale = LocaleUtils.toLocale(value))
     case _ => throw new IllegalArgumentException(s"Illegal placeholder attribute $name")
 
-val DefaultValueFormat = ValueFormat()
+object DefaultValueFormat extends ValueFormat()
