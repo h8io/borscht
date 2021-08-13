@@ -59,6 +59,8 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
     }
   }
 
+  final def iterator[T: NodeParser](ref: String*): Iterator[T] = get[Iterator[T]](ref: _*) getOrElse Iterator.empty
+
   final def list[T: NodeParser](ref: String*): List[T] = get[List[T]](ref: _*) getOrElse Nil
 
   final def set[T: NodeParser](ref: String*): Set[T] = get[Set[T]](ref: _*) getOrElse Set.empty

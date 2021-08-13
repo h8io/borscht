@@ -28,8 +28,11 @@ given NodeParserNumber: NodeParser[Number] = NodeParserScalarAny andThen {
   case v: String => BigDecimal(v)
 }
 
+given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =
+  NodeParserSeqNode andThen { node => node.iterator map parser }
+
 given NodeParserList[T](using parser: NodeParser[T]): NodeParser[List[T]] =
-  NodeParserSeqNode andThen { node => (node.iterator map parser).toList }
+  NodeParserIterator andThen (_.toList)
 
 given NodeParserSet[T] (using parser: NodeParser[T]): NodeParser[Set[T]] =
   NodeParserSeqNode andThen { node => (node.iterator map parser).toSet }
