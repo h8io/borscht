@@ -4,7 +4,7 @@ import borscht.*
 
 import scala.collection.mutable
 
-class TestTemplate(engine: String, template: String) extends Template:
+class TestTemplate(val engine: String, val template: String) extends Template:
   private val parameters = mutable.SortedMap[String, Any]()
 
   override def render: String = s"$engine -> $template: ${parameters.mkString("{", ", ", "}")}"
