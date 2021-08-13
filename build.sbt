@@ -111,21 +111,21 @@ lazy val `legacy-template-apache-commons-text` = project
 lazy val `template-core` = project
   .in(file("template/core"))
   .settings(name := "borscht-template-core")
-  .dependsOn(core, typed, test % "test -> compile")
+  .dependsOn(core, test % "test -> compile")
 
 lazy val `template-st4` = project
   .in(file("template/st4"))
   .settings(
     name := "borscht-template-st4",
     libraryDependencies += Dependencies.ST4)
-  .dependsOn(`template-core`, util, test % "test -> compile")
+  .dependsOn(`template-core`, util, test % "test -> compile", typed % "test -> compile")
 
 lazy val `template-apache-commons-text` = project
   .in(file("template/apache-commons-text"))
   .settings(
     name := "borscht-template-apache-commons-text",
     libraryDependencies += Dependencies.ApacheCommonsText)
-  .dependsOn(`template-core`, util, test % "test -> compile")
+  .dependsOn(`template-core`, util, test % "test -> compile", typed % "test -> compile")
 
 lazy val util = project
   .in(file("util"))

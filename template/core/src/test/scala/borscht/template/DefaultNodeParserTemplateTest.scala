@@ -1,18 +1,43 @@
 package borscht.template
 
-import borscht.test.cfg
+import borscht.{Node, NodeParser}
+import borscht.test.{cfg, scalar}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
-  "Default template parser" should "parse scalar value" in {
-    val nodeParser = DefaultNodeParserTemplate(cfg("underlying" -> cfg(
-      "test1" -> cfg(
-        "class" -> classOf[TestTemplateEngine].getName,
-        "parameters" -> "test1"
-      ),
-      "test2" -> cfg(
-        "class" -> classOf[TestTemplateEngine].getName,
-        "parameters" -> "test2"
-      ))))
+  private val enginesCfg = cfg("underlying" -> cfg(
+    "test1" -> cfg(
+      "class" -> classOf[TestTemplateEngine].getName,
+      "parameters" -> "test1"),
+    "test2" -> cfg(
+      "class" -> classOf[TestTemplateEngine].getName,
+      "parameters" -> "test2")))
+
+  private val parserWithDefault = DefaultNodeParserTemplate(cfg("default" -> "test1" :: enginesCfg.toList: _*))
+
+  private lazy val parserWithoutDefault = DefaultNodeParserTemplate(enginesCfg)
+
+  extension (parser: DefaultNodeParserTemplate)
+    def test(node: Node): TestTemplate = parser.apply(node).asInstanceOf[TestTemplate]
+
+  "Default template parser with default engine" should "parse scalar value" in {
+    val tmpl = parserWithDefault.test(scalar("template text"))
+    tmpl.engine shouldBe "test1"
+    tmpl.template shouldBe "template text"
+    tmpl.parameters shouldBe empty
+  }
+
+  it should "parse cfg value without defined engine" in {
+    val tmpl = parserWithDefault.test(cfg("template" -> "template text"))
+    tmpl.engine shouldBe "test1"
+    tmpl.template shouldBe "template text"
+    tmpl.parameters shouldBe empty
+  }
+
+  it should "parse cfg value with defined engine" in {
+    val tmpl = parserWithDefault.test(cfg("template" -> "template text", "engine" -> "test2"))
+    tmpl.engine shouldBe "test2"
+    tmpl.template shouldBe "template text"
+    tmpl.parameters shouldBe empty
   }
