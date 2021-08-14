@@ -11,11 +11,12 @@ import org.apache.commons.text.lookup.StringLookupFactory
 final class ACTTemplateEngine(substitutor: StringSubstitutor,
                               renderers: List[Renderer],
                               valueFormat: ValueFormat = ValueFormat.default) extends TemplateEngine:
+  def this() = this(ACTTemplateEngine.DefaultStringSubstitutor, Nil, ValueFormat.default)
+
   def this(renderers: Node) = this(
     ACTTemplateEngine.DefaultStringSubstitutor,
     renderers.parse[List[ComponentRef[Renderer]]] map (_.get),
-    ValueFormat.default
-  )
+    ValueFormat.default)
 
   override def apply(template: Node): Template =
     ACTTemplate(substitutor, template.parse[String], renderers, valueFormat)
