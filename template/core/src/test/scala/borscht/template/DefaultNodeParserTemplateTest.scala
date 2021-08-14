@@ -12,9 +12,9 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
     "test1" -> cfg("class" -> classOf[TestTemplateEngine].getName, "parameters" -> "test1"),
     "test2" -> cfg("class" -> classOf[TestTemplateEngine].getName, "parameters" -> "test2"))
 
-  private val parserWithDefault = DefaultNodeParserTemplate(enginesCfg, scalar("test1"))
+  private def parserWithDefault = DefaultNodeParserTemplate(enginesCfg, scalar("test1"))
 
-  private lazy val parserWithoutDefault = DefaultNodeParserTemplate(enginesCfg)
+  private def parserWithoutDefault = DefaultNodeParserTemplate(enginesCfg)
 
   extension (parser: DefaultNodeParserTemplate)
     def test(node: Node): TestTemplate = parser.apply(node).asInstanceOf[TestTemplate]
