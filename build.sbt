@@ -12,10 +12,10 @@ ThisBuild / scmInfo := Some(
 )
 ThisBuild / developers := List(
   Developer(
-    id    = "eshu",
-    name  = "Pavel Parkhomenko",
+    id = "eshu",
+    name = "Pavel Parkhomenko",
     email = "tjano.xibalba@gmail.com",
-    url   = url("https://github.com/h8io/")
+    url = url("https://github.com/h8io/")
   )
 )
 
@@ -57,6 +57,8 @@ ThisBuild / libraryDependencies ++= Seq(
 ThisBuild / scalacOptions ++= Seq(
   //"-Yexplicit-nulls",
   "-Ysafe-init")
+
+ThisBuild / javacOptions += "-parameters"
 
 lazy val core = project
   .in(file("core"))

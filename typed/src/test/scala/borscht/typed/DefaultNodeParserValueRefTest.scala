@@ -18,8 +18,7 @@ class DefaultNodeParserValueRefTest extends AnyFlatSpec with Matchers:
     System.setProperty("factorial", "3628800")
     System.setProperty("secret-ref", "secret-answer")
     System.setProperty("secret-answer", "42")
-    val config = cfg("untyped-value" -> "Plain string",
-      "str" -> cfg("type" -> "str", "value" -> "String with \"str\" type"),
+    val config = cfg("str" -> cfg("type" -> "str", "value" -> "String with \"str\" type"),
       "int" -> cfg("type" -> "int", "value" -> 42),
       "untyped-property" -> cfg("type" -> "prop", "value" -> "prayer"),
       "string-property" -> cfg("type" -> "prop[str]", "value" -> "city"),
@@ -36,7 +35,6 @@ class DefaultNodeParserValueRefTest extends AnyFlatSpec with Matchers:
         Some(DefaultNodeParserValueRef())
       ))
     config[Map[String, ValueRef]]() map { (key: String, value: ValueRef) => key -> value.value } shouldEqual Map(
-      "untyped-value" -> "Plain string",
       "str" -> "String with \"str\" type",
       "int" -> 42,
       "untyped-property" -> "Cthulhu fhtagn",

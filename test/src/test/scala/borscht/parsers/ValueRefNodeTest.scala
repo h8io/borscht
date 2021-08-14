@@ -25,17 +25,20 @@ class ValueRefNodeTest extends AnyFlatSpec with Matchers:
 
   private val testMeta = new Meta(None, None, Some(TestNodeParserValueRef))
 
+  private def testValueRefScalarNode(ref: ValueRef, expected: Any) =
+    ref.value.asInstanceOf[ScalarNode].value shouldEqual expected
+
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
-    config[ValueRef]("str") shouldEqual ValueRef("The Answer")
-    config[ValueRef]("num") shouldEqual ValueRef(42)
-    config[ValueRef]("bool") shouldEqual ValueRef(true)
+    testValueRefScalarNode(config[ValueRef]("str"), "The Answer")
+    testValueRefScalarNode(config[ValueRef]("num"), 42)
+    testValueRefScalarNode(config[ValueRef]("bool"), true)
   }
 
   it should "return a correct value for the test value type parser" in {
     val cfgWithMeta = config withMeta testMeta
     cfgWithMeta[ValueRef]("str") shouldEqual ValueRef("The Answer!")
-    cfgWithMeta[ValueRef]("num") shouldEqual ValueRef(42)
-    cfgWithMeta[ValueRef]("bool") shouldEqual ValueRef(true)
+    testValueRefScalarNode(config[ValueRef]("num"), 42)
+    testValueRefScalarNode(config[ValueRef]("bool"), true)
   }
 
   "Sequence typed value node parser" should "return a correct value for the base value type parser" in {
