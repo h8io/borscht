@@ -123,7 +123,6 @@ lazy val examples = project
       Dependencies.JacksonDataformatYAML,
       Dependencies.ST4,
       Dependencies.ApacheCommonsText),
-    //classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
   .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`, typed)
 
