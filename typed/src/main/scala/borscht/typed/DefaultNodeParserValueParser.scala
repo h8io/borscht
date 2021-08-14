@@ -13,9 +13,9 @@ final class DefaultNodeParserValueParser(val types: Map[String, ValueType]) exte
       case _ => false
     case _ => false
 
-  override def apply(node: Node): ValueParser = (node: @unchecked) match
-    case scalar: ScalarNode => (scalar.value: @unchecked) match
-      case value: String => valueparser.parse(value, types) getOrElse { throw MatchError(value) }
+  override def apply(node: Node): ValueParser =
+    val `type` = node.parse[String]
+    valueparser.parse(node.parse[String], types) getOrElse { throw UnknownValueType(`type`, node.position) }
 
   override def orElse[N <: Node, V >: ValueParser](that: PartialFunction[N, V]): PartialFunction[N, V] = that match
     case that: DefaultNodeParserValueParser => DefaultNodeParserValueParser(that.types ++ types)
