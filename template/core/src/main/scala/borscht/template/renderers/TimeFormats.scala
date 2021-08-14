@@ -28,4 +28,4 @@ case class TimeFormats(dateFormatter: DateTimeFormatter,
     }).format(value)
 
 object TimeFormats:
-  object empty extends TimeFormats(None, None, None)
+  object default extends TimeFormats(None, None, None)

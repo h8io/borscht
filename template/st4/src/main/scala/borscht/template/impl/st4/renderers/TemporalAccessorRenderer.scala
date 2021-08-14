@@ -10,7 +10,7 @@ import java.time.temporal.TemporalAccessor
 import java.util.Locale
 
 final class TemporalAccessorRenderer(formats: TimeFormats) extends Renderer[TemporalAccessor]:
-  def this() = this(TimeFormats.empty)
+  def this() = this(TimeFormats.default)
 
   def this(formats: CfgNode) = this(new TimeFormats(formats))
 

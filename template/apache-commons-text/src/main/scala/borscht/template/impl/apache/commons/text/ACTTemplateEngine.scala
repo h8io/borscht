@@ -7,14 +7,14 @@ import org.apache.commons.text.lookup.{StringLookup, StringLookupFactory}
 import org.apache.commons.text.matcher.StringMatcher
 
 final class ACTTemplateEngine(substitutor: StringSubstitutor,
-                              renderer: Renderer = TemporalRenderer,
-                              valueFormat: ValueFormat = DefaultValueFormat) extends TemplateEngine:
+                              renderer: Renderer,
+                              valueFormat: ValueFormat = ValueFormat.default) extends TemplateEngine:
   override def apply(template: String): Template =
     ACTTemplate(substitutor, template, renderer, valueFormat)
 
 object ACTTemplateEngine:
   def apply(renderer: Renderer = TemporalRenderer,
-            valueFormat: ValueFormat = DefaultValueFormat,
+            valueFormat: ValueFormat = ValueFormat.default,
             stringLookup: StringLookup = StringLookupFactory.INSTANCE.nullStringLookup(),
             prefix: StringMatcher = StringSubstitutor.DEFAULT_PREFIX,
             suffix: StringMatcher = StringSubstitutor.DEFAULT_SUFFIX,
