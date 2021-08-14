@@ -1,6 +1,6 @@
 package borscht.reflect
 
-import borscht.CfgNode
+import borscht.{CfgNode, ScalarNode, SeqNode}
 
 trait Superclass:
   def isParameterless: Boolean
@@ -25,8 +25,23 @@ class ComponentWithBothConstructors(val cfg: CfgNode, val isParameterless: Boole
   override val optCfg: Option[CfgNode] = if (cfg == CfgNode.Empty) None else Some(cfg)
 
 case class ComponentWithoutAppropriateConstructor(value: Integer) extends Superclass:
+  def this(node: ScalarNode) = this(node.value.asInstanceOf[Integer])
+
   override def isParameterless: Boolean = false
 
   override def optCfg: Option[CfgNode] = None
 
-case class ComponentWithMultipleParameters(cfg: CfgNode, str: String, value: Integer, is: java.lang.Boolean)
+case class ComponentWithMultipleParameters(cfg: CfgNode,
+                                           list: List[Int],
+                                           str: String,
+                                           value: Integer,
+                                           is: java.lang.Boolean):
+  def this(cfg: CfgNode, list: SeqNode, str: ScalarNode, value: ScalarNode, is: ScalarNode) = this(
+      cfg,
+      (list.iterator map { node => node match
+        case scalar: ScalarNode => scalar.value.asInstanceOf[Int]
+        case _ => throw MatchError(node)
+      }).toList,
+      str.value.asInstanceOf[String],
+      value.value.asInstanceOf[Int],
+      is.value.asInstanceOf[java.lang.Boolean])

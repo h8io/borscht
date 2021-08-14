@@ -10,9 +10,9 @@ private object TypesafeCfgProvider extends CfgProvider:
 
   override def apply(): CfgNode = new TypesafeCfgNode(ConfigFactory.load)
 
-  override def load(paths: Iterable[Path]): CfgNode = new TypesafeCfgNode(
+  override def load(paths: Iterable[Path]): CfgNode = new TypesafeCfgNode(ConfigFactory.load(
     (paths.iterator map { path =>
       ConfigFactory.parseFile(path.toFile)
-    } reduce { (prev, next) => next withFallback prev }).resolve)
+    } reduce { (prev, next) => next withFallback prev })))
 
 object TypesafeRecipe extends Recipe(TypesafeCfgProvider)

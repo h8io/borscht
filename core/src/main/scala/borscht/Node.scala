@@ -33,6 +33,9 @@ trait ScalarNode extends Node:
 
   override def toString: String = s"${getClass.getName}($value)"
 
+final case class VirtualScalarNode(value: Any, meta: Meta, position: Position) extends ScalarNode:
+  override def withMeta(meta: Meta): VirtualScalarNode = copy(meta = meta)
+
 trait SeqNode extends Node with Iterable[Node] :
   override def withMeta(meta: Meta): SeqNode
 

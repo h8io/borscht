@@ -93,18 +93,19 @@ class ComponentRefNodeTest extends AnyFlatSpec with Matchers :
   "Component" should "be created with multiple named parameters" in {
     val config = cfg("class" -> classOf[ComponentWithMultipleParameters].getName, "parameters" -> cfg(
       "cfg" -> configParameter,
+      "list" -> seq(1, 2, 3),
       "str" -> "Answer",
       "value" -> 42,
       "is" -> true))
     config[ComponentRef[ComponentWithMultipleParameters]]().get shouldEqual
-      ComponentWithMultipleParameters(configParameter, "Answer", 42, true)
+      ComponentWithMultipleParameters(configParameter, List(1, 2, 3), "Answer", 42, true)
   }
 
   it should "be created with multiple unnamed parameters" in {
     val config = cfg("class" -> classOf[ComponentWithMultipleParameters].getName, "parameters" ->
-      seq(configParameter, "Answer", 42, true))
+      seq(configParameter, seq(1, 2, 3), "Answer", 42, true))
     config[ComponentRef[ComponentWithMultipleParameters]]().get shouldEqual
-      ComponentWithMultipleParameters(configParameter, "Answer", 42, true)
+      ComponentWithMultipleParameters(configParameter, List(1, 2, 3), "Answer", 42, true)
   }
 
   it should "be created with a single parameter" in {

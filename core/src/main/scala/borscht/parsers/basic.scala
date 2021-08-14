@@ -1,6 +1,6 @@
 package borscht.parsers
 
-import borscht.{Node, RenderableString}
+import borscht.{Entries, Node, RenderableString}
 
 import java.lang.{Boolean => jBoolean}
 import borscht.*
@@ -12,7 +12,7 @@ import scala.jdk.CollectionConverters.*
 
 given NodeParserString: NodeParser[String] =
   NodeParserPlainString orElse { case node =>
-    node.meta.nodeParserRenderableString map (_(node)()) getOrElse {
+    node.meta.nodeParserRenderableString map (_(node).render) getOrElse {
       throw IllegalStateException("Renderable string parser is not defined")
     }
   }
@@ -28,8 +28,10 @@ given NodeParserNumber: NodeParser[Number] = NodeParserScalarAny andThen {
   case v: String => BigDecimal(v)
 }
 
-given NodeParserList[T](using parser: NodeParser[T]): NodeParser[List[T]] =
-  NodeParserSeqNode andThen { node => (node.iterator map parser).toList }
+given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =
+  NodeParserSeqNode andThen { node => node.iterator map parser }
+
+given NodeParserList[T: NodeParser]: NodeParser[List[T]] = NodeParserIterator[T] andThen (_.toList)
 
 given NodeParserSet[T] (using parser: NodeParser[T]): NodeParser[Set[T]] =
   NodeParserSeqNode andThen { node => (node.iterator map parser).toSet }

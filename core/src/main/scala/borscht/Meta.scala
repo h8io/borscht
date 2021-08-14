@@ -23,7 +23,7 @@ case class Meta(val nodeParserRenderableString: Option[NodeParser[RenderableStri
 
 object Meta extends (CfgNode => Meta) :
   override def apply(cfg: CfgNode): Meta =
-    cfg.get[CfgNode]("borscht", "node-parsers") map { nps =>
+    cfg.get[CfgNode]("borscht") map { nps =>
       new Meta(
         nps.get[ComponentRef[NodeParser[RenderableString]]]("renderable-string") map (_.get),
         nps.get[ComponentRef[NodeParser[ValueParser]]]("value-parser") map (_.get),

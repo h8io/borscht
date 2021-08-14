@@ -121,12 +121,13 @@ class CreatorTest extends AnyFlatSpec with Matchers:
       classOf[ComponentWithMultipleParameters],
       cfg(
         "cfg" -> configParameter,
+        "list" -> seq(1, 2, 3),
         "str" -> "Answer",
         "value" -> 42,
-        "is" -> true))() shouldEqual ComponentWithMultipleParameters(configParameter, "Answer", 42, true)
+        "is" -> true))() shouldEqual ComponentWithMultipleParameters(configParameter, List(1, 2, 3), "Answer", 42, true)
   }
 
   it should "be created with unnamed parameters" in {
-    creator(classOf[ComponentWithMultipleParameters], seq(configParameter, "Answer", 42, true))() shouldEqual
-      ComponentWithMultipleParameters(configParameter, "Answer", 42, true)
+    creator(classOf[ComponentWithMultipleParameters], seq(configParameter, seq(1, 2, 3), "Answer", 42, true))() shouldEqual
+      ComponentWithMultipleParameters(configParameter, List(1, 2, 3), "Answer", 42, true)
   }
