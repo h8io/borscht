@@ -1,31 +1,37 @@
 package borscht.parsers
 
-import borscht.{Node, RenderableString}
+import borscht.{Entries, Node, RenderableString}
 
 import java.lang.{Boolean => jBoolean}
-import borscht._
+import borscht.*
 
 import scala.annotation.tailrec
 import scala.collection.mutable
 import scala.compiletime.summonFrom
-import scala.jdk.CollectionConverters._
+import scala.jdk.CollectionConverters.*
 
-given NodeParserString(using parser: NodeParser[RenderableString] = NodeParserNothing): NodeParser[String] =
-  NodeParserPlainString orElse (parser andThen (_()))
+given NodeParserString: NodeParser[String] =
+  NodeParserPlainString orElse { case node =>
+    node.meta.nodeParserRenderableString map (_(node).render) getOrElse {
+      throw IllegalStateException("Renderable string parser is not defined")
+    }
+  }
 
-given NodeParserBoolean: NodeParser[Boolean] = NodeParserScalarAnyRef andThen {
+given NodeParserBoolean: NodeParser[Boolean] = NodeParserScalarAny andThen {
   case v: jBoolean => v.booleanValue
   case v: String => jBoolean.parseBoolean(v)
   case v: Number => v != 0
 }
 
-given NodeParserNumber: NodeParser[Number] = NodeParserScalarAnyRef andThen {
+given NodeParserNumber: NodeParser[Number] = NodeParserScalarAny andThen {
   case v: Number => v
   case v: String => BigDecimal(v)
 }
 
-given NodeParserList[T](using parser: NodeParser[T]): NodeParser[List[T]] =
-  NodeParserSeqNode andThen { node => (node.iterator map parser).toList }
+given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =
+  NodeParserSeqNode andThen { node => node.iterator map parser }
+
+given NodeParserList[T: NodeParser]: NodeParser[List[T]] = NodeParserIterator[T] andThen (_.toList)
 
 given NodeParserSet[T] (using parser: NodeParser[T]): NodeParser[Set[T]] =
   NodeParserSeqNode andThen { node => (node.iterator map parser).toSet }

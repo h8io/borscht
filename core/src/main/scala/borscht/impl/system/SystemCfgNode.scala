@@ -1,11 +1,15 @@
 package borscht.impl.system
 
-import borscht.{CfgNode, Node, Position}
+import borscht.*
 
 import scala.annotation.tailrec
 
-private[system] class SystemCfgNode(children: Map[String, Node]) extends CfgNode:
+private[system] class SystemCfgNode(children: Map[String, Node], val meta: Meta = Meta.Empty) extends CfgNode:
   export children.{iterator, get => child}
+
+  override def withMeta(meta: Meta): CfgNode = new SystemCfgNode(children map { case (key, node) =>
+    key -> node.withMeta(meta)
+  }, meta)
 
   override def position: Position = SystemPosition
 

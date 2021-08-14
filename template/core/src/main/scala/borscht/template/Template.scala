@@ -2,15 +2,12 @@ package borscht.template
 
 import borscht.RenderableString
 
-trait Template extends RenderableString :
-  def set(key: String, value: AnyRef): Template
+trait Template extends RenderableString:
+  def set(key: String, value: Any): Template
 
-  def set(parameters: IterableOnce[(String, AnyRef)]): Template
+  // Could be overriden for a performance reason
+  def set(parameters: IterableOnce[(String, Any)]): Template = (parameters.iterator foldLeft this) { (t, p) =>
+    t.set(p._1, p._2)
+  }
 
-  def set(parameters: (String, AnyRef)*): Template = set(parameters)
-
-  override def apply(): String
-
-  def apply(parameters: IterableOnce[(String, AnyRef)]): String = set(parameters)()
-
-  def apply(parameters: (String, AnyRef)*): String = apply(parameters)
+  final def set(parameters: (String, Any)*): Template = set(parameters)

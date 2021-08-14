@@ -1,8 +1,10 @@
 package borscht.impl.system
 
-import borscht.{Position, ScalarNode}
+import borscht.*
 
-private[system] class SystemScalarNode(override val unwrapped: String) extends ScalarNode:
-  def position: Position = SystemPosition
+private[system] class SystemScalarNode(override val value: String, val meta: Meta = Meta.Empty) extends ScalarNode:
+  override def withMeta(meta: Meta): ScalarNode = SystemScalarNode(value, meta)
 
-  override def toString: String = unwrapped
+  override def position: Position = SystemPosition
+
+  override def toString: String = value

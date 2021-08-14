@@ -1,15 +1,17 @@
 package borscht.impl.jackson
 
+import borscht.*
 import borscht.impl.system.SystemCfgNode
-import borscht.{CfgException, CfgNode, Recipe}
-
-import java.nio.file.Path
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 
+import java.nio.file.Path
 import scala.collection.immutable.Queue
 
-open class JacksonRecipe(mapper: ObjectMapper, defaultFileNames: List[String] = Nil) extends Recipe:
+open class JacksonRecipe(mapper: ObjectMapper, defaultFileNames: List[String] = Nil)
+  extends Recipe(JacksonCfgProvider(mapper, defaultFileNames))
+
+private class JacksonCfgProvider(mapper: ObjectMapper, defaultFileNames: List[String] = Nil) extends CfgProvider :
   override def parse(content: String): CfgNode =
     asConfigNode(mapper.readTree(content), JacksonSource.raw)
 
@@ -26,9 +28,9 @@ open class JacksonRecipe(mapper: ObjectMapper, defaultFileNames: List[String] = 
     (paths.iterator map { path =>
       asConfigNode(mapper.readTree(path.toFile), JacksonSource.path(path))
     } reduce (_ ++ _)) ++ SystemCfgNode()
-    
+
   private def asConfigNode(node: JsonNode, src: JacksonSource): CfgNode =
-    JacksonCfgNode(asObjectNode(node, src), src)
+    JacksonCfgNode(asObjectNode(node, src), src, Meta.Empty)
 
   private def asObjectNode(node: JsonNode, src: JacksonSource): ObjectNode = node match
     case node: ObjectNode => node

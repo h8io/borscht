@@ -1,8 +1,11 @@
 package borscht
 
+import scala.annotation.implicitNotFound
+
+@implicitNotFound(msg = "No parser available for ${T}")
 type NodeParser[T] = PartialFunction[Node, T]
 
-val NodeParserScalarAnyRef: NodeParser[AnyRef] = parsers.NodeParserScalarNode andThen (_.unwrapped)
+val NodeParserScalarAny: NodeParser[Any] = parsers.NodeParserScalarNode andThen (_.value)
 
 val NodeParserPlainString: NodeParser[String] = parsers.NodeParserScalarNode andThen (_.asString)
 

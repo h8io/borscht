@@ -4,50 +4,49 @@ import borscht.Recipe
 import borscht.impl.typesafe.TypesafeRecipe.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
-import org.scalatest.matchers.must.Matchers
+import org.scalatest.matchers.should.Matchers
 
 class NumericScalarNodeTest extends AnyFlatSpec with Matchers:
-
-  it should "provide a byte value from a string" in {
-    cfg"""key: "42""""[Byte]("key") mustEqual 42.toByte
+  "Numeric node parser" should "provide a byte value from a string" in {
+    cfg"""key: "42""""[Byte]("key") shouldEqual 42.toByte
   }
 
   it should "provide a double value" in {
-    cfg"key: 2.66"[Double]("key") mustEqual 2.66
+    cfg"key: 2.66"[Double]("key") shouldEqual 2.66
   }
 
   it should "provide a double value from a string" in {
-    cfg"""key: "2.66""""[Double]("key") mustEqual 2.66
+    cfg"""key: "2.66""""[Double]("key") shouldEqual 2.66
   }
 
   it should "provide a float value" in {
-    cfg"key: 2.66"[Float]("key") mustEqual 2.66f
+    cfg"key: 2.66"[Float]("key") shouldEqual 2.66f
   }
 
   it should "provide a float value from a string" in {
-    cfg"""key: "2.66""""[Float]("key") mustEqual 2.66f
+    cfg"""key: "2.66""""[Float]("key") shouldEqual 2.66f
   }
 
   it should "provide an integer value" in {
-    cfg"key: ${Int.MaxValue}"[Int]("key") mustEqual Int.MaxValue
+    cfg"key: ${Int.MaxValue}"[Int]("key") shouldEqual Int.MaxValue
   }
 
   it should "provide an integer value from a string" in {
-    cfg"""key: "1""""[Int]("key") mustEqual 1
+    cfg"""key: "1""""[Int]("key") shouldEqual 1
   }
 
   it should "provide a long value" in {
-    cfg"key: ${Long.MaxValue}"[Long]("key") mustEqual Long.MaxValue
+    cfg"key: ${Long.MaxValue}"[Long]("key") shouldEqual Long.MaxValue
   }
 
   it should "provide a long value from a string" in {
-    cfg"""key: "${Long.MinValue}""""[Long]("key") mustEqual Long.MinValue
+    cfg"""key: "${Long.MinValue}""""[Long]("key") shouldEqual Long.MinValue
   }
 
   it should "provide a short value" in {
-    cfg"key: 42"[Short]("key") mustEqual 42.toShort
+    cfg"key: 42"[Short]("key") shouldEqual 42.toShort
   }
 
   it should "provide a short value from a string" in {
-    cfg"""key: "42""""[Short]("key") mustEqual 42.toShort
+    cfg"""key: "42""""[Short]("key") shouldEqual 42.toShort
   }

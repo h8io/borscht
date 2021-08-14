@@ -1,3 +1,5 @@
+import sbt.Test
+
 ThisBuild / organization := "io.h8.borscht"
 ThisBuild / organizationName := "H8IO"
 ThisBuild / organizationHomepage := Some(url("https://github.com/h8io/"))
@@ -10,10 +12,10 @@ ThisBuild / scmInfo := Some(
 )
 ThisBuild / developers := List(
   Developer(
-    id    = "eshu",
-    name  = "Pavel Parkhomenko",
+    id = "eshu",
+    name = "Pavel Parkhomenko",
     email = "tjano.xibalba@gmail.com",
-    url   = url("https://github.com/h8io/")
+    url = url("https://github.com/h8io/")
   )
 )
 
@@ -56,9 +58,16 @@ ThisBuild / scalacOptions ++= Seq(
   //"-Yexplicit-nulls",
   "-Ysafe-init")
 
+ThisBuild / javacOptions += "-parameters"
+
 lazy val core = project
   .in(file("core"))
   .settings(name := "borscht-core")
+
+lazy val test: Project = project
+  .in(file("test"))
+  .settings(publishArtifact := false)
+  .dependsOn(core)
 
 lazy val `recipe-typesafe` = project
   .in(file("recipe/typesafe"))
@@ -81,34 +90,30 @@ lazy val `recipe-jackson-yaml` = project
     libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`recipe-jackson`)
 
-lazy val `typed-core` = project
-  .in(file("typed/core"))
+lazy val typed = project
+  .in(file("typed"))
   .settings(
-    name := "borscht-typed-core")
-  .dependsOn(`core`, `recipe-typesafe` % "test -> compile")
+    name := "borscht-typed")
+  .dependsOn(core, test % "test -> compile")
 
 lazy val `template-core` = project
   .in(file("template/core"))
   .settings(name := "borscht-template-core")
-  .dependsOn(`core`, `typed-core`)
+  .dependsOn(core, test % "test -> compile")
 
 lazy val `template-st4` = project
   .in(file("template/st4"))
   .settings(
     name := "borscht-template-st4",
     libraryDependencies += Dependencies.ST4)
-  .dependsOn(`template-core`, util)
+  .dependsOn(`template-core`, test % "test -> compile", typed % "test -> compile")
 
 lazy val `template-apache-commons-text` = project
   .in(file("template/apache-commons-text"))
   .settings(
     name := "borscht-template-apache-commons-text",
     libraryDependencies += Dependencies.ApacheCommonsText)
-  .dependsOn(`template-core`, util)
-
-lazy val util = project
-  .in(file("util"))
-  .settings(name := "borscht-util")
+  .dependsOn(`template-core`, test % "test -> compile", typed % "test -> compile")
 
 lazy val examples = project
   .in(file("examples"))
@@ -118,9 +123,8 @@ lazy val examples = project
       Dependencies.JacksonDataformatYAML,
       Dependencies.ST4,
       Dependencies.ApacheCommonsText),
-    classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
-  .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`)
+  .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`, typed)
 
 lazy val root = project
   .in(file("."))
@@ -128,7 +132,7 @@ lazy val root = project
     name := "borscht",
     publishArtifact := false)
   .aggregate(
-    core, util, examples,
+    core, examples,
     `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`,
-    `typed-core`,
+    typed,
     `template-core`, `template-st4`, `template-apache-commons-text`)

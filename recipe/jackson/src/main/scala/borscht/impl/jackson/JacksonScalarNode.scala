@@ -1,11 +1,11 @@
 package borscht.impl.jackson
 
-import borscht.{CfgNodeParserException, ScalarNode}
+import borscht.{CfgNodeParserException, Meta, ScalarNode}
 import com.fasterxml.jackson.databind.JsonNode
-import com.fasterxml.jackson.databind.node._
+import com.fasterxml.jackson.databind.node.*
 
 private[jackson] object JacksonScalarNode:
-  def apply(node: ValueNode, src: JacksonSource): ScalarNode =
+  def apply(node: ValueNode, src: JacksonSource, meta: Meta): ScalarNode =
     val unwrapped = node match
       case node: BinaryNode => node.binaryValue
       case node: BooleanNode => Boolean.box(node.booleanValue)
@@ -14,8 +14,13 @@ private[jackson] object JacksonScalarNode:
       case node: POJONode => node.getPojo
       case node: TextNode => node.textValue
       case node => throw CfgNodeParserException(s"Unsupported scalar node: $node", src)
-    new JacksonScalarNode(unwrapped, node, src)
+    new JacksonScalarNode(unwrapped, node, src, meta)
 
 
-private[jackson] final class JacksonScalarNode(val unwrapped: AnyRef, node: JsonNode, src: JacksonSource)
-  extends ScalarNode with JacksonNode(node, src)
+private[jackson] final class JacksonScalarNode(val value: AnyRef,
+                                               node: JsonNode,
+                                               src: JacksonSource,
+                                               val meta: Meta)
+  extends ScalarNode with JacksonNode(node, src):
+
+  override def withMeta(meta: Meta): ScalarNode = new JacksonScalarNode(value, node, src, meta)
