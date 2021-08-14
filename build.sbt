@@ -96,20 +96,6 @@ lazy val typed = project
     name := "borscht-typed")
   .dependsOn(core, test % "test -> compile")
 
-lazy val `legacy-template-core` = project
-  .in(file("legacy/template/core"))
-  .dependsOn(core, typed)
-
-lazy val `legacy-template-st4` = project
-  .in(file("legacy/template/st4"))
-  .settings(libraryDependencies += Dependencies.ST4)
-  .dependsOn(`template-core`)
-
-lazy val `legacy-template-apache-commons-text` = project
-  .in(file("legacy/template/apache-commons-text"))
-  .settings(libraryDependencies += Dependencies.ApacheCommonsText)
-  .dependsOn(`template-core`)
-
 lazy val `template-core` = project
   .in(file("template/core"))
   .settings(name := "borscht-template-core")
