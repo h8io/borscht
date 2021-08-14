@@ -123,9 +123,9 @@ lazy val examples = project
       Dependencies.JacksonDataformatYAML,
       Dependencies.ST4,
       Dependencies.ApacheCommonsText),
-    classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
+    //classLoaderLayeringStrategy := ClassLoaderLayeringStrategy.Flat,
     publishArtifact := false)
-  .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`)
+  .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`, typed)
 
 lazy val root = project
   .in(file("."))

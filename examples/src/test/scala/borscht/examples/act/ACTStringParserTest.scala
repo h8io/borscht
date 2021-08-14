@@ -2,16 +2,13 @@ package borscht.examples.act
 
 import borscht.{CfgNodeParserException, Meta}
 import borscht.impl.typesafe.TypesafeRecipe
-import borscht.impl.typesafe.TypesafeRecipe.given
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
 
 class ACTStringParserTest extends AnyFlatSpec with Matchers:
   private val config =
-    TypesafeRecipe(java.nio.file.Paths.get(getClass.getResource("ACTStringParserTest.conf").toURI))
-
-  println(config)
+    TypesafeRecipe(java.nio.file.Paths.get(getClass.getResource(s"${getClass.getSimpleName}.conf").toURI))
 
   System.setProperty("birthday", "1974-05-03")
 
