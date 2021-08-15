@@ -22,12 +22,13 @@ class DefaultNodeParserValueRefTest extends AnyFlatSpec with Matchers:
       "prop" -> ValueTypeProp()))),
     Some(DefaultNodeParserValueRef()))
 
+  System.setProperty("prayer", "Cthulhu fhtagn")
+  System.setProperty("city", "R'lyeh")
+  System.setProperty("factorial", "3628800")
+  System.setProperty("secret-ref", "secret-answer")
+  System.setProperty("secret-answer", "42")
+
   it should "provide correct values references from cfg nodes" in {
-    System.setProperty("prayer", "Cthulhu fhtagn")
-    System.setProperty("city", "R'lyeh")
-    System.setProperty("factorial", "3628800")
-    System.setProperty("secret-ref", "secret-answer")
-    System.setProperty("secret-answer", "42")
     val config = cfg(
       "str" -> cfg("type" -> "str", "value" -> "String with \"str\" type"),
       "int" -> cfg("type" -> "int", "value" -> 42),
@@ -45,11 +46,6 @@ class DefaultNodeParserValueRefTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide correct values references from scalar nodes" in {
-    System.setProperty("prayer", "Cthulhu fhtagn")
-    System.setProperty("city", "R'lyeh")
-    System.setProperty("factorial", "3628800")
-    System.setProperty("secret-ref", "secret-answer")
-    System.setProperty("secret-answer", "42")
     val config = cfg(
       "str" -> scalar("str:String with \"str\" type"),
       "int" -> scalar("int:42"),
