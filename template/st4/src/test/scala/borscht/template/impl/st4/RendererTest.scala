@@ -13,8 +13,7 @@ class RendererTest extends AnyFlatSpec with Matchers:
   private val customParser = ST4TemplateEngine(seq(
     cfg("class" -> classOf[TemporalAccessorRenderer].getName,
       "parameters" -> cfg("formats" -> cfg(
-        "type" -> "node",
-        "value" -> cfg(
+         "node" -> cfg(
           "date" -> "dd.MM.yyyy",
           "time" -> "HH-mm-ss",
           "datetime" -> "HH:mm MM/dd/yyyy"))))))

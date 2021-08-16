@@ -8,7 +8,7 @@ import org.scalatest.matchers.should.Matchers
 
 class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
   private val parametersParameterValue = cfg("parameter" -> "value")
-  private val parametersParameter = cfg("value" -> parametersParameterValue)
+  private val parametersParameter = cfg("node" -> parametersParameterValue)
   private val parameters = cfg("cfg" -> parametersParameter)
 
   "Scalar component reference node" should "provide a correct object with parameterless constructor" in {
@@ -96,7 +96,7 @@ class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
   "Component" should "be created with multiple named parameters" in {
     val config = cfg("class" -> classOf[ComponentWithMultipleParameters].getName, "parameters" -> cfg(
       "cfg" -> parametersParameter,
-      "list" -> cfg("value" -> seq(1, 2, 3)),
+      "list" -> cfg("node" -> seq(1, 2, 3)),
       "str" -> "Answer",
       "value" -> 42,
       "is" -> true))
@@ -106,7 +106,7 @@ class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
 
   it should "be created with multiple unnamed parameters" in {
     val config = cfg("class" -> classOf[ComponentWithMultipleParameters].getName, "parameters" ->
-      seq(parametersParameter, cfg("value" -> seq(1, 2, 3)), "Answer", 42, false))
+      seq(parametersParameter, cfg("node" -> seq(1, 2, 3)), "Answer", 42, false))
     config[ComponentRef[ComponentWithMultipleParameters]]().get shouldEqual
       ComponentWithMultipleParameters(parametersParameterValue, List(1, 2, 3), "Answer", 42, false)
   }

@@ -9,11 +9,11 @@ import scala.util.Right
 
 class ValueTypeComponentRefTest extends AnyFlatSpec with Matchers:
   "Component reference value type" should "create a correct component instance" in {
-    ValueTypeComponentRef().parser(Nil) map { parser =>
+    ValueTypeComponentRef.parser(Nil) map { parser =>
       parser(
         cfg(
           "class" -> classOf[RuntimeException].getName,
-          "parameters" -> seq(cfg("type" -> "_", "value" -> "Exception component"))))
+          "parameters" -> seq("Exception component")))
     } match
       case Right(e: RuntimeException) => e.getMessage shouldEqual "Exception component"
       case unexpected => fail(s"Unexpected component $unexpected")

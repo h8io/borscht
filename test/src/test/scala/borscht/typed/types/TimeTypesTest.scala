@@ -9,27 +9,27 @@ import scala.util.Right
 
 class TimeTypesTest extends AnyFlatSpec with Matchers:
   "Zone value type" should "parse a region id" in {
-    ValueTypeZoneId().parser(Nil) map (_(scalar("Asia/Tokyo"))) shouldEqual Right(ZoneId.of("Asia/Tokyo"))
+    ValueTypeZoneId.parser(Nil) map (_(scalar("Asia/Tokyo"))) shouldEqual Right(ZoneId.of("Asia/Tokyo"))
   }
 
   it should "parse an offset for a prefix" in {
-    ValueTypeZoneId().parser(Nil) map (_(scalar("GMT+15:30"))) shouldEqual Right(ZoneId.of("GMT+15:30"))
+    ValueTypeZoneId.parser(Nil) map (_(scalar("GMT+15:30"))) shouldEqual Right(ZoneId.of("GMT+15:30"))
   }
 
   "Zone offset type" should "parse Z" in {
-    ValueTypeZoneOffset().parser(Nil) map (_(scalar("Z"))) shouldEqual Right(ZoneOffset.UTC)
+    ValueTypeZoneOffset.parser(Nil) map (_(scalar("Z"))) shouldEqual Right(ZoneOffset.UTC)
   }
 
   it should "parse zero" in {
-    ValueTypeZoneOffset().parser(Nil) map (_(scalar("+0"))) shouldEqual Right(ZoneOffset.UTC)
+    ValueTypeZoneOffset.parser(Nil) map (_(scalar("+0"))) shouldEqual Right(ZoneOffset.UTC)
   }
 
   it should "parse an hours value" in {
-    ValueTypeZoneOffset().parser(Nil) map (_(scalar("+9"))) shouldEqual Right(ZoneOffset.ofHours(9))
+    ValueTypeZoneOffset.parser(Nil) map (_(scalar("+9"))) shouldEqual Right(ZoneOffset.ofHours(9))
   }
 
   it should "parse an hours and minutes value" in {
-    ValueTypeZoneOffset().parser(Nil) map (_(scalar("-08:30"))) shouldEqual
+    ValueTypeZoneOffset.parser(Nil) map (_(scalar("-08:30"))) shouldEqual
       Right(ZoneOffset.ofHoursMinutes(-8, -30))
   }
 
@@ -62,4 +62,3 @@ class TimeTypesTest extends AnyFlatSpec with Matchers:
         value should (be >= before and be <= after)
       case _ => fail("Unexpected result $now")
   }
-

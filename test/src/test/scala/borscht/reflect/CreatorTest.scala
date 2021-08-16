@@ -7,7 +7,7 @@ import org.scalatest.matchers.should.Matchers
 
 class CreatorTest extends AnyFlatSpec with Matchers:
   private val configParameterValue = cfg("parameter" -> "value")
-  private val configParameter = cfg("value" -> configParameterValue)
+  private val configParameter = cfg("node" -> configParameterValue)
   private val config = cfg("cfg" -> configParameter)
 
   "Parameterless creator" should "return a correct object with parameterless constructor" in {
@@ -122,7 +122,7 @@ class CreatorTest extends AnyFlatSpec with Matchers:
       classOf[ComponentWithMultipleParameters],
       cfg(
         "cfg" -> configParameter,
-        "list" -> cfg("value" -> seq(1, 2, 3)),
+        "list" -> cfg("node" -> seq(1, 2, 3)),
         "str" -> "Answer",
         "value" -> 42,
         "is" -> true))() shouldEqual
@@ -134,7 +134,7 @@ class CreatorTest extends AnyFlatSpec with Matchers:
       classOf[ComponentWithMultipleParameters],
       seq(
         configParameter,
-        cfg("value" -> seq(1, 2, 3)),
+        cfg("node" -> seq(1, 2, 3)),
         "Answer",
         42,
         false))() shouldEqual

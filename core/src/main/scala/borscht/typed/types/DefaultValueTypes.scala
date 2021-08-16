@@ -3,10 +3,12 @@ package borscht.typed.types
 import borscht.typed.ValueType
 
 val DefaultValueTypes: Map[String, ValueType] = Map(
-  "_" -> ValueTypeString,
+  "$" -> ValueTypeString,
   "str" -> ValueTypeString,
 
+  "_" -> ValueTypeNode,
   "node" -> ValueTypeNode,
+  "component" -> ValueTypeComponentRef,
 
   "env" -> ValueTypeEnv,
   "prop" -> ValueTypeProp,

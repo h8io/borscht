@@ -14,8 +14,8 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
     "num" -> 42,
     "bool" -> true,
     "my-str" -> "my-type:The Answer",
-    "seq" -> cfg("type" -> "node", "value" -> seq(1, 2, 3)),
-    "cfg" -> cfg("value" -> cfg("key" -> "value")))
+    "seq" -> cfg("node" -> seq(1, 2, 3)),
+    "cfg" -> cfg("node" -> cfg("key" -> "value")))
 
   private val testMeta = new Meta(None, Map("my-type" -> new ValueTypeParameterless:
     override def apply(node: Node): Any = node.parse[String] + "!"
@@ -29,12 +29,12 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
 
   "Value reference node" should "provide correct values references from cfg nodes" in {
     val config = cfg(
-      "str" -> cfg("type" -> "str", "value" -> "String with \"str\" type"),
-      "int" -> cfg("type" -> "int", "value" -> 42),
-      "untyped-property" -> cfg("type" -> "prop", "value" -> "prayer"),
-      "string-property" -> cfg("type" -> "prop[str]", "value" -> "city"),
-      "bigint-property" -> cfg("type" -> "prop[bigint]", "value" -> "factorial"),
-      "secret-property" -> cfg("type" -> "prop[prop[long]]", "value" -> "secret-ref"))
+      "str" -> cfg("str" -> "String with \"str\" type"),
+      "int" -> cfg("int" -> 42),
+      "untyped-property" -> cfg("prop" -> "prayer"),
+      "string-property" -> cfg("prop[str]" -> "city"),
+      "bigint-property" -> cfg("prop[bigint]" -> "factorial"),
+      "secret-property" -> cfg("prop[prop[long]]" -> "secret-ref"))
     config[Map[String, ValueRef]]() map { (key: String, value: ValueRef) => key -> value.get } shouldEqual Map(
       "str" -> "String with \"str\" type",
       "int" -> 42,

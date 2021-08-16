@@ -9,9 +9,13 @@ given NodeParserValueParser: NodeParser[ValueParser] =
     valueparser.parse(tp, node.meta.valueTypes) getOrElse { throw UnknownValueTypeException(tp, node.position) }
 
 given NodeParserValueRef: NodeParser[ValueRef] =
-  case cfg: CfgNode => cfg.child("value") map { node =>
-    ValueRef(cfg.get[ValueParser]("type") map (_.apply(node)) getOrElse node)
-  } getOrElse (throw UndefinedValueException(cfg.position))
+  case cfg: CfgNode if cfg.size == 1 =>
+    val (tp, node) = cfg.iterator.next
+    valueparser.parse(tp, cfg.meta.valueTypes) map { parser =>
+      ValueRef(parser(node))
+    } getOrElse {
+      throw UnknownValueTypeException(tp, cfg.position)
+    }
   case node: Node => node.parse[String] split(":", 2) match
     case Array(value) => node match
       case scalar: ScalarNode => ValueRef(scalar.value)

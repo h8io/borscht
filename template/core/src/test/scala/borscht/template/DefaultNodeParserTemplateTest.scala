@@ -80,7 +80,7 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
   it should "be retrieved as a component" in {
     val parser = cfg("class" -> classOf[DefaultNodeParserTemplate].getName,
       "parameters" -> cfg(
-        "underlying" -> cfg("value" -> enginesCfg),
+        "underlying" -> cfg("node" -> enginesCfg),
         "default" -> "test2"))[ComponentRef[NodeParser[Template]]]().get.asInstanceOf[DefaultNodeParserTemplate]
 
     val scalarTmpl = parser.test(scalar("template text"))

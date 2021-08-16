@@ -18,13 +18,13 @@ class ValueTypePropTest extends AnyFlatSpec with Matchers:
 
   it should "retrieve an integer value" in {
     System.setProperty("factorial", "3628800")
-    ValueTypeProp.parser(List(ValueTypeInt())) map (_(scalar("factorial"))) shouldEqual Right(3628800)
+    ValueTypeProp.parser(List(ValueTypeInt)) map (_(scalar("factorial"))) shouldEqual Right(3628800)
   }
 
   it should "retrieve a nested value" in {
     System.setProperty("secret-ref", "secret-answer")
     System.setProperty("secret-answer", "42")
-    val propInt = ValueTypeProp.parser(List(ValueTypeInt())) getOrElse fail()
+    val propInt = ValueTypeProp.parser(List(ValueTypeInt)) getOrElse fail()
     propInt(scalar("secret-answer")) shouldEqual 42
     ValueTypeProp.parser(List(propInt)) map (_(scalar("secret-ref"))) shouldEqual Right(42)
   }

@@ -4,22 +4,22 @@ borscht:
     parameters:
       default: st4
       underlying:
-        value:
+        node:
           st4:
             class: borscht.template.impl.st4.ST4TemplateEngine
             parameters:
               renderers:
-                value:
+                node:
                   -
                     class: borscht.template.impl.st4.renderers.TemporalAccessorRenderer
                     parameters:
                       formats:
-                        value: {}
+                        node: {}
           act:
             class: borscht.template.impl.apache.commons.text.ACTTemplateEngine
             parameters:
               renderers:
-                value:
+                node:
                   - borscht.template.impl.apache.commons.text.renderers.TemporalRenderer
 
 scalar: <value>
@@ -27,11 +27,8 @@ object:
   template: "<name>: <value> (<date; format=\"dd.MM.yyyy\">)"
   parameters:
     name:
-      type: str
-      value: value
+      str: value
     value:
-      type: int
-      value: 42
+      int: 42
     date:
-      type: date
-      value: 2020-12-08
+      date: 2020-12-08
