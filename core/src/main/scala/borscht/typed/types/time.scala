@@ -7,20 +7,20 @@ import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
 import java.time.{ZoneId, ZoneOffset, ZonedDateTime}
 
-final class ValueTypeDateTimeFormatter extends ValueTypePlain[DateTimeFormatter]:
+object ValueTypeDateTimeFormatter extends ValueTypePlain[DateTimeFormatter] :
   override def parse(pattern: String): DateTimeFormatter = DateTimeFormatter.ofPattern(pattern)
 
-final class ValueTypeZoneId extends ValueTypePlain[ZoneId]:
+object ValueTypeZoneId extends ValueTypePlain[ZoneId] :
   override def parse(zone: String): ZoneId = ZoneId.of(zone)
 
-final class ValueTypeZoneOffset extends ValueTypePlain[ZoneOffset]:
+object ValueTypeZoneOffset extends ValueTypePlain[ZoneOffset] :
   override def parse(offset: String): ZoneOffset = ZoneOffset.of(offset)
 
-class ValueTypeNow(zone: ZoneId) extends ValueTypePlain[ZonedDateTime]:
+class ValueTypeNow(zone: ZoneId) extends ValueTypePlain[ZonedDateTime] :
   def this() = this(ZoneId.systemDefault())
 
   def this(zone: String) = this(ZoneId.of(zone))
-  
+
   override def parse(adjuster: String): ZonedDateTime = ZonedDateTime.now(zone).`with`(DateTimeAdjuster(adjuster))
 
 private trait ValueTypeTemporalAccessor(formatter: DateTimeFormatter) extends ValueTypePlain[TemporalAccessor]:
@@ -31,12 +31,12 @@ class ValueTypeDateTime(formatter: DateTimeFormatter) extends ValueTypeTemporalA
 
   def this() = this(DateTimeFormatter.ISO_DATE_TIME)
 
-class ValueTypeDate(formatter: DateTimeFormatter) extends ValueTypeTemporalAccessor(formatter):
+class ValueTypeDate(formatter: DateTimeFormatter) extends ValueTypeTemporalAccessor(formatter) :
   def this(pattern: String) = this(DateTimeFormatter.ofPattern(pattern))
 
   def this() = this(DateTimeFormatter.ISO_DATE)
 
-class ValueTypeTime(formatter: DateTimeFormatter) extends ValueTypeTemporalAccessor(formatter):
+class ValueTypeTime(formatter: DateTimeFormatter) extends ValueTypeTemporalAccessor(formatter) :
   def this(pattern: String) = this(DateTimeFormatter.ofPattern(pattern))
 
   def this() = this(DateTimeFormatter.ISO_TIME)

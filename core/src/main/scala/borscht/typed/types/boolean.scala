@@ -17,12 +17,12 @@ private object BooleanParser:
 
   def parse(value: String): Boolean = value.toBoolean
 
-final class ValueTypeBoolean extends ValueTypeParameterless with StringParser[Boolean]:
+object ValueTypeBoolean extends ValueTypeParameterless with StringParser[Boolean]:
   override def apply(node: Node): Boolean = BooleanParser.parse(node)
 
   override def parse(value: String): Boolean = BooleanParser.parse(value)
 
-final class ValueTypeJBoolean extends ValueTypeParameterless with StringParser[jBoolean]:
+object ValueTypeJBoolean extends ValueTypeParameterless with StringParser[jBoolean]:
   override def apply(node: Node): jBoolean = BooleanParser.parse(node)
 
   override def parse(value: String): jBoolean = BooleanParser.parse(value)

@@ -4,13 +4,11 @@ import borscht.Node
 import borscht.parsers.NodeParserString
 import borscht.typed.{AbstractValueType, ValueParser}
 
-private val DefaultStringParser = new ValueTypeString
-
 trait ValueTypeStringMapper extends AbstractValueType[String => ?] with StringParser[String]:
   self =>
 
   override protected def prepare(parameters: List[ValueParser]): Either[String, String => ?] = parameters match
-    case Nil => Right(DefaultStringParser.parse)
+    case Nil => Right(ValueTypeString.parse)
     case first :: Nil => first match
       case sp: StringParser[?] => Right(sp.parse)
       case _ => Left("string parser expected")

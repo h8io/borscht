@@ -36,12 +36,12 @@ case class ComponentWithMultipleParameters(cfg: CfgNode,
                                            str: String,
                                            value: Integer,
                                            is: java.lang.Boolean):
-  def this(cfg: CfgNode, list: SeqNode, str: ScalarNode, value: ScalarNode, is: ScalarNode) = this(
+  def this(cfg: CfgNode, list: SeqNode, str: String, value: Integer, is: java.lang.Boolean) = this(
       cfg,
       (list.iterator map { node => node match
         case scalar: ScalarNode => scalar.value.asInstanceOf[Int]
         case _ => throw MatchError(node)
       }).toList,
-      str.value.asInstanceOf[String],
-      value.value.asInstanceOf[Int],
-      is.value.asInstanceOf[java.lang.Boolean])
+      str,
+      value,
+      is)

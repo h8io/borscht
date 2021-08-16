@@ -19,12 +19,12 @@ private object CharParser:
     case EncodedCharPattern(code) => Integer.parseInt(code, 16).toChar
     case _ => throw MatchError(value)
 
-final class ValueTypeChar extends ValueTypeParameterless with StringParser[Char]:
+object ValueTypeChar extends ValueTypeParameterless with StringParser[Char]:
   override def apply(node: Node): Char = CharParser.parse(node)
 
   override def parse(value: String): Char = CharParser.parse(value)
 
-final class ValueTypeJChar extends ValueTypeParameterless with StringParser[Character]:
+object ValueTypeJChar extends ValueTypeParameterless with StringParser[Character]:
   override def apply(node: Node): Character = CharParser.parse(node)
 
   override def parse(value: String): Character = CharParser.parse(value)

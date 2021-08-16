@@ -1,15 +1,21 @@
 package borscht.parsers
 
-import borscht.{CfgNodeParserException, Node, NodeParser}
+import borscht.*
 import borscht.typed.*
 
-given NodeParserValueParser: NodeParser[ValueParser] with
-  override def isDefinedAt(node: Node): Boolean = node.meta.nodeParserValueParser exists (_.isDefinedAt(node))
+given NodeParserValueParser: NodeParser[ValueParser] =
+  case node =>
+    val tp = node.parse[String]
+    valueparser.parse(tp, node.meta.valueTypes) getOrElse { throw UnknownValueTypeException(tp, node.position) }
 
-  override def apply(node: Node): ValueParser = node.meta.nodeParserValueParser map (_(node)) getOrElse {
-    throw CfgNodeParserException("nodeParserValueParser is not defined in meta", node.position)
-  }
-
-given NodeParserValueRef: NodeParser[ValueRef] = { case node =>
-  (node.meta.nodeParserValueRef map (_ orElse BaseNodeParserValueRef) getOrElse BaseNodeParserValueRef)(node)
-}
+given NodeParserValueRef: NodeParser[ValueRef] =
+  case cfg: CfgNode => cfg.child("value") map { node =>
+    ValueRef(cfg.get[ValueParser]("type") map (_.apply(node)) getOrElse node)
+  } getOrElse (throw UndefinedValueException(cfg.position))
+  case node: Node => node.parse[String] split(":", 2) match
+    case Array(value) => node match
+      case scalar: ScalarNode => ValueRef(scalar.value)
+      case other => ValueRef(other)
+    case Array(tp, value) =>
+      ValueRef(new VirtualScalarNode(tp, node).parse[ValueParser](new VirtualScalarNode(value, node)))
+    case unexpected => throw Error(s"Unexpected array size ${unexpected.length}")

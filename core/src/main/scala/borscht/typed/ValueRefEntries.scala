@@ -10,4 +10,4 @@ class ValueRefEntries(underlying: Iterator[(String, Node)]) extends Iterator[(St
 
   override def next(): (String, Any) =
     val (key, node) = underlying.next()
-    key -> node.parse[ValueRef].value
+    key -> node.parse[ValueRef].get

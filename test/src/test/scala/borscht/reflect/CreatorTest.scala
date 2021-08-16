@@ -6,7 +6,8 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class CreatorTest extends AnyFlatSpec with Matchers:
-  private val configParameter = cfg("parameter" -> "value")
+  private val configParameterValue = cfg("parameter" -> "value")
+  private val configParameter = cfg("value" -> configParameterValue)
   private val config = cfg("cfg" -> configParameter)
 
   "Parameterless creator" should "return a correct object with parameterless constructor" in {
@@ -64,14 +65,14 @@ class CreatorTest extends AnyFlatSpec with Matchers:
     val instance = creator[Superclass](classOf[ComponentWithCfgConstructor], Some(config))()
     instance shouldBe a[ComponentWithCfgConstructor]
     instance.isParameterless shouldBe false
-    instance.optCfg shouldBe Some(configParameter)
+    instance.optCfg shouldBe Some(configParameterValue)
   }
 
   it should "return a correct object with both constructors" in {
     val instance = creator[Superclass](classOf[ComponentWithBothConstructors], Some(config))()
     instance shouldBe a[ComponentWithBothConstructors]
     instance.isParameterless shouldBe false
-    instance.optCfg shouldBe Some(configParameter)
+    instance.optCfg shouldBe Some(configParameterValue)
   }
 
   it should "fail without an appropriate constructor" in {
@@ -88,14 +89,14 @@ class CreatorTest extends AnyFlatSpec with Matchers:
     val instance = creator[Superclass](classOf[ComponentWithCfgConstructor], config)()
     instance shouldBe a[ComponentWithCfgConstructor]
     instance.isParameterless shouldBe false
-    instance.optCfg shouldBe Some(configParameter)
+    instance.optCfg shouldBe Some(configParameterValue)
   }
 
   it should "return a correct object with both constructors" in {
     val instance = creator[Superclass](classOf[ComponentWithBothConstructors], config)()
     instance shouldBe a[ComponentWithBothConstructors]
     instance.isParameterless shouldBe false
-    instance.optCfg shouldBe Some(configParameter)
+    instance.optCfg shouldBe Some(configParameterValue)
   }
 
   it should "fail without an appropriate constructor" in {
@@ -108,7 +109,7 @@ class CreatorTest extends AnyFlatSpec with Matchers:
       creator[Superclass](classOf[ComponentWithBothConstructors], seq(configParameter))()
     instance shouldBe a[ComponentWithBothConstructors]
     instance.isParameterless shouldBe false
-    instance.optCfg shouldBe Some(configParameter)
+    instance.optCfg shouldBe Some(configParameterValue)
   }
 
   it should "be created with unnamed parameter" in {
@@ -121,13 +122,21 @@ class CreatorTest extends AnyFlatSpec with Matchers:
       classOf[ComponentWithMultipleParameters],
       cfg(
         "cfg" -> configParameter,
-        "list" -> seq(1, 2, 3),
+        "list" -> cfg("value" -> seq(1, 2, 3)),
         "str" -> "Answer",
         "value" -> 42,
-        "is" -> true))() shouldEqual ComponentWithMultipleParameters(configParameter, List(1, 2, 3), "Answer", 42, true)
+        "is" -> true))() shouldEqual
+      ComponentWithMultipleParameters(configParameterValue, List(1, 2, 3), "Answer", 42, true)
   }
 
   it should "be created with unnamed parameters" in {
-    creator(classOf[ComponentWithMultipleParameters], seq(configParameter, seq(1, 2, 3), "Answer", 42, true))() shouldEqual
-      ComponentWithMultipleParameters(configParameter, List(1, 2, 3), "Answer", 42, true)
+    creator(
+      classOf[ComponentWithMultipleParameters],
+      seq(
+        configParameter,
+        cfg("value" -> seq(1, 2, 3)),
+        "Answer",
+        42,
+        false))() shouldEqual
+      ComponentWithMultipleParameters(configParameterValue, List(1, 2, 3), "Answer", 42, false)
   }

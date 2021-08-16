@@ -4,7 +4,7 @@ import borscht.test.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class SeqNodeTest extends AnyFlatSpec with Matchers:
+class NodeParserSeqTest extends AnyFlatSpec with Matchers:
   "Sequence node parser" should "provide a singleton list of strings" in {
     cfg("key" -> "value")[List[String]]("key") should contain theSameElementsInOrderAs List("value")
   }

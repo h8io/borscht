@@ -2,7 +2,6 @@ package borscht.typed.types
 
 import borscht.Meta
 import borscht.test.{cfg, seq}
-import borscht.typed.{DefaultNodeParserValueParser, DefaultNodeParserValueRef}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -14,11 +13,7 @@ class ValueTypeComponentRefTest extends AnyFlatSpec with Matchers:
       parser(
         cfg(
           "class" -> classOf[RuntimeException].getName,
-          "parameters" -> seq(cfg("type" -> "str", "value" -> "Exception component"))).withMeta(
-          Meta(
-            None,
-            Some(DefaultNodeParserValueParser(Map("str" -> ValueTypeString()))),
-            Some(DefaultNodeParserValueRef()))))
+          "parameters" -> seq(cfg("type" -> "_", "value" -> "Exception component"))))
     } match
       case Right(e: RuntimeException) => e.getMessage shouldEqual "Exception component"
       case unexpected => fail(s"Unexpected component $unexpected")

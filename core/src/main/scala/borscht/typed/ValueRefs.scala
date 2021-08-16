@@ -8,4 +8,4 @@ class ValueRefs(underlying: Iterator[Node]) extends Iterator[Any]:
   
   override def hasNext: Boolean = underlying.hasNext
 
-  override def next(): Any = underlying.next.parse[ValueRef].value
+  override def next(): Any = underlying.next.parse[ValueRef].get

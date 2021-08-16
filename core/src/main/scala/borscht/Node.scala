@@ -60,7 +60,7 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
 
   final def get[T: NodeParser](ref: String*): Option[T] = node(ref: _*) map { n =>
     try n.parse[T] catch {
-      case e: Exception => throw CfgNodeParserException(n.position, e)
+      case e: Exception if !e.isInstanceOf[CfgException] => throw CfgNodeParserException(n.position, e)
     }
   }
 
