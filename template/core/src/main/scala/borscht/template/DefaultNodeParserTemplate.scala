@@ -7,18 +7,17 @@ import borscht.typed.ValueRefEntries
 
 class DefaultNodeParserTemplate(default: Option[TemplateEngine],
                                 underlying: Map[String, TemplateEngine]) extends NodeParser[Template]:
-  private def this(underlying: Map[String, TemplateEngine], default: Option[Node]) = this(
-    default map { node =>
-      val engine = node.parse[String]
-      underlying.get(engine) getOrElse (throw TemplateEngineException("Unknown default engine", node.position))
+  private def this(underlying: Map[String, TemplateEngine], default: Option[String]) = this(
+    default map { engine =>
+      underlying.get(engine) getOrElse (throw IllegalArgumentException("Unknown default engine $engine"))
     }, underlying)
 
-  private def this(underlying: CfgNode, default: Option[Node]) =
+  private def this(underlying: CfgNode, default: Option[String]) =
     this(underlying.map[ComponentRef[TemplateEngine]]() map { (key, value) => key -> value.get }, default)
 
   def this(underlying: CfgNode) = this(underlying, None)
 
-  def this(underlying: CfgNode, default: Node) = this(underlying, Some(default))
+  def this(underlying: CfgNode, default: String) = this(underlying, Some(default))
 
   override def isDefinedAt(node: Node): Boolean = node match
     case cfg: CfgNode => (cfg.get[String](Engine) flatMap underlying.get).isDefined || default.isDefined

@@ -15,5 +15,4 @@ final class TemporalAccessorRenderer(formats: TimeFormats) extends Renderer[Temp
   def this(formats: CfgNode) = this(new TimeFormats(formats))
 
   override def toString(value: TemporalAccessor, format: (String | Null), locale: Locale): String =
-    println(value)
     formats.format(Option(format), locale, value)

@@ -1,8 +1,13 @@
 package borscht.parsers
 
-import java.time.*
 import borscht.NodeParser
 import borscht.time.DateTimeAdjuster
+
+import java.time.*
+import java.time.format.DateTimeFormatter
+
+given NodeParserDateTimeFormatter: NodeParser[DateTimeFormatter] =
+  NodeParserString andThen DateTimeFormatter.ofPattern
 
 given NodeParserZonedDateTime: NodeParser[ZonedDateTime] =
   NodeParserString andThen (ZonedDateTime.parse(_))

@@ -12,7 +12,7 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
     "test1" -> cfg("class" -> classOf[TestTemplateEngine].getName, "parameters" -> "test1"),
     "test2" -> cfg("class" -> classOf[TestTemplateEngine].getName, "parameters" -> "test2"))
 
-  private def parserWithDefault = DefaultNodeParserTemplate(enginesCfg, scalar("test1"))
+  private def parserWithDefault = DefaultNodeParserTemplate(enginesCfg, "test1")
 
   private def parserWithoutDefault = DefaultNodeParserTemplate(enginesCfg)
 
@@ -60,11 +60,7 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
       cfg("template" -> "template text", "parameters" -> cfg("a" -> "b", "x" -> "y")))
     tmpl.engine shouldBe "test1"
     tmpl.template shouldBe "template text"
-    tmpl.parameters map {
-      case (key: String, scalar: ScalarNode) => key -> scalar.value
-      case (key: String, node: Node) => fail(s"Unexpected node type ${node.`type`} for $key")
-      case (key: String, value: Any) => fail(s"Unexpected value $value for $key")
-    } shouldEqual Map("a" -> "b", "x" -> "y")
+    tmpl.parameters shouldEqual Map("a" -> "b", "x" -> "y")
   }
 
   it should "fail if there is no template definition" in {
@@ -73,7 +69,7 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
   }
 
   it should "fail on creation if default engine is unknown" in {
-    a[TemplateEngineException] should be thrownBy DefaultNodeParserTemplate(enginesCfg, scalar("test3"))
+    a[IllegalArgumentException] should be thrownBy DefaultNodeParserTemplate(enginesCfg, "test3")
   }
 
   it should "fail on unknown engine in the template definition" in {
@@ -84,7 +80,7 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
   it should "be retrieved as a component" in {
     val parser = cfg("class" -> classOf[DefaultNodeParserTemplate].getName,
       "parameters" -> cfg(
-        "underlying" -> enginesCfg,
+        "underlying" -> cfg("node" -> enginesCfg),
         "default" -> "test2"))[ComponentRef[NodeParser[Template]]]().get.asInstanceOf[DefaultNodeParserTemplate]
 
     val scalarTmpl = parser.test(scalar("template text"))

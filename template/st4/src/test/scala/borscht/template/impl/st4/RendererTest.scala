@@ -13,9 +13,10 @@ class RendererTest extends AnyFlatSpec with Matchers:
   private val customParser = ST4TemplateEngine(seq(
     cfg("class" -> classOf[TemporalAccessorRenderer].getName,
       "parameters" -> cfg("formats" -> cfg(
-        "date" -> "dd.MM.yyyy",
-        "time" -> "HH-mm-ss",
-        "datetime" -> "HH:mm MM/dd/yyyy")))))
+         "node" -> cfg(
+          "date" -> "dd.MM.yyyy",
+          "time" -> "HH-mm-ss",
+          "datetime" -> "HH:mm MM/dd/yyyy"))))))
 
   "Default temporal accessor renderer" should "render date and time with format string" in {
     val date = DateTimeFormatter.ISO_DATE_TIME.parse("1961-04-12T09:07:00+03:00[Europe/Moscow]")

@@ -1,3 +1,3 @@
 package borscht.typed
 
-case class ValueRef(value: Any) extends AnyVal
+case class ValueRef(get: Any) extends AnyVal
