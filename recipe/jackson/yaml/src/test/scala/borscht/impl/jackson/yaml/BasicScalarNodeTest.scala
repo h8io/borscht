@@ -10,11 +10,11 @@ import scala.language.implicitConversions
 
 class BasicScalarNodeTest extends AnyFlatSpec with Matchers:
   "Scalar node parser" should "provide a numeric value" in {
-    cfg"key: 42"[Number]("key") shouldEqual 42
+    cfg"key: 42"[BigInt]("key") shouldEqual 42
   }
 
   it should "provide a numeric value from string" in {
-    cfg"""key: "42""""[Number]("key") shouldEqual 42
+    cfg"""key: "42""""[BigDecimal]("key") shouldEqual 42
   }
   
   it should "provide a nested config" in {

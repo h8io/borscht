@@ -14,19 +14,19 @@ class SeqNodeTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide a list of numbers" in {
-    cfg"key: [42, 2.66]"[List[Number]]("key") should contain theSameElementsInOrderAs List(42, 2.66)
+    cfg"key: [42, 2.66]"[List[BigDecimal]]("key") should contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers" in {
-    cfg"key: ${Long.MaxValue}"[List[Number]]("key") should contain theSameElementsInOrderAs List(Long.MaxValue)
+    cfg"key: ${Long.MaxValue}"[List[BigDecimal]]("key") should contain theSameElementsInOrderAs List(Long.MaxValue)
   }
 
   it should "provide a list of numbers from a string sequence" in {
-    cfg"""key: ["42", "2.66"]"""[List[Number]]("key") should contain theSameElementsInOrderAs List(42, 2.66)
+    cfg"""key: ["42", "2.66"]"""[List[BigDecimal]]("key") should contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers from a string value" in {
-    cfg"""key: "${Long.MaxValue}""""[List[Number]]("key") should contain theSameElementsInOrderAs List(Long.MaxValue)
+    cfg"""key: "${Long.MaxValue}""""[List[BigDecimal]]("key") should contain theSameElementsInOrderAs List(Long.MaxValue)
   }
 
   it should "provide a list of booleans" in {

@@ -26,7 +26,7 @@ private[valueparser] final class Events(chars: IndexedSeq[Char]) extends (Parser
       End(Position(index))
 
   private def isTypeNameChar(char: Char) =
-    char.isLetterOrDigit || char == '_' || char == '-' || char == '.' || char == '$'
+    char.isLetterOrDigit || char == '_' || char == '-' || char == '.' || char == '$' || char == '#'
 
   @tailrec
   private def typeName(builder: StringBuilder, i: Int): Event =

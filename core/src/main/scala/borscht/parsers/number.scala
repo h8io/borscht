@@ -1,15 +1,66 @@
 package borscht.parsers
 
-import borscht.NodeParser
+import borscht.{Node, NodeParser, NodeParserScalarAny, ScalarNode}
 
-given NodeParserByte: NodeParser[Byte] = NodeParserNumber andThen (_.byteValue)
+given NodeParserBigInt: NodeParser[BigInt] =
+  case node: ScalarNode => node.value match
+    case v: BigInt => v
+    case v: Int => BigInt(v)
+    case v: Long => BigInt(v)
+    case v: Array[Byte] => BigInt(v)
+    case _ => BigInt(node.asString)
+  case node: Node => BigInt(node.parse[String])
 
-given NodeParserDouble: NodeParser[Double] = NodeParserNumber andThen (_.doubleValue)
+given NodeParserBigDecimal: NodeParser[BigDecimal] =
+  case node: ScalarNode => node.value match
+    case v: BigDecimal => v
+    case v: BigInt => BigDecimal(v)
+    case v: Int => BigDecimal(v)
+    case v: Long => BigDecimal(v)
+    case v: Double => BigDecimal(v)
+    case v: Array[Char] => BigDecimal(v)
+    case _ => BigDecimal(node.asString)
+  case node: Node => BigDecimal(node.parse[String])
 
-given NodeParserFloat: NodeParser[Float] = NodeParserNumber andThen (_.floatValue)
+given NodeParserByte: NodeParser[Byte] =
+  case node: ScalarNode => node.value match
+    case v: Byte => v
+    case v: Number => v.byteValue
+    case _ => node.asString.toByte
+  case node: Node => node.parse[String].toByte
 
-given NodeParserInt: NodeParser[Int] = NodeParserNumber andThen (_.intValue)
+given NodeParserDouble: NodeParser[Double] =
+  case node: ScalarNode => node.value match
+    case v: Double => v
+    case v: Number => v.doubleValue
+    case _ => node.asString.toDouble
+  case node: Node => node.parse[String].toDouble
 
-given NodeParserLong: NodeParser[Long] = NodeParserNumber andThen (_.longValue)
 
-given NodeParserShort: NodeParser[Short] = NodeParserNumber andThen (_.shortValue)
+given NodeParserFloat: NodeParser[Float] =
+  case node: ScalarNode => node.value match
+    case v: Float => v
+    case v: Number => v.floatValue
+    case _ => node.asString.toFloat
+  case node: Node => node.parse[String].toFloat
+
+given NodeParserInt: NodeParser[Int] =
+  case node: ScalarNode => node.value match
+    case v: Int => v
+    case v: Number => v.intValue
+    case _ => node.asString.toInt
+  case node: Node => node.parse[String].toInt
+
+given NodeParserLong: NodeParser[Long] =
+  case node: ScalarNode => node.value match
+    case v: Long => v
+    case v: Number => v.longValue
+    case _ => node.asString.toLong
+  case node: Node => node.parse[String].toLong
+
+given NodeParserShort: NodeParser[Short] =
+  case node: ScalarNode => node.value match
+    case v: Short => v
+    case v: Number => v.shortValue
+    case _ => node.asString.toShort
+  case node: Node => node.parse[String].toShort

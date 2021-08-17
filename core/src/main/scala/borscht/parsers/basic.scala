@@ -19,14 +19,18 @@ given NodeParserString: NodeParser[String] =
 
 given NodeParserBoolean: NodeParser[Boolean] = NodeParserScalarAny andThen {
   case v: jBoolean => v.booleanValue
-  case v: String => jBoolean.parseBoolean(v)
+  case v: String => v.toBoolean
   case v: Number => v != 0
 }
 
-given NodeParserNumber: NodeParser[Number] = NodeParserScalarAny andThen {
-  case v: Number => v
-  case v: String => BigDecimal(v)
-}
+given NodeParserChar: NodeParser[Char] =
+  case scalar: ScalarNode => scalar.value match
+    case value: Char => value
+    case value: Character => value.charValue
+    case value: Int => value.toChar
+    case _ => util.parseChar(scalar.asString)
+  case node => util.parseChar(node.parse[String])
+
 
 given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =
   NodeParserSeqNode andThen { node => node.iterator map parser }

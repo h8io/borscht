@@ -4,7 +4,6 @@ import borscht.parsers.given
 import borscht.reflect.ComponentRef
 import borscht.typed.*
 import borscht.typed.types.DefaultValueTypes
-import borscht.typed.types.ValueTypeString
 
 import scala.annotation.targetName
 
