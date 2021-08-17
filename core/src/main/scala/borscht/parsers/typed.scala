@@ -4,18 +4,12 @@ import borscht.*
 import borscht.typed.*
 
 given NodeParserValueParser: NodeParser[ValueParser] =
-  case node =>
-    val tp = node.parse[String]
-    valueparser.parse(tp, node.meta.valueTypes) getOrElse { throw UnknownValueTypeException(tp, node.position) }
+  case node => valueparser.parse(node.parse[String], node.meta.valueTypes)
 
 given NodeParserValueRef: NodeParser[ValueRef] =
   case cfg: CfgNode if cfg.size == 1 =>
     val (tp, node) = cfg.iterator.next
-    valueparser.parse(tp, cfg.meta.valueTypes) map { parser =>
-      ValueRef(parser(node))
-    } getOrElse {
-      throw UnknownValueTypeException(tp, cfg.position)
-    }
+    ValueRef(valueparser.parse(tp, cfg.meta.valueTypes)(node))
   case node: Node => node.parse[String] split(":", 2) match
     case Array(value) => node match
       case scalar: ScalarNode => ValueRef(scalar.value)

@@ -2,7 +2,7 @@ package borscht.typed.valueparser
 
 import scala.annotation.tailrec
 
-private[valueparser] final class Events(chars: IndexedSeq[Char]) extends (Parser => Option[Parser]) with Iterator[Event]:
+private[valueparser] final class Events(chars: IndexedSeq[Char]) extends (Parser => Parser) with Iterator[Event]:
   private var index = 0
   private var _hasNext = true
 
@@ -38,12 +38,6 @@ private[valueparser] final class Events(chars: IndexedSeq[Char]) extends (Parser
       else Event.TypeName(builder.result, Position(i))
     else Event.TypeName(builder.result, Position(i))
 
-  override def apply(parser: Parser): Option[Parser] = apply(Some(parser))
-
   @tailrec
-  private def apply(parser: Option[Parser]): Option[Parser] =
-    if (hasNext)
-      parser match
-        case None => None
-        case Some(parser) => apply(parser(next))
-    else parser
+  override def apply(parser: Parser): Parser =
+    if (hasNext) apply(parser(next)) else parser

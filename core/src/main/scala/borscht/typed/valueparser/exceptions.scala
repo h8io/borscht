@@ -8,3 +8,5 @@ final class UnexpectedEventException(event: Event) extends ValueParserException(
 final class ValueParserInstantiationException(message: String, event: Event, cause: Option[Exception] = None)
   extends ValueParserException(s"Value parser instantiation error: $message", event, cause)
 
+final class UnknownTypeException(val `type`: String, event: Event)
+  extends ValueParserException(s"Unknown type ${`type`}", event)

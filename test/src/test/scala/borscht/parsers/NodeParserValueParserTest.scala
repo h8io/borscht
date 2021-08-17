@@ -4,6 +4,7 @@ import borscht.*
 import borscht.test.*
 import borscht.typed.*
 import borscht.typed.types.{TestValueParser, TestValueType, ValueTypeParameterless}
+import borscht.typed.valueparser.UnknownTypeException
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -26,7 +27,8 @@ class NodeParserValueParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "throw an exception if it is not defined in meta" in {
-    a[UnknownValueTypeException] should be thrownBy config[ValueParser]("parser")
+    val e = the[CfgNodeParserException] thrownBy config[ValueParser]("parser")
+    e.getCause shouldBe a[UnknownTypeException]
   }
 
   it should "return a correct value for a scalar value" in {

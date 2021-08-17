@@ -3,8 +3,9 @@ package borscht.parsers
 import borscht.*
 import borscht.parsers.{NodeParserMap, NodeParserValueRef}
 import borscht.test.*
+import borscht.typed.ValueRef
 import borscht.typed.types.*
-import borscht.typed.{UnknownValueTypeException, ValueRef}
+import borscht.typed.valueparser.UnknownTypeException
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -67,7 +68,8 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
   }
 
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
-    an[UnknownValueTypeException] should be thrownBy config[ValueRef]("my-str")
+    val e = the[CfgNodeParserException] thrownBy config[ValueRef]("my-str")
+    e.getCause shouldBe a[UnknownTypeException]
     config[ValueRef]("str") shouldEqual ValueRef("The Answer")
     config[ValueRef]("num") shouldEqual ValueRef(42)
     config[ValueRef]("bool") shouldEqual ValueRef(true)
