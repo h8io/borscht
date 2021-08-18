@@ -1,6 +1,7 @@
 package borscht.typed
 
-import borscht.Node
+import borscht.{CfgNode, Node, ScalarNode, VirtualScalarNode}
+import borscht.parsers.{NodeParserString, NodeParserValueParser}
 
 import scala.annotation.targetName
 

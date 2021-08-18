@@ -1,19 +1,20 @@
-package borscht.typed.valueparser
+package borscht.typed
 
 import borscht.typed.ValueType
 import borscht.typed.types.{TestValueParser, TestValueType}
+import borscht.typed.valueparser.UnknownTypeException
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class ParseTest extends AnyFlatSpec with Matchers:
+class ParsersTest extends AnyFlatSpec with Matchers:
   private val types = Iterator("abc", "def", "ghi", "jkl", "mno").map(name => name -> TestValueType(name)).toMap
 
-  "Parse function" should "parse a parameterless definition" in {
-    parse("abc", types) shouldEqual TestValueParser("abc", Nil)
+  "Parse type function" should "parse a parameterless definition" in {
+    parseType("abc", types) shouldEqual TestValueParser("abc", Nil)
   }
 
   it should "parse definition with parameters" in {
-    parse("abc[abc[], def[abc, ghi[jkl]], mno]", types) shouldEqual
+    parseType("abc[abc[], def[abc, ghi[jkl]], mno]", types) shouldEqual
       TestValueParser("abc", List(
         TestValueParser("abc", Nil),
         TestValueParser("def", List(
@@ -23,7 +24,7 @@ class ParseTest extends AnyFlatSpec with Matchers:
   }
 
   it should "return None on a missed type" in {
-    val e = the[UnknownTypeException] thrownBy parse("abc[abc[], def[abc, ghi[jkl]], miss]", types)
+    val e = the[UnknownTypeException] thrownBy parseType("abc[abc[], def[abc, ghi[jkl]], miss]", types)
     e.`type` shouldBe "miss"
   }
 
