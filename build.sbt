@@ -121,6 +121,14 @@ lazy val examples = project
     publishArtifact := false)
   .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`)
 
+lazy val classic = project
+  .in(file("classic"))
+  .settings(
+    name := "borscht-classic")
+  .dependsOn(
+    `recipe-typesafe`, `template-st4`
+  )
+
 lazy val root = project
   .in(file("."))
   .settings(
@@ -130,4 +138,4 @@ lazy val root = project
     core, `test-core`,
     `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`,
     `template-core`, `template-st4`, `template-apache-commons-text`,
-    examples)
+    examples, classic)
