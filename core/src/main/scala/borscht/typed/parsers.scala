@@ -12,9 +12,8 @@ def parseValue(node: Node): Any = node match
   case cfg: CfgNode if cfg.size == 1 =>
     val (tp, node) = cfg.iterator.next
     parseType(tp, cfg.meta.valueTypes)(node)
-  case node: Node => node.parse[String] split(":", 2) match
-    case Array(value) => node match
-      case scalar: ScalarNode => scalar.value
-      case other => other
-    case Array(tp, value) => parseType(tp, node.meta.valueTypes)(new VirtualScalarNode(value, node))
+  case scalar: ScalarNode => scalar.asString split(":", 2) match
+    case Array(value) => scalar.value
+    case Array(tp, value) => parseType(tp, scalar.meta.valueTypes)(new VirtualScalarNode(value, scalar))
     case unexpected => throw Error(s"Unexpected array size ${unexpected.length}")
+  case node: Node => node

@@ -1,6 +1,6 @@
 package borscht.template.impl.apache.commons.text
 
-import borscht.Node
+import borscht.{Node, SeqNode}
 import borscht.parsers.{NodeParserComponentRef, NodeParserList, NodeParserString}
 import borscht.reflect.ComponentRef
 import borscht.template.impl.apache.commons.text.renderers.Renderer
@@ -14,6 +14,8 @@ final class ACTTemplateEngine(substitutor: StringSubstitutor,
   def this() = this(ACTTemplateEngine.DefaultStringSubstitutor, Nil, ValueFormat.default)
 
   def this(renderers: List[Renderer]) = this(ACTTemplateEngine.DefaultStringSubstitutor, renderers, ValueFormat.default)
+
+  def this(renderers: SeqNode) = this(renderers.list[ComponentRef[Renderer]] map (_.get))
 
   override def apply(template: Node): Template =
     ACTTemplate(substitutor, template.parse[String], renderers, valueFormat)

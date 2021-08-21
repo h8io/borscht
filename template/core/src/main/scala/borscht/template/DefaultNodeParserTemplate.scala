@@ -16,6 +16,10 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
 
   def this(underlying: Map[String, TemplateEngine], default: String) = this(underlying, Some(default))
 
+  def this(underlying: CfgNode) = this(DefaultNodeParserTemplate.underlying(underlying))
+
+  def this(underlying: CfgNode, default: String) = this(DefaultNodeParserTemplate.underlying(underlying), default)
+
   override def isDefinedAt(node: Node): Boolean = node match
     case cfg: CfgNode => (cfg.get[String](Engine) flatMap underlying.get).isDefined || default.isDefined
     case _ => default.isDefined
@@ -43,3 +47,9 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
   private inline def Template = "template"
 
   private inline def Parameters = "parameters"
+
+private object DefaultNodeParserTemplate:
+  private def underlying(cfg: CfgNode) = cfg.map[ComponentRef[TemplateEngine]]() map { (name, component) =>
+    name -> component.get
+  }
+

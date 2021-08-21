@@ -37,6 +37,8 @@ trait SeqNode extends Node with Iterable[Node] :
   override def withMeta(meta: Meta): SeqNode
 
   final def `type`: NodeType = NodeType.seq
+  
+  final def list[T](using parser: NodeParser[T]) = (this.iterator map parser).toList
 
   override def toString: String = mkString(s"${getClass.getName}([", ", ", "])")
 
