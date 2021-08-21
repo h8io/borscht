@@ -4,22 +4,26 @@ borscht:
     parameters:
       default: st4
       underlying:
-        node:
+        map[$, component]:
           st4:
             class: borscht.template.impl.st4.ST4TemplateEngine
             parameters:
               renderers:
-                node:
+                "list[component]":
                   -
                     class: borscht.template.impl.st4.renderers.TemporalAccessorRenderer
                     parameters:
                       formats:
-                        node: {}
+                        component:
+                          class: borscht.template.renderers.TimeFormats
+                          parameters:
+                            formats:
+                              "map[$, $]": {}
           act:
             class: borscht.template.impl.apache.commons.text.ACTTemplateEngine
             parameters:
               renderers:
-                node:
+                "list[component]":
                   - borscht.template.impl.apache.commons.text.renderers.TemporalRenderer
 
 scalar: <value>

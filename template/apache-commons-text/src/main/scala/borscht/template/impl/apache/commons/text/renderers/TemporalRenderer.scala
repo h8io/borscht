@@ -14,8 +14,6 @@ import java.util.{Calendar, Date, Locale}
 final class TemporalRenderer(formats: TimeFormats) extends Renderer:
   def this() = this(TimeFormats.default)
 
-  def this(formats: CfgNode) = this(new TimeFormats(formats))
-
   override def apply(vf: ValueFormat, value: Any): Option[String] = value match
     case temporal: TemporalAccessor => Some(formats.format(vf.format, vf.locale, temporal))
     case date: Date => Some(render(vf, date))

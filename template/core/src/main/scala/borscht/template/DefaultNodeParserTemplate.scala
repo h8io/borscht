@@ -12,12 +12,9 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
       underlying.get(engine) getOrElse (throw IllegalArgumentException("Unknown default engine $engine"))
     }, underlying)
 
-  private def this(underlying: CfgNode, default: Option[String]) =
-    this(underlying.map[ComponentRef[TemplateEngine]]() map { (key, value) => key -> value.get }, default)
+  def this(underlying: Map[String, TemplateEngine]) = this(underlying, None)
 
-  def this(underlying: CfgNode) = this(underlying, None)
-
-  def this(underlying: CfgNode, default: String) = this(underlying, Some(default))
+  def this(underlying: Map[String, TemplateEngine], default: String) = this(underlying, Some(default))
 
   override def isDefinedAt(node: Node): Boolean = node match
     case cfg: CfgNode => (cfg.get[String](Engine) flatMap underlying.get).isDefined || default.isDefined

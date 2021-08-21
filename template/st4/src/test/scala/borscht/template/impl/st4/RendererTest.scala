@@ -1,6 +1,7 @@
 package borscht.template.impl.st4
 
 import borscht.template.impl.st4.renderers.TemporalAccessorRenderer
+import borscht.template.renderers.TimeFormats
 import borscht.test.{cfg, scalar, seq}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.must.Matchers
@@ -9,14 +10,9 @@ import java.time.format.DateTimeFormatter
 import java.time.{LocalDate, LocalTime, OffsetTime}
 
 class RendererTest extends AnyFlatSpec with Matchers:
-  private val parser = ST4TemplateEngine(seq(classOf[TemporalAccessorRenderer].getName))
-  private val customParser = ST4TemplateEngine(seq(
-    cfg("class" -> classOf[TemporalAccessorRenderer].getName,
-      "parameters" -> cfg("formats" -> cfg(
-         "node" -> cfg(
-          "date" -> "dd.MM.yyyy",
-          "time" -> "HH-mm-ss",
-          "datetime" -> "HH:mm MM/dd/yyyy"))))))
+  private val parser = ST4TemplateEngine(List(new TemporalAccessorRenderer()))
+  private val customParser = ST4TemplateEngine(List(new TemporalAccessorRenderer(
+    new TimeFormats(Map("date" -> "dd.MM.yyyy", "time" -> "HH-mm-ss", "datetime" -> "HH:mm MM/dd/yyyy")))))
 
   "Default temporal accessor renderer" should "render date and time with format string" in {
     val date = DateTimeFormatter.ISO_DATE_TIME.parse("1961-04-12T09:07:00+03:00[Europe/Moscow]")

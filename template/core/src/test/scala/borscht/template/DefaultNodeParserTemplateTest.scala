@@ -3,18 +3,16 @@ package borscht.template
 import borscht.{Node, NodeParser, ScalarNode}
 import borscht.parsers.NodeParserComponentRef
 import borscht.reflect.ComponentRef
-import borscht.test.{cfg, scalar}
+import borscht.test.{cfg, scalar, seq}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
-  private val enginesCfg = cfg(
-    "test1" -> cfg("class" -> classOf[TestTemplateEngine].getName, "parameters" -> "test1"),
-    "test2" -> cfg("class" -> classOf[TestTemplateEngine].getName, "parameters" -> "test2"))
+  private val engines = Map("test1" -> TestTemplateEngine("test1"), "test2" -> TestTemplateEngine("test2"))
 
-  private def parserWithDefault = DefaultNodeParserTemplate(enginesCfg, "test1")
+  private def parserWithDefault = DefaultNodeParserTemplate(engines, "test1")
 
-  private def parserWithoutDefault = DefaultNodeParserTemplate(enginesCfg)
+  private def parserWithoutDefault = DefaultNodeParserTemplate(engines)
 
   extension (parser: DefaultNodeParserTemplate)
     def test(node: Node): TestTemplate = parser.apply(node).asInstanceOf[TestTemplate]
@@ -69,7 +67,7 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
   }
 
   it should "fail on creation if default engine is unknown" in {
-    a[IllegalArgumentException] should be thrownBy DefaultNodeParserTemplate(enginesCfg, "test3")
+    a[IllegalArgumentException] should be thrownBy DefaultNodeParserTemplate(engines, "test3")
   }
 
   it should "fail on unknown engine in the template definition" in {
@@ -80,7 +78,11 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
   it should "be retrieved as a component" in {
     val parser = cfg("class" -> classOf[DefaultNodeParserTemplate].getName,
       "parameters" -> cfg(
-        "underlying" -> cfg("node" -> enginesCfg),
+        "underlying" -> cfg("map[$, component]" -> cfg(
+          "test1" -> cfg("class" -> classOf[TestTemplateEngine].getName,
+            "parameters" -> "test1"),
+          "test2" -> cfg("class" -> classOf[TestTemplateEngine].getName,
+            "parameters" -> "test2"))),
         "default" -> "test2"))[ComponentRef[NodeParser[Template]]]().get.asInstanceOf[DefaultNodeParserTemplate]
 
     val scalarTmpl = parser.test(scalar("template text"))
