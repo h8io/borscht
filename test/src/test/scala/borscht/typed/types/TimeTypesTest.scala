@@ -5,7 +5,6 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.time.{ZoneId, ZoneOffset, ZonedDateTime}
-import scala.util.Right
 
 class TimeTypesTest extends AnyFlatSpec with Matchers:
   "Zone value type" should "parse a region id" in {

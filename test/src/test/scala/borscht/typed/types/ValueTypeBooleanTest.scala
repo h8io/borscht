@@ -4,8 +4,6 @@ import borscht.test.scalar
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-import scala.util.Right
-
 class ValueTypeBooleanTest extends AnyFlatSpec with Matchers:
   "Value type boolean" should "parse string values correctly" in {
     ValueTypeBoolean.parser(Nil) map (_(scalar("true"))) shouldBe Right(true)

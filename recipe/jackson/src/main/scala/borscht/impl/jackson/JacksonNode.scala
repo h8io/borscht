@@ -1,6 +1,6 @@
 package borscht.impl.jackson
 
-import borscht.{CfgNodeParserException, Meta, Node, Position}
+import borscht.{NodeParserException, Meta, Node, Position}
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
 
@@ -15,4 +15,4 @@ private[jackson] def wrap(src: JacksonSource, meta: Meta): JsonNode => Node =
   case obj: ObjectNode => JacksonCfgNode(obj, src, meta)
   case array: ArrayNode => JacksonSeqNode(array, src, meta)
   case value: ValueNode => JacksonScalarNode(value, src, meta)
-  case node => throw new CfgNodeParserException(s"Unsupported Jackson node: $node", src)
+  case node => throw new NodeParserException(s"Unsupported Jackson node: $node", src)

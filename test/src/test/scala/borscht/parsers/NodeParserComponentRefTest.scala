@@ -1,6 +1,6 @@
 package borscht.parsers
 
-import borscht.CfgNodeParserException
+import borscht.NodeParserException
 import borscht.reflect.*
 import borscht.test.*
 import org.scalatest.flatspec.AnyFlatSpec
@@ -21,7 +21,7 @@ class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
 
   it should "fail without parameterless constructor" in {
     val config = cfg("component" -> classOf[ComponentWithCfgConstructor].getName)
-    a[CfgNodeParserException] should be thrownBy config[ComponentRef[Superclass]]("component")
+    a[NodeParserException] should be thrownBy config[ComponentRef[Superclass]]("component")
   }
 
   it should "return a correct object with both constructors" in {
@@ -34,7 +34,7 @@ class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
 
   it should "fail without an appropriate constructor" in {
     val config = cfg("component" -> classOf[ComponentWithoutAppropriateConstructor].getName)
-    a[CfgNodeParserException] should be thrownBy config[ComponentRef[Superclass]]("component")
+    a[NodeParserException] should be thrownBy config[ComponentRef[Superclass]]("component")
   }
 
   "Configuration component reference node without cfg" should
@@ -49,7 +49,7 @@ class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
 
   it should "fail without parameterless constructor" in {
     val config = cfg("class" -> classOf[ComponentWithCfgConstructor].getName)
-    a[CfgNodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
+    a[NodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
   }
 
   it should "return a correct object with both constructors" in {
@@ -62,13 +62,13 @@ class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
 
   it should "fail without an appropriate constructor" in {
     val config = cfg("class" -> classOf[ComponentWithoutAppropriateConstructor].getName)
-    a[CfgNodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
+    a[NodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
   }
 
   "Configuration component reference node" should "fail without configuration constructor" in {
     val config =
       cfg("class" -> classOf[ComponentWithParameterlessConstructor].getName, "parameters" -> parameters)
-    a[CfgNodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
+    a[NodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
   }
 
   it should "return a correct object with configuration constructor" in {
@@ -90,7 +90,7 @@ class NodeParserComponentRefTest extends AnyFlatSpec with Matchers :
   it should "fail without an appropriate constructor" in {
     val config =
       cfg("class" -> classOf[ComponentWithoutAppropriateConstructor].getName, "parameters" -> parameters)
-    a[CfgNodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
+    a[NodeParserException] should be thrownBy config[ComponentRef[Superclass]]()
   }
 
   "Component" should "be created with multiple named parameters" in {

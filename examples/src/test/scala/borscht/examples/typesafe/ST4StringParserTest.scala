@@ -1,6 +1,6 @@
 package borscht.examples.typesafe
 
-import borscht.CfgNodeParserException
+import borscht.NodeParserException
 import borscht.impl.typesafe.TypesafeRecipe
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec

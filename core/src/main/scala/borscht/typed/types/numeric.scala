@@ -1,55 +1,47 @@
 package borscht.typed.types
 
-import borscht.ScalarNode
+import borscht.{Node, ScalarNode}
 import borscht.parsers.given
 import borscht.typed.ValueParser
 
 import java.lang.{Byte as jByte, Double as jDouble, Float as jFloat, Integer as jInt, Long as jLong, Short as jShort}
 
-object ValueTypeBigInt extends ValueTypeInheritedWithStringParser[BigInt]:
-  override def parse(value: String): BigInt = BigInt(value)
+object ValueTypeBigInt extends ValueTypeInherited[BigInt]
 
-object ValueTypeBigDecimal extends ValueTypeInheritedWithStringParser[BigDecimal]:
-  override def parse(value: String): BigDecimal = BigDecimal(value)
+object ValueTypeBigDecimal extends ValueTypeInherited[BigDecimal]
 
 
-object ValueTypeByte extends ValueTypeInheritedWithStringParser[Byte]:
-  override def parse(value: String): Byte = value.toByte
+object ValueTypeByte extends ValueTypeInherited[Byte]
 
 object ValueTypeJByte extends ValueTypePlain[jByte]:
-  override def parse(value: String): jByte = jByte.valueOf(value)
+  override protected def parse(value: String): jByte = jByte.valueOf(value)
 
 
-object ValueTypeDouble extends ValueTypeInheritedWithStringParser[Double]:
-  override def parse(value: String): Double = value.toDouble
+object ValueTypeDouble extends ValueTypeInherited[Double]
 
 object ValueTypeJDouble extends ValueTypePlain[jDouble]:
-  override def parse(value: String): jDouble = jDouble.valueOf(value)
+  override protected def parse(value: String): jDouble = jDouble.valueOf(value)
 
 
-object ValueTypeFloat extends ValueTypeInheritedWithStringParser[Float]:
-  override def parse(value: String): Float = value.toFloat
+object ValueTypeFloat extends ValueTypeInherited[Float]
 
 object ValueTypeJFloat extends ValueTypePlain[jFloat]:
-  override def parse(value: String): jFloat = jFloat.valueOf(value)
+  override protected def parse(value: String): jFloat = jFloat.valueOf(value)
 
 
-object ValueTypeInt extends ValueTypeInheritedWithStringParser[Int]:
-  override def parse(value: String): Int = value.toInt
+object ValueTypeInt extends ValueTypeInherited[Int]
 
 object ValueTypeJInt extends ValueTypePlain[jInt]:
-  override def parse(value: String): jInt = jInt.valueOf(value)
+  override protected def parse(value: String): jInt = jInt.valueOf(value)
 
 
-object ValueTypeLong extends ValueTypeInheritedWithStringParser[Long]:
-  override def parse(value: String): Long = value.toLong
+object ValueTypeLong extends ValueTypeInherited[Long]
 
 object ValueTypeJLong extends ValueTypePlain[jLong]:
-  override def parse(value: String): jLong = jLong.valueOf(value)
+  override protected def parse(value: String): jLong = jLong.valueOf(value)
 
 
-object ValueTypeShort extends ValueTypeInheritedWithStringParser[Short]:
-  override def parse(value: String): Short = value.toShort
+object ValueTypeShort extends ValueTypeInherited[Short]
 
 object ValueTypeJShort extends ValueTypePlain[jShort]:
-  override def parse(value: String): jShort = jShort.valueOf(value)
+  override protected def parse(value: String): jShort = jShort.valueOf(value)

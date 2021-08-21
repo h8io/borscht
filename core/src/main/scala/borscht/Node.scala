@@ -33,11 +33,6 @@ trait ScalarNode extends Node:
 
   override def toString: String = s"${getClass.getName}($value)"
 
-final case class VirtualScalarNode(value: Any, meta: Meta, position: Position) extends ScalarNode:
-  def this(value: Any, node: Node) = this(value, node.meta, node.position)
-
-  override def withMeta(meta: Meta): VirtualScalarNode = copy(meta = meta)
-
 trait SeqNode extends Node with Iterable[Node] :
   override def withMeta(meta: Meta): SeqNode
 
@@ -60,7 +55,7 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
 
   final def get[T: NodeParser](ref: String*): Option[T] = node(ref: _*) map { n =>
     try n.parse[T] catch {
-      case e: Exception if !e.isInstanceOf[CfgException] => throw CfgNodeParserException(n.position, e)
+      case e: Exception if !e.isInstanceOf[CfgException] => throw NodeParserException(n.position, e)
     }
   }
 

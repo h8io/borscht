@@ -27,7 +27,7 @@ class NodeParserValueParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "throw an exception if it is not defined in meta" in {
-    val e = the[CfgNodeParserException] thrownBy config[ValueParser]("parser")
+    val e = the[NodeParserException] thrownBy config[ValueParser]("parser")
     e.getCause shouldBe a[UnknownTypeException]
   }
 

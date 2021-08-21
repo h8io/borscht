@@ -1,6 +1,6 @@
 package borscht.impl.jackson
 
-import borscht.{CfgNodeParserException, Meta, ScalarNode}
+import borscht.{NodeParserException, Meta, ScalarNode}
 import com.fasterxml.jackson.databind.JsonNode
 import com.fasterxml.jackson.databind.node.*
 
@@ -13,7 +13,7 @@ private[jackson] object JacksonScalarNode:
       case node: NumericNode => node.numberValue
       case node: POJONode => node.getPojo
       case node: TextNode => node.textValue
-      case node => throw CfgNodeParserException(s"Unsupported scalar node: $node", src)
+      case node => throw NodeParserException(s"Unsupported scalar node: $node", src)
     new JacksonScalarNode(unwrapped, node, src, meta)
 
 

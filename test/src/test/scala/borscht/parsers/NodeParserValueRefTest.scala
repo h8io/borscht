@@ -68,7 +68,7 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
   }
 
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
-    val e = the[CfgNodeParserException] thrownBy config[ValueRef]("my-str")
+    val e = the[NodeParserException] thrownBy config[ValueRef]("my-str")
     e.getCause shouldBe a[UnknownTypeException]
     config[ValueRef]("str") shouldEqual ValueRef("The Answer")
     config[ValueRef]("num") shouldEqual ValueRef(42)

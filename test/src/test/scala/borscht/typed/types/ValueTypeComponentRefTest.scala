@@ -5,8 +5,6 @@ import borscht.test.{cfg, seq}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-import scala.util.Right
-
 class ValueTypeComponentRefTest extends AnyFlatSpec with Matchers:
   "Component reference value type" should "create a correct component instance" in {
     ValueTypeComponentRef.parser(Nil) map { parser =>

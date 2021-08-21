@@ -6,7 +6,9 @@ import borscht.typed.ValueParser
 
 import scala.reflect.ClassTag
 
-trait ValueTypePlain[T](using tag: ClassTag[T]) extends ValueTypeParameterless with StringParser[T]:
-  override def apply(node: Node): Any = node match
-    case node: ScalarNode => tag.unapply(node.value) getOrElse parse(node.parse[String])
-    case node => parse(node.parse[String])
+trait ValueTypePlain[T](using tag: ClassTag[T]) extends ValueTypeParameterless:
+  override def apply(node: Node): T = node match
+    case scalar: ScalarNode => tag.unapply(scalar.value) getOrElse parse(scalar.asString)
+    case _ => parse(node.parse[String])
+
+  protected def parse(value: String): T

@@ -1,6 +1,6 @@
 package borscht.examples.jackson.yaml
 
-import borscht.CfgNodeParserException
+import borscht.NodeParserException
 import borscht.impl.jackson.yaml.YamlRecipe
 import borscht.parsers.given
 import org.scalatest.flatspec.AnyFlatSpec

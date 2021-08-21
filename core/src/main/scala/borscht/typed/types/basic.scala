@@ -1,34 +1,26 @@
 package borscht.typed.types
 
-import borscht.{Node, SeqNode, util}
 import borscht.parsers.given
+import borscht.typed
 import borscht.typed.{AbstractValueType, ValueParser, ValueRef}
+import borscht.{Node, SeqNode, util}
 
 import java.lang.Boolean as jBoolean
 
-object ValueTypeString extends ValueTypeInheritedWithStringParser[String]:
-  override def parse(value: String): String = value
+object ValueTypeAny extends ValueTypeParameterless:
+  override def apply(node: Node): Any = node.parse[ValueRef].get
 
 
-object ValueTypeBoolean extends ValueTypeInheritedWithStringParser[Boolean]:
-  override def parse(value: String): Boolean = value.toBoolean
+object ValueTypeString extends ValueTypeInherited[String]
 
-object ValueTypeJBoolean extends ValueTypeParameterless with StringParser[jBoolean]:
+
+object ValueTypeBoolean extends ValueTypeInherited[Boolean]
+
+object ValueTypeJBoolean extends ValueTypeParameterless:
   override def apply(node: Node): jBoolean = node.parse[Boolean]
 
-  override def parse(value: String): jBoolean = value.toBoolean
 
+object ValueTypeChar extends ValueTypeInherited[Char]
 
-object ValueTypeChar extends ValueTypeInheritedWithStringParser[Char]:
-  override def parse(value: String): Char = util.parseChar(value)
-
-object ValueTypeJChar extends ValueTypeParameterless with StringParser[Character]:
+object ValueTypeJChar extends ValueTypeParameterless:
   override def apply(node: Node): Character = node.parse[Char]
-
-  override def parse(value: String): Character = util.parseChar(value)
-
-
-object ValueTypeList extends ValueTypeWithOptionalParameter:
-  override protected def create(parser: Option[ValueParser]): ValueParser = node => node match
-    case seq: SeqNode => (parser map seq.iterator.map getOrElse (seq.parse[List[ValueRef]].iterator map (_.get))).toList
-    case _ => List(parser map (_(node)) getOrElse node.parse[ValueRef].get)
