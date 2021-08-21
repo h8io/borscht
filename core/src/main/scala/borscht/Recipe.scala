@@ -1,19 +1,17 @@
 package borscht
 
+import java.io.{File, InputStream}
+import java.net.URL
 import java.nio.file.Path
 
+type CfgSource = File | Path | String | URL 
+
 class Recipe(provider: CfgProvider):
-  def parse(content: String): CfgNode = upgrade(provider.parse(content))
+  def apply(sources: CfgSource*): CfgNode = apply(sources)
 
-  def apply(): CfgNode = upgrade(provider())
-
-  def apply(paths: Iterable[Path]): CfgNode = if (paths.isEmpty) apply() else load(paths)
-
-  def load(paths: Iterable[Path]): CfgNode = upgrade(provider.load(paths))
-
-  def apply(paths: Path*): CfgNode = apply(paths)
+  def apply(sources: Iterable[CfgSource]): CfgNode = upgrade(provider(sources))
 
   private def upgrade(cfg: CfgNode): CfgNode = cfg.withMeta(Meta(cfg))
 
   implicit final class CfgStringContext(sc: StringContext):
-    def cfg(args: Any*): CfgNode = parse(sc.s(args: _*).stripMargin)
+    def cfg(args: Any*): CfgNode = apply(sc.s(args: _*).stripMargin)

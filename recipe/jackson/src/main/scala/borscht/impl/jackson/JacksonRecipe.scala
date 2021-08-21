@@ -5,6 +5,8 @@ import borscht.impl.system.SystemCfgNode
 import com.fasterxml.jackson.databind.node.ObjectNode
 import com.fasterxml.jackson.databind.{JsonNode, ObjectMapper}
 
+import java.io.File
+import java.net.URL
 import java.nio.file.Path
 import scala.collection.immutable.Queue
 
@@ -12,22 +14,24 @@ open class JacksonRecipe(mapper: ObjectMapper, defaultFileNames: List[String] = 
   extends Recipe(JacksonCfgProvider(mapper, defaultFileNames))
 
 private class JacksonCfgProvider(mapper: ObjectMapper, defaultFileNames: List[String] = Nil) extends CfgProvider :
-  override def parse(content: String): CfgNode =
-    asConfigNode(mapper.readTree(content), JacksonSource.raw)
-
-  override def apply(): CfgNode =
-    (defaultFileNames.iterator map ClassLoader.getSystemResource filter (_ != null)).nextOption map { url =>
-      val src = JacksonSource.url(url)
-      asConfigNode(mapper.readTree(url), src) ++ SystemCfgNode()
-    } getOrElse {
-      throw CfgException(s"A default file is not found",
-        JacksonSource.oneOf(Queue.from(defaultFileNames map JacksonSource.resource.apply)))
-    }
-
-  override def load(paths: Iterable[Path]): CfgNode =
-    (paths.iterator map { path =>
-      asConfigNode(mapper.readTree(path.toFile), JacksonSource.path(path))
-    } reduce (_ ++ _)) ++ SystemCfgNode()
+  override def apply(sources: Iterable[CfgSource]): CfgNode =
+    if (sources.isEmpty)
+      (defaultFileNames.iterator map ClassLoader.getSystemResource filter (_ != null)).nextOption map { url =>
+        val src = JacksonSource.url(url)
+        asConfigNode(mapper.readTree(url), src) ++ SystemCfgNode()
+      } getOrElse {
+        throw CfgException(s"A default file is not found",
+          JacksonSource.oneOf(Queue.from(defaultFileNames map JacksonSource.resource.apply)))
+      }
+    else
+      (sources.iterator map { source =>
+        val (node, src) = source match
+          case file: File => (mapper.readTree(file), JacksonSource.file(file))
+          case path: Path => (mapper.readTree(path.toFile), JacksonSource.path(path))
+          case content: String => (mapper.readTree(content), JacksonSource.raw)
+          case url: URL => (mapper.readTree(url), JacksonSource.url(url))
+        asConfigNode(node, src)
+      } reduce (_ ++ _)) ++ SystemCfgNode()
 
   private def asConfigNode(node: JsonNode, src: JacksonSource): CfgNode =
     JacksonCfgNode(asObjectNode(node, src), src, Meta.Empty)

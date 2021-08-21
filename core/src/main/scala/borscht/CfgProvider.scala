@@ -1,11 +1,8 @@
 package borscht
 
+import java.io.InputStream
+import java.net.URL
 import java.nio.file.Path
 
 trait CfgProvider:
-  def parse(content: String): CfgNode
-
-  def apply(): CfgNode
-  
-  def load(paths: Iterable[Path]): CfgNode
-
+  def apply(sources: Iterable[CfgSource]): CfgNode
