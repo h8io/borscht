@@ -1,4 +1,4 @@
-package borscht.typed.valueparser
+package borscht.typed.parser
 
 import scala.annotation.tailrec
 import scala.collection.BitSet

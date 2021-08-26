@@ -1,8 +1,10 @@
 package borscht.typed.types
 
-import borscht.typed.{AbstractValueType, ValueParser}
+import borscht.NodeParser
+import borscht.typed.AbstractValueType
 
-case class TestValueType(name: String) extends AbstractValueType[List[ValueParser]]:
-  override protected def prepare(parameters: List[ValueParser]): Either[String, List[ValueParser]] = Right(parameters)
+case class TestValueType(name: String) extends AbstractValueType[List[NodeParser[?]]]:
+  override protected def prepare(parameters: List[NodeParser[?]]): Either[String, List[NodeParser[?]]] =
+    Right(parameters)
 
-  override protected def create(parameters: List[ValueParser]): ValueParser = TestValueParser(name, parameters)
+  override protected def create(parameters: List[NodeParser[?]]): NodeParser[?] = TestValueParser(name, parameters)

@@ -6,7 +6,7 @@ import borscht.reflect.ComponentRef
 import borscht.typed.ValueRefEntries
 
 class DefaultNodeParserTemplate(default: Option[TemplateEngine],
-                                underlying: Map[String, TemplateEngine]) extends NodeParser[Template]:
+                                underlying: Map[String, TemplateEngine]) extends PartialNodeParser[Template]:
   private def this(underlying: Map[String, TemplateEngine], default: Option[String]) = this(
     default map { engine =>
       underlying.get(engine) getOrElse (throw IllegalArgumentException("Unknown default engine $engine"))

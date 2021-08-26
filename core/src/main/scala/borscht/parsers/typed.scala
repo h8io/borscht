@@ -3,8 +3,6 @@ package borscht.parsers
 import borscht.*
 import borscht.typed.*
 
-given NodeParserValueParser: NodeParser[ValueParser] =
-  case node => parseType(node.as[String], node.meta.valueTypes)
+given NodeParserNodeParser: NodeParser[NodeParser[?]] = node => parseType(node.as[String], node.meta.valueTypes)
 
-given NodeParserValueRef: NodeParser[ValueRef] =
-  case node => ValueRef(parseValue(node))
+given NodeParserValueRef: NodeParser[ValueRef] = node => ValueRef(parseValue(node))

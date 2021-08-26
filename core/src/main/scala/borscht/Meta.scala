@@ -17,10 +17,10 @@ case class Meta(val nodeParserRenderableString: Option[NodeParser[RenderableStri
   private def merge[T](fallback: Option[NodeParser[T]], main: Option[NodeParser[T]]): Option[NodeParser[T]] =
     fallback match
       case `main` => main
-      case Some(fallbackParser) => main map (_ orElse fallbackParser) orElse fallback
+      case Some(fallbackParser) => main orElse fallback
       case None => main
 
-object Meta extends (CfgNode => Meta) :
+object Meta extends (CfgNode => Meta):
   override def apply(cfg: CfgNode): Meta =
     cfg.get[CfgNode]("borscht") map { nps =>
       new Meta(

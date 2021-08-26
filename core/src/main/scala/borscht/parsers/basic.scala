@@ -11,17 +11,19 @@ import scala.compiletime.summonFrom
 import scala.jdk.CollectionConverters.*
 
 given NodeParserString: NodeParser[String] =
-  NodeParserPlainString orElse { case node =>
-    node.meta.nodeParserRenderableString map (_(node).render) getOrElse {
-      throw IllegalStateException("Renderable string parser is not defined")
-    }
+  case scalar: ScalarNode => scalar.asString
+  case node => node.meta.nodeParserRenderableString map (_(node).render) getOrElse {
+    throw IllegalStateException("Renderable string parser is not defined")
   }
 
-given NodeParserBoolean: NodeParser[Boolean] = NodeParserScalarAny andThen {
-  case v: jBoolean => v.booleanValue
-  case v: String => v.toBoolean
-  case v: Number => v != 0
-}
+given NodeParserBoolean: NodeParser[Boolean] =
+  case scalar: ScalarNode => scalar.value match
+    case v: Boolean => v
+    case v: jBoolean => v.booleanValue
+    case v: String => v.toBoolean
+    case v: Number => v != 0
+  case node: Node => node.as[String].toBoolean
+
 
 given NodeParserChar: NodeParser[Char] =
   case scalar: ScalarNode => scalar.value match

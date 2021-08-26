@@ -1,11 +1,11 @@
-package borscht.typed.valueparser
+package borscht.typed.parser
 
-import borscht.typed.ValueParser
+import borscht.NodeParser
 
-private[valueparser] trait Parser extends (Event => Parser):
+private[parser] trait Parser extends (Event => Parser):
   protected def parse: PartialFunction[Event, Parser]
 
   final def apply(event: Event): Parser =
     (parse orElse { case unexpected => throw UnexpectedEventException(unexpected) })(event)
 
-  def result: Option[ValueParser] = None
+  def result: Option[NodeParser[?]] = None

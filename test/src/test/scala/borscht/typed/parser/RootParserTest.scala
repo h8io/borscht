@@ -1,6 +1,7 @@
-package borscht.typed.valueparser
+package borscht.typed.parser
 
 import borscht.typed.ValueType
+import borscht.typed.parser.{AfterParser, Events, UnknownTypeException}
 import borscht.typed.types.{TestValueParser, TestValueType}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers

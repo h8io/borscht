@@ -2,9 +2,10 @@ package borscht.parsers
 
 import borscht.*
 
-given NodeParserScalarNode: NodeParser[ScalarNode] = { case node: ScalarNode => node }
+given NodeParserScalarNode: PartialNodeParser[ScalarNode] =
+  case node: ScalarNode => node
 
-given NodeParserSeqNode: NodeParser[SeqNode] =
+given NodeParserSeqNode: PartialNodeParser[SeqNode] =
   case node: SeqNode => node
   case node =>
     class SingletonSeqNode(val meta: Meta = node.meta) extends SeqNode:
@@ -13,4 +14,5 @@ given NodeParserSeqNode: NodeParser[SeqNode] =
       override def position: Position = node.position
     SingletonSeqNode()
 
-given NodeParserCfgNode: NodeParser[CfgNode] = { case node: CfgNode => node }
+given NodeParserCfgNode: PartialNodeParser[CfgNode] =
+  case node: CfgNode => node

@@ -3,12 +3,12 @@ package borscht.parsers
 import borscht.*
 import borscht.test.*
 import borscht.typed.*
+import borscht.typed.parser.UnknownTypeException
 import borscht.typed.types.{TestValueParser, TestValueType, ValueTypeParameterless}
-import borscht.typed.valueparser.UnknownTypeException
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class NodeParserValueParserTest extends AnyFlatSpec with Matchers:
+class NodeParserNodeParserTest extends AnyFlatSpec with Matchers:
   private val config = cfg("parser" -> "my-type")
 
   private object MyValueType extends ValueTypeParameterless:
@@ -18,7 +18,7 @@ class NodeParserValueParserTest extends AnyFlatSpec with Matchers:
 
   "Value parser node" should "parse type correctly" in {
     val meta = Meta(None, Map("type1" -> TestValueType("type1"), "type2" -> TestValueType("type2")))
-    scalar("type1[type2, type1[type2, type1]]").withMeta(meta).as[ValueParser] shouldEqual
+    scalar("type1[type2, type1[type2, type1]]").withMeta(meta).as[NodeParser[?]] shouldEqual
       TestValueParser("type1", List(
         TestValueParser("type2", Nil),
         TestValueParser("type1", List(
@@ -27,10 +27,10 @@ class NodeParserValueParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "throw an exception if it is not defined in meta" in {
-    val e = the[NodeParserException] thrownBy config[ValueParser]("parser")
+    val e = the[NodeParserException] thrownBy config[NodeParser[?]]("parser")
     e.getCause shouldBe a[UnknownTypeException]
   }
 
   it should "return a correct value for a scalar value" in {
-    (config withMeta testMeta)[ValueParser]("parser") shouldEqual MyValueType
+    (config withMeta testMeta)[NodeParser[?]]("parser") shouldEqual MyValueType
   }

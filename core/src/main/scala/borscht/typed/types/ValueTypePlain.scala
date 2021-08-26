@@ -1,8 +1,7 @@
 package borscht.typed.types
 
-import borscht.{Node, ScalarNode}
+import borscht.{Node, NodeParser, ScalarNode}
 import borscht.parsers.NodeParserString
-import borscht.typed.ValueParser
 
 import scala.reflect.ClassTag
 

@@ -2,7 +2,6 @@ package borscht.typed.types
 
 import borscht.{Node, ScalarNode}
 import borscht.parsers.given
-import borscht.typed.ValueParser
 
 import java.lang.{Byte as jByte, Double as jDouble, Float as jFloat, Integer as jInt, Long as jLong, Short as jShort}
 
