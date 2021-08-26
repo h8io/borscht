@@ -18,7 +18,7 @@ class NodeParserValueParserTest extends AnyFlatSpec with Matchers:
 
   "Value parser node" should "parse type correctly" in {
     val meta = Meta(None, Map("type1" -> TestValueType("type1"), "type2" -> TestValueType("type2")))
-    scalar("type1[type2, type1[type2, type1]]").withMeta(meta).parse[ValueParser] shouldEqual
+    scalar("type1[type2, type1[type2, type1]]").withMeta(meta).as[ValueParser] shouldEqual
       TestValueParser("type1", List(
         TestValueParser("type2", Nil),
         TestValueParser("type1", List(

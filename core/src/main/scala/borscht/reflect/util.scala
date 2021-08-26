@@ -34,7 +34,7 @@ def creator[T](`class`: Class[? <: T], named: CfgNode): () => T =
   }
 
 def creator[T](`class`: Class[? <: T], unnamed: Node): () => T =
-  val parameters = ValueRefs(unnamed.parse[SeqNode]).toArray
+  val parameters = ValueRefs(unnamed.as[SeqNode]).toArray
   val types = parameters map (_.getClass)
   getConstructors(`class`, types.size) find { constructor =>
     constructor.getParameterTypes.iterator zip types forall (_ isAssignableFrom _)

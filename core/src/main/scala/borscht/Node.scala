@@ -20,7 +20,7 @@ sealed trait Node:
 
   def toString: String
 
-  final def parse[T](using parser: NodeParser[T]) = parser(this)
+  final def as[T](using parser: NodeParser[T]) = parser(this)
 
 trait ScalarNode extends Node:
   def value: Any
@@ -56,7 +56,7 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
     }
 
   final def get[T: NodeParser](ref: String*): Option[T] = node(ref: _*) map { n =>
-    try n.parse[T] catch {
+    try n.as[T] catch {
       case e: Exception if !e.isInstanceOf[CfgException] => throw NodeParserException(n.position, e)
     }
   }

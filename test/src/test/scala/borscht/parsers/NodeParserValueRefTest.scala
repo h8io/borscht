@@ -19,7 +19,7 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
     "cfg" -> cfg("node" -> cfg("key" -> "value")))
 
   private val testMeta = new Meta(None, Map("my-type" -> new ValueTypeParameterless:
-    override def apply(node: Node): Any = node.parse[String] + "!"
+    override def apply(node: Node): Any = node.as[String] + "!"
   ))
 
   System.setProperty("prayer", "Cthulhu fhtagn")

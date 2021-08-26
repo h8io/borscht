@@ -18,7 +18,7 @@ final class ACTTemplateEngine(substitutor: StringSubstitutor,
   def this(renderers: SeqNode) = this(renderers.list[ComponentRef[Renderer]] map (_.get))
 
   override def apply(template: Node): Template =
-    ACTTemplate(substitutor, template.parse[String], renderers, valueFormat)
+    ACTTemplate(substitutor, template.as[String], renderers, valueFormat)
 
 object ACTTemplateEngine:
   object DefaultStringSubstitutor extends StringSubstitutor(

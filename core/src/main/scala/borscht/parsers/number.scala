@@ -9,7 +9,7 @@ given NodeParserBigInt: NodeParser[BigInt] =
     case v: Long => BigInt(v)
     case v: Array[Byte] => BigInt(v)
     case _ => BigInt(node.asString)
-  case node: Node => BigInt(node.parse[String])
+  case node: Node => BigInt(node.as[String])
 
 given NodeParserBigDecimal: NodeParser[BigDecimal] =
   case node: ScalarNode => node.value match
@@ -20,21 +20,21 @@ given NodeParserBigDecimal: NodeParser[BigDecimal] =
     case v: Double => BigDecimal(v)
     case v: Array[Char] => BigDecimal(v)
     case _ => BigDecimal(node.asString)
-  case node: Node => BigDecimal(node.parse[String])
+  case node: Node => BigDecimal(node.as[String])
 
 given NodeParserByte: NodeParser[Byte] =
   case node: ScalarNode => node.value match
     case v: Byte => v
     case v: Number => v.byteValue
     case _ => node.asString.toByte
-  case node: Node => node.parse[String].toByte
+  case node: Node => node.as[String].toByte
 
 given NodeParserDouble: NodeParser[Double] =
   case node: ScalarNode => node.value match
     case v: Double => v
     case v: Number => v.doubleValue
     case _ => node.asString.toDouble
-  case node: Node => node.parse[String].toDouble
+  case node: Node => node.as[String].toDouble
 
 
 given NodeParserFloat: NodeParser[Float] =
@@ -42,25 +42,25 @@ given NodeParserFloat: NodeParser[Float] =
     case v: Float => v
     case v: Number => v.floatValue
     case _ => node.asString.toFloat
-  case node: Node => node.parse[String].toFloat
+  case node: Node => node.as[String].toFloat
 
 given NodeParserInt: NodeParser[Int] =
   case node: ScalarNode => node.value match
     case v: Int => v
     case v: Number => v.intValue
     case _ => node.asString.toInt
-  case node: Node => node.parse[String].toInt
+  case node: Node => node.as[String].toInt
 
 given NodeParserLong: NodeParser[Long] =
   case node: ScalarNode => node.value match
     case v: Long => v
     case v: Number => v.longValue
     case _ => node.asString.toLong
-  case node: Node => node.parse[String].toLong
+  case node: Node => node.as[String].toLong
 
 given NodeParserShort: NodeParser[Short] =
   case node: ScalarNode => node.value match
     case v: Short => v
     case v: Number => v.shortValue
     case _ => node.asString.toShort
-  case node: Node => node.parse[String].toShort
+  case node: Node => node.as[String].toShort

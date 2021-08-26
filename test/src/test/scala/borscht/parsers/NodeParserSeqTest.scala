@@ -10,7 +10,7 @@ class NodeParserSeqTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide a list of numbers" in {
-    seq(42, 2.66).parse[List[BigDecimal]] should contain theSameElementsInOrderAs List(42, 2.66)
+    seq(42, 2.66).as[List[BigDecimal]] should contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers" in {
@@ -19,7 +19,7 @@ class NodeParserSeqTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide a list of numbers from a string sequence" in {
-    seq("42", "2.66").parse[List[BigDecimal]] should contain theSameElementsInOrderAs List(42, 2.66)
+    seq("42", "2.66").as[List[BigDecimal]] should contain theSameElementsInOrderAs List(42, 2.66)
   }
 
   it should "provide a singleton list of numbers from a string value" in {
@@ -28,10 +28,10 @@ class NodeParserSeqTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide a list of booleans" in {
-    seq(true, true, false).parse[List[Boolean]] should contain theSameElementsInOrderAs List(true, true, false)
+    seq(true, true, false).as[List[Boolean]] should contain theSameElementsInOrderAs List(true, true, false)
   }
 
   it should "provide a list of booleans from a string sequence" in {
-    seq("false", "true", "false").parse[List[Boolean]] should contain theSameElementsInOrderAs
+    seq("false", "true", "false").as[List[Boolean]] should contain theSameElementsInOrderAs
       List(false, true, false)
   }

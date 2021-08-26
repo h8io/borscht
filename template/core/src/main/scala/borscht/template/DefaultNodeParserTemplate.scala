@@ -27,7 +27,7 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
   override def apply(node: Node): Template = node match
     case cfg: CfgNode =>
       val engine = cfg.child(Engine) map { name =>
-        underlying.get(name.parse[String]) getOrElse {
+        underlying.get(name.as[String]) getOrElse {
           throw TemplateEngineException("The template engine is unknown", name.position)
         }
       } orElse default getOrElse {

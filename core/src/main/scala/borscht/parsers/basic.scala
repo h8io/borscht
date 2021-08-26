@@ -29,7 +29,7 @@ given NodeParserChar: NodeParser[Char] =
     case value: Character => value.charValue
     case value: Int => value.toChar
     case _ => util.parseChar(scalar.asString)
-  case node => util.parseChar(node.parse[String])
+  case node => util.parseChar(node.as[String])
 
 
 given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =

@@ -16,4 +16,4 @@ final class ST4TemplateEngine(group: STGroup) extends TemplateEngine:
 
   def this(renderers: SeqNode) = this(renderers.list[ComponentRef[Renderer[?]]] map (_.get))
 
-  override def apply(node: Node): ST4Template = ST4Template(ST(group, node.parse[String]))
+  override def apply(node: Node): ST4Template = ST4Template(ST(group, node.as[String]))
