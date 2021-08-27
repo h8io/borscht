@@ -1,6 +1,6 @@
 package borscht.parsers
 
-import borscht.{Node, NodeParser, NodeParserScalarAny, ScalarNode}
+import borscht.{Node, NodeParser, ScalarNode}
 
 given NodeParserBigInt: NodeParser[BigInt] =
   case node: ScalarNode => node.value match

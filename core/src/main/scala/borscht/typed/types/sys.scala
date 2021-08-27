@@ -1,14 +1,13 @@
 package borscht.typed.types
 
-import borscht.Node
+import borscht.{Node, NodeParser}
 import borscht.parsers.NodeParserString
-import borscht.typed.ValueParser
 import borscht.virtual.VirtualScalarNode
 
 object ValueTypeEnv extends ValueTypeWithOptionalParameter:
-  override protected def create(parser: ValueParser): ValueParser = new ValueParser:
+  override protected def create(parser: NodeParser[?]): NodeParser[?] = new NodeParser[?]:
     override def apply(node: Node): Any = parser(new VirtualScalarNode(sys.env(node.as[String]), node))
 
 object ValueTypeProp extends ValueTypeWithOptionalParameter:
-  override protected def create(parser: ValueParser): ValueParser = new ValueParser:
+  override protected def create(parser: NodeParser[?]): NodeParser[?] = new NodeParser[?]:
     override def apply(node: Node): Any = parser(new VirtualScalarNode(sys.props(node.as[String]), node))

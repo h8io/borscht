@@ -1,11 +1,12 @@
 package borscht.typed
 
-import borscht.parsers.{NodeParserString, NodeParserValueParser}
-import borscht.typed.valueparser.{Events, RootParser}
+import borscht.NodeParser
+import borscht.parsers.{NodeParserNodeParser, NodeParserString}
+import borscht.typed.parser.{Events, RootParser}
 import borscht.virtual.VirtualScalarNode
 import borscht.{CfgNode, Node, ScalarNode}
 
-def parseType(definition: String, types: Map[String, ValueType]): ValueParser =
+def parseType(definition: String, types: Map[String, ValueType]): NodeParser[?] =
   Events(definition)(RootParser(types)).result getOrElse (throw IllegalStateException(s"Unparsable type $definition"))
 
 def parseValue(node: Node): Any = node match

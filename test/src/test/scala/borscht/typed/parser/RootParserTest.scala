@@ -1,7 +1,8 @@
-package borscht.typed.valueparser
+package borscht.typed.parser
 
 import borscht.typed.ValueType
-import borscht.typed.types.{TestValueParser, TestValueType}
+import borscht.typed.parser.{AfterParser, Events, UnknownTypeException}
+import borscht.typed.types.{TestNodeParser, TestValueType}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -14,7 +15,7 @@ class RootParserTest extends AnyFlatSpec with Matchers:
     val events = Events("abc")
     val afterParser = events.apply(RootParser(types))
     afterParser shouldBe an[AfterParser]
-    afterParser.result shouldEqual Some(TestValueParser("abc", Nil))
+    afterParser.result shouldEqual Some(TestNodeParser("abc", Nil))
   }
 
   it should "parse definition with parameters" in {
@@ -22,12 +23,12 @@ class RootParserTest extends AnyFlatSpec with Matchers:
     val afterParser = events.apply(RootParser(types))
     afterParser shouldBe an[AfterParser]
     afterParser.result shouldEqual
-      Some(TestValueParser("abc", List(
-        TestValueParser("abc", Nil),
-        TestValueParser("def", List(
-          TestValueParser("abc", Nil),
-          TestValueParser("ghi", List(TestValueParser("jkl", Nil))))),
-        TestValueParser("mno", Nil))))
+      Some(TestNodeParser("abc", List(
+        TestNodeParser("abc", Nil),
+        TestNodeParser("def", List(
+          TestNodeParser("abc", Nil),
+          TestNodeParser("ghi", List(TestNodeParser("jkl", Nil))))),
+        TestNodeParser("mno", Nil))))
   }
 
   it should "return None on a missed type" in {

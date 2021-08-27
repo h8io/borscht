@@ -1,12 +1,12 @@
 package borscht.parsers
 
-import java.util.regex.Pattern
 import borscht.*
 
+import java.util.regex.Pattern
 import scala.util.matching.Regex
 
-given NodeParserPattern: NodeParser[Pattern] = NodeParserString andThen (Pattern.compile(_))
+given NodeParserPattern: NodeParser[Pattern] = node => Pattern.compile(node.as[String])
 
-given NodeParserRegex: NodeParser[Regex] =
-  NodeParserPlainString andThen (Regex(_)) orElse
-    (NodeParserCfgNode andThen { cfg  => Regex(cfg[String]("pattern"), cfg.list[String]("groups"): _*) })
+given NodeParserRegex: PartialNodeParser[Regex] =
+  case scalar: ScalarNode => Regex(scalar.asString)
+  case cfg: CfgNode => Regex(cfg[String]("pattern"), cfg.list[String]("groups"): _*)

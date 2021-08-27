@@ -2,7 +2,6 @@ package borscht.typed.types
 
 import borscht.Node
 import borscht.time.DateTimeAdjuster
-import borscht.typed.ValueParser
 
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor

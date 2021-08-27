@@ -2,8 +2,8 @@ package borscht.typed.types
 
 import borscht.parsers.given
 import borscht.typed
-import borscht.typed.{AbstractValueType, ValueParser, ValueRef}
-import borscht.{Node, SeqNode, util}
+import borscht.typed.{AbstractValueType, ValueRef}
+import borscht.{Node, NodeParser, SeqNode, util}
 
 import java.lang.Boolean as jBoolean
 

@@ -4,8 +4,8 @@ import borscht.*
 import borscht.parsers.{NodeParserMap, NodeParserValueRef}
 import borscht.test.*
 import borscht.typed.ValueRef
+import borscht.typed.parser.UnknownTypeException
 import borscht.typed.types.*
-import borscht.typed.valueparser.UnknownTypeException
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

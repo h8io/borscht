@@ -1,4 +1,4 @@
-package borscht.typed.valueparser
+package borscht.typed.parser
 
 sealed class ValueParserException(message: String, event: Event, cause: Option[Exception] = None)
   extends RuntimeException(s"$message @ ${event.position}", cause.orNull)
