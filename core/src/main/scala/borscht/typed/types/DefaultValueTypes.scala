@@ -51,4 +51,14 @@ val DefaultValueTypes: Map[String, ValueType] = Map(
   "now" -> ValueTypeNow(),
   "datetime" -> ValueTypeDateTime(),
   "date" -> ValueTypeDate(),
-  "time" -> ValueTypeTime())
+  "time" -> ValueTypeTime(),
+
+  "locale" -> ValueTypeLocale,
+  "message-format" -> ValueTypeMessageFormat,
+
+  "pattern" -> ValueTypePattern,
+  "re" -> ValueTypeRegex,
+  "regex" -> ValueTypeRegex,
+
+  "duration" -> ValueTypeDuration,
+  "finite-duration" -> ValueTypeFiniteDuration)

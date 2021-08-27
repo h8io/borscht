@@ -1,8 +1,8 @@
 package borscht.parsers
 
-import java.util.regex.Pattern
 import borscht.*
 
+import java.util.regex.Pattern
 import scala.util.matching.Regex
 
 given NodeParserPattern: NodeParser[Pattern] = node => Pattern.compile(node.as[String])

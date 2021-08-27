@@ -2,6 +2,6 @@ package borscht.typed.types
 
 import borscht.{Node, NodeParser, ScalarNode}
 
-case class TestValueParser(name: String, parameters: List[NodeParser[?]]) extends NodeParser[?]:
+case class TestNodeParser(name: String, parameters: List[NodeParser[?]]) extends NodeParser[?]:
   override def apply(node: Node): AnyRef = (node: @unchecked) match
     case scalar: ScalarNode => s"$name:${scalar.value}"

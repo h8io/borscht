@@ -4,7 +4,7 @@ import borscht.*
 import borscht.test.*
 import borscht.typed.*
 import borscht.typed.parser.UnknownTypeException
-import borscht.typed.types.{TestValueParser, TestValueType, ValueTypeParameterless}
+import borscht.typed.types.{TestNodeParser, TestValueType, ValueTypeParameterless}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -19,11 +19,11 @@ class NodeParserNodeParserTest extends AnyFlatSpec with Matchers:
   "Value parser node" should "parse type correctly" in {
     val meta = Meta(None, Map("type1" -> TestValueType("type1"), "type2" -> TestValueType("type2")))
     scalar("type1[type2, type1[type2, type1]]").withMeta(meta).as[NodeParser[?]] shouldEqual
-      TestValueParser("type1", List(
-        TestValueParser("type2", Nil),
-        TestValueParser("type1", List(
-          TestValueParser("type2", Nil),
-          TestValueParser("type1", Nil)))))
+      TestNodeParser("type1", List(
+        TestNodeParser("type2", Nil),
+        TestNodeParser("type1", List(
+          TestNodeParser("type2", Nil),
+          TestNodeParser("type1", Nil)))))
   }
 
   it should "throw an exception if it is not defined in meta" in {
