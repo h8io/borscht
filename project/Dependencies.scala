@@ -3,7 +3,7 @@ import sbt._
 object Dependencies {
   val TypesafeConfig = "com.typesafe" % "config" % "1.4.1"
 
-  private val JacksonVersion = "2.13.0-rc1"
+  private val JacksonVersion = "2.13.0-rc2"
   val JacksonDatabind = "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion
   val JacksonDataformatYAML = "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion
 
