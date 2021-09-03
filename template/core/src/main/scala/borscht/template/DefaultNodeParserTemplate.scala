@@ -3,7 +3,7 @@ package borscht.template
 import borscht.*
 import borscht.parsers.given
 import borscht.reflect.ComponentRef
-import borscht.typed.ValueRefEntries
+import borscht.typedOld.ValueRefEntries
 
 class DefaultNodeParserTemplate(default: Option[TemplateEngine],
                                 underlying: Map[String, TemplateEngine]) extends PartialNodeParser[Template]:

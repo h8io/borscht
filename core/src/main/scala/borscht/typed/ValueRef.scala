@@ -1,3 +1,3 @@
 package borscht.typed
 
-case class ValueRef(get: Any) extends AnyVal
+class ValueRef[T](`class`: Class[? <: T], value: => T)

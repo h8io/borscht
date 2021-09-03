@@ -2,9 +2,9 @@ package borscht.parsers
 
 import borscht.*
 import borscht.test.*
-import borscht.typed.*
-import borscht.typed.parser.UnknownTypeException
-import borscht.typed.types.{TestNodeParser, TestValueType, ValueTypeParameterless}
+import borscht.typedOld.*
+import borscht.typedOld.parser.UnknownTypeException
+import borscht.typedOld.types.{TestNodeParser, TestValueType, ValueTypeParameterless}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

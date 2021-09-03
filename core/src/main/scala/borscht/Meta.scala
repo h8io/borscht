@@ -2,8 +2,8 @@ package borscht
 
 import borscht.parsers.given
 import borscht.reflect.ComponentRef
-import borscht.typed.*
-import borscht.typed.types.DefaultValueTypes
+import borscht.typedOld.*
+import borscht.typedOld.types.DefaultValueTypes
 
 import scala.annotation.targetName
 

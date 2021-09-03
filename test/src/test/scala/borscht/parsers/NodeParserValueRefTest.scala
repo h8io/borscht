@@ -3,9 +3,9 @@ package borscht.parsers
 import borscht.*
 import borscht.parsers.{NodeParserMap, NodeParserValueRef}
 import borscht.test.*
-import borscht.typed.ValueRef
-import borscht.typed.parser.UnknownTypeException
-import borscht.typed.types.*
+import borscht.typedOld.ValueRef
+import borscht.typedOld.parser.UnknownTypeException
+import borscht.typedOld.types.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 

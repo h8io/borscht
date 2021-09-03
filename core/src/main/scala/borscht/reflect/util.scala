@@ -2,7 +2,7 @@ package borscht.reflect
 
 import borscht.*
 import borscht.parsers.given
-import borscht.typed.*
+import borscht.typedOld.*
 
 import java.lang.reflect.Constructor
 import scala.reflect.ClassTag
