@@ -2,7 +2,6 @@ package borscht.typed.types
 
 import borscht.parsers.given
 
-import java.lang.Boolean as jBoolean
 import java.text.MessageFormat
 import java.util.Locale
 import java.util.regex.Pattern
