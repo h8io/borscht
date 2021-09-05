@@ -14,5 +14,9 @@ final class Ref[T](val `class`: Class[? <: T], _value: => T):
       throw ClassCastException(s"${tag.runtimeClass} is not assignable from ${`class`}")
     }
 
-  def map[R](f: T => R)(using tag: ClassTag[R]): Ref[R] =
-    Ref(tag.runtimeClass.getClass.asInstanceOf[Class[R]], f(value))
+  def map[R](f: T => R)(using tag: ClassTag[R]): Ref[R] = Ref(f(value))
+
+object Ref:
+  def apply[T](value: => T)(using tag: ClassTag[T]): Ref[T] = Ref(tag.runtimeClass.asInstanceOf[Class[T]], value)
+
+  def apply[T](`class`: Class[? <: T], value: => T): Ref[T] = new Ref(`class`, value)
