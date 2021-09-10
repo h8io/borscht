@@ -74,7 +74,7 @@ sealed abstract class RefPrimitive[P <: Primitive](_value: => P)(using val class
   protected def boxedClass: Class[? <: AnyRef]
 
   override def cast[R](using tag: ClassTag[R]): Ref[R] =
-    if (tag == ClassTag.Any || tag == ClassTag.AnyVal) asInstanceOf[Ref[R]]
+    if (tag == ClassTag.Any || tag == ClassTag.AnyVal || tag == classTag) asInstanceOf[Ref[R]]
     else if (tag.runtimeClass.isAssignableFrom(boxedClass))
       RefObj[Any](value.asInstanceOf[Any])(using ClassTag(boxedClass)).asInstanceOf[Ref[R]]
     else throw ClassCastException(s"$tag is not assignable from $classTag")
