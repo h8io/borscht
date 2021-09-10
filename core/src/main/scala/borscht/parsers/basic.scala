@@ -24,14 +24,20 @@ given NodeParserBoolean: NodeParser[Boolean] =
     case v: Number => v != 0
   case node: Node => node.as[String].toBoolean
 
+private val EncodedCharPattern = raw"\\u([\d+A-Fa-f]{4})".r
+
+private def parseChar(value: String): Char =
+  if (value.length == 1) value.head else value match
+    case EncodedCharPattern(code) => Integer.parseInt(code, 16).toChar
+    case _ => throw IllegalArgumentException("Could not parse \"$value\" to a character")
 
 given NodeParserChar: NodeParser[Char] =
   case scalar: ScalarNode => scalar.value match
     case value: Char => value
     case value: Character => value.charValue
     case value: Int => value.toChar
-    case _ => util.parseChar(scalar.asString)
-  case node => util.parseChar(node.as[String])
+    case _ => parseChar(scalar.asString)
+  case node => parseChar(node.as[String])
 
 
 given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =

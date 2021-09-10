@@ -1,7 +1,7 @@
 package borscht.typedOld
 
 import borscht.NodeParser
-import borscht.parsers.{NodeParserNodeParser, NodeParserString}
+import borscht.parsers.NodeParserString
 import borscht.typedOld.parser.{Events, RootParser}
 import borscht.virtual.VirtualScalarNode
 import borscht.{CfgNode, Node, ScalarNode}

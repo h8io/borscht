@@ -6,7 +6,9 @@ import org.scalatest.matchers.should.Matchers
 
 class NodeParserNumericTest extends AnyFlatSpec with Matchers:
   "Numeric node parser" should "provide a byte value from a string" in {
-    cfg("key" -> "42")[Byte]("key") shouldEqual 42.toByte
+    val result = cfg("key" -> "42")[Byte]("key")
+    result.getClass shouldEqual classOf[Byte]
+    result shouldEqual 42.toByte
   }
 
   it should "provide a double value" in {

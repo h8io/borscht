@@ -1,8 +1,14 @@
 package borscht.parsers
 
 import borscht.*
-import borscht.typedOld.*
+import borscht.typed.*
+import borscht.typedOld
+import borscht.typedOld.ValueRef
 
-given NodeParserNodeParser: NodeParser[NodeParser[?]] = node => parseType(node.as[String], node.meta.valueTypes)
+import scala.reflect.ClassTag
 
-given NodeParserValueRef: NodeParser[ValueRef] = node => ValueRef(parseValue(node))
+given NodeParserNodeParser: NodeParser[NodeParser[?]] = node => typedOld.parseType(node.as[String], node.meta.valueTypes)
+
+given NodeParserValueRef: NodeParser[ValueRef] = node => ValueRef(typedOld.parseValue(node))
+
+given NodeParserRef[T: ClassTag]: NodeParser[Ref[T]] = node => parseRef(node).cast[T]

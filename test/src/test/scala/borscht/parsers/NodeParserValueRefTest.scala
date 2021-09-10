@@ -18,7 +18,7 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
     "seq" -> cfg("node" -> seq(1, 2, 3)),
     "cfg" -> cfg("node" -> cfg("key" -> "value")))
 
-  private val testMeta = new Meta(None, Map("my-type" -> new ValueTypeParameterless:
+  private val testMeta = new Meta(None, Map.empty, Map("my-type" -> new ValueTypeParameterless:
     override def apply(node: Node): Any = node.as[String] + "!"
   ))
 

@@ -3,7 +3,7 @@ package borscht.typedOld.types
 import borscht.parsers.given
 import borscht.typedOld
 import borscht.typedOld.{AbstractValueType, ValueRef}
-import borscht.{Node, NodeParser, SeqNode, util}
+import borscht.{Node, NodeParser, SeqNode}
 
 import java.lang.Boolean as jBoolean
 

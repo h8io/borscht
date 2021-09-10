@@ -1,16 +1,22 @@
 package borscht.typed.types
 
 import borscht.parsers.given
+import borscht.typed.RefObj
+import borscht.{Node, NodeParser}
 
 import java.text.MessageFormat
 import java.util.Locale
 import java.util.regex.Pattern
 import scala.concurrent.duration.{Duration, FiniteDuration}
+import scala.reflect.ClassTag
 import scala.util.matching.Regex
 
-object RefTypeBoolean extends RefTypeInherited[Boolean]
+trait RefTypeInherited[T <: AnyRef](using parser: NodeParser[T], tag: ClassTag[T]) extends RefTypeParameterless:
+  override def apply(node: Node): RefObj[T] = RefObj(parser(node))
 
-object RefTypeChar extends RefTypeInherited[Char]
+object RefTypeBigDecimal extends RefTypeInherited[BigDecimal]
+
+object RefTypeBigInt extends RefTypeInherited[BigInt]
 
 object RefTypeDuration extends RefTypeInherited[Duration]
 
