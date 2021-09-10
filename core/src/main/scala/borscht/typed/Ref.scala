@@ -82,16 +82,6 @@ sealed abstract class RefPrimitive[P <: Primitive](_value: => P)(using val class
   override def isAssignableTo(`class`: Class[?]): Boolean =
     `class`.isAssignableFrom(classTag.runtimeClass) || `class`.isAssignableFrom(boxedClass)
 
-object RefPrimitive:
-  def apply[T <: Primitive](value: => T)(using tag: ClassTag[T]): Ref[T] = tag match
-    case ClassTag.Boolean => RefBoolean(value)
-    case ClassTag.Byte => RefByte(value)
-    case ClassTag.Char => RefChar(value)
-    case ClassTag.Double => RefDouble(value)
-    case ClassTag.Float => RefFloat(value)
-    case ClassTag.Int => RefInt(value)
-    case ClassTag.Long => RefLong(value)
-    case ClassTag.Short => RefShort(value)
 
 final class RefBoolean(_value: => Boolean) extends RefPrimitive(_value) :
   override protected def boxedClass = classOf[java.lang.Boolean]
