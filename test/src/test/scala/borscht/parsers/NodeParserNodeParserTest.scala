@@ -2,35 +2,31 @@ package borscht.parsers
 
 import borscht.*
 import borscht.test.*
-import borscht.typedOld.*
-import borscht.typedOld.parser.UnknownTypeException
-import borscht.typedOld.types.{TestNodeParser, TestValueType, ValueTypeParameterless}
+import borscht.typed.*
+import borscht.typed.parser.UnknownTypeException
+import borscht.typed.types.{RefTypeParameterless, TestNodeParser, TestRefType}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
+import scala.reflect.ClassTag
+
 class NodeParserNodeParserTest extends AnyFlatSpec with Matchers:
-  private val config = cfg("parser" -> "my-type")
+  private object MyRefType extends RefTypeParameterless:
+    override def apply(node: Node): Ref[Any] = RefObj(node)(using ClassTag(node.getClass))
 
-  private object MyValueType extends ValueTypeParameterless:
-    override def apply(node: Node): Any = node
-  
-  private val testMeta = new Meta(None, Map.empty, Map("my-type" -> MyValueType))
+  private val testMeta = new Meta(None, Map("my-type" -> MyRefType))
 
-  "Value parser node" should "parse type correctly" in {
-    val meta = Meta(None, Map.empty, Map("type1" -> TestValueType("type1"), "type2" -> TestValueType("type2")))
-    scalar("type1[type2, type1[type2, type1]]").withMeta(meta).as[NodeParser[?]] shouldEqual
-      TestNodeParser("type1", List(
-        TestNodeParser("type2", Nil),
-        TestNodeParser("type1", List(
-          TestNodeParser("type2", Nil),
-          TestNodeParser("type1", Nil)))))
+  "Ref parser node" should "parse type correctly" in {
+    val meta = Meta(None, Map("type1" -> TestRefType("type1"), "type2" -> TestRefType("type2")))
+    scalar("type1[type2, type1[type2, type1]]")
+      .withMeta(meta)
+      .as[NodeParser[?]](scalar("test")) shouldEqual "type1:[type2:test, type1:[type2:test, type1:test]]"
   }
 
   it should "throw an exception if it is not defined in meta" in {
-    val e = the[NodeParserException] thrownBy config[NodeParser[?]]("parser")
-    e.getCause shouldBe a[UnknownTypeException]
+    an[UnknownTypeException] should be thrownBy (scalar("my-type").as[NodeParser[?]])
   }
 
   it should "return a correct value for a scalar value" in {
-    (config withMeta testMeta)[NodeParser[?]]("parser") shouldEqual MyValueType
+    (scalar("my-type") withMeta testMeta).as[NodeParser[?]](scalar("test")) shouldEqual scalar("test")
   }

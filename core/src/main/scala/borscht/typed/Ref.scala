@@ -51,6 +51,7 @@ final class RefObj[T](_value: => T)(using val classTag: ClassTag[T]) extends Ref
   override def isAssignableTo(`class`: Class[?]): Boolean = `class`.isAssignableFrom(classTag.runtimeClass) ||
     RefObj.UnboxMap.get(classTag.runtimeClass).exists(_._1 == `class`)
 
+
 object RefObj:
   private def lift[B <: AnyRef, P <: Primitive](f: B => P)
                                                (using b: ClassTag[B], p: ClassTag[P]): (Class[B], (Class[P], B => P)) =
