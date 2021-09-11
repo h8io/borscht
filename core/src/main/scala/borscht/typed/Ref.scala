@@ -31,10 +31,10 @@ object Ref:
     case ClassTag.Int => RefInt(value)
     case ClassTag.Long => RefLong(value)
     case ClassTag.Short => RefShort(value)
-    case _ => RefObj(value)(using tag)
+    case anyRefTag: ClassTag[? <: AnyRef] => RefObj(value)(using tag)
 
 
-final class RefObj[T](_value: => T)(using val classTag: ClassTag[T]) extends Ref[T] :
+final class RefObj[T <: AnyRef](_value: => T)(using val classTag: ClassTag[T]) extends Ref[T] :
   lazy val value: T = classTag.unapply(_value) getOrElse (throw IllegalStateException(
     s"Value $_value has wrong type (${_value.getClass.getName} instead $classTag)"))
 
@@ -73,11 +73,11 @@ sealed abstract class RefPrimitive[P <: Primitive](_value: => P)(using val class
 
   protected def boxedClass: Class[? <: AnyRef]
 
-  override def cast[R](using tag: ClassTag[R]): Ref[R] =
-    if (tag == ClassTag.Any || tag == ClassTag.AnyVal || tag == classTag) asInstanceOf[Ref[R]]
-    else if (tag.runtimeClass.isAssignableFrom(boxedClass))
-      RefObj[Any](value.asInstanceOf[Any])(using ClassTag(boxedClass)).asInstanceOf[Ref[R]]
-    else throw ClassCastException(s"$tag is not assignable from $classTag")
+  override def cast[R](using tag: ClassTag[R]): Ref[R] = tag match
+    case ClassTag.Any | ClassTag.AnyVal | `classTag` => asInstanceOf[Ref[R]]
+    case tag: ClassTag[? <: AnyRef] if (tag.runtimeClass.isAssignableFrom(boxedClass)) =>
+      RefObj(value.asInstanceOf[AnyRef])(using ClassTag(boxedClass)).asInstanceOf[Ref[R]]
+    case _ => throw ClassCastException(s"$tag is not assignable from $classTag")
 
   override def isAssignableTo(`class`: Class[?]): Boolean =
     `class`.isAssignableFrom(classTag.runtimeClass) || `class`.isAssignableFrom(boxedClass)

@@ -12,7 +12,7 @@ import scala.reflect.ClassTag
 
 class NodeParserNodeParserTest extends AnyFlatSpec with Matchers:
   private object MyRefType extends RefTypeParameterless:
-    override def apply(node: Node): Ref[Any] = RefObj(node)(using ClassTag(node.getClass))
+    override def apply(node: Node): Ref[Any] = Ref(node)(using ClassTag(node.getClass))
 
   private val testMeta = new Meta(None, Map("my-type" -> MyRefType))
 
