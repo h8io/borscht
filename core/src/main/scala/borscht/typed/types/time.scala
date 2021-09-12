@@ -91,6 +91,8 @@ final class RefTypeLocalTime(formatter: DateTimeFormatter)
   def this() = this(DateTimeFormatter.ISO_TIME)
 
 
+object RefTypeInstant extends RefTypeInherited[Instant]
+
 object RefTypeMonth extends RefTypeInherited[Month]
 
 object RefTypeMonthDay extends RefTypeInherited[MonthDay]
@@ -99,4 +101,8 @@ object RefTypeYear extends RefTypeInherited[Year]
 
 object RefTypeYearMonth extends RefTypeInherited[YearMonth]
 
+object RefTypeDayOfWeek extends RefTypeInherited[DayOfWeek]
+
 object RefTypePeriod extends RefTypeInherited[Period]
+
+object RefTypeJavaDuration extends RefTypeInherited[Duration]

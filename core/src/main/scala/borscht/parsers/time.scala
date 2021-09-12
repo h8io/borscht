@@ -40,7 +40,7 @@ given NodeParserMonth: NodeParser[Month] =
   NodeParserString andThen (_.toUpperCase) andThen Month.valueOf
 
 given NodeParserInstant: NodeParser[Instant] =
-  NodeParserString andThen (Instant.parse(_))
+  NodeParserString andThen Instant.parse
 
 given NodeParserJavaDuration: NodeParser[Duration] =
   NodeParserString andThen (Duration.parse(_))
