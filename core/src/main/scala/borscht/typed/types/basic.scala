@@ -1,26 +1,13 @@
 package borscht.typed.types
 
-import borscht.parsers.given
-import borscht.typed
-import borscht.typed.{AbstractValueType, ValueRef}
-import borscht.{Node, NodeParser, SeqNode, util}
+import borscht.parsers.NodeParserRef
+import borscht.typed.{AbstractRefType, Ref, RefObj}
+import borscht.Node
 
-import java.lang.Boolean as jBoolean
+import scala.reflect.ClassTag
 
-object ValueTypeAny extends ValueTypeParameterless:
-  override def apply(node: Node): Any = node.as[ValueRef].get
+object RefTypeAny extends RefTypeParameterless:
+  override def apply(node: Node): Ref[Any] = node.as[Ref[Any]]
 
-
-object ValueTypeString extends ValueTypeInherited[String]
-
-
-object ValueTypeBoolean extends ValueTypeInherited[Boolean]
-
-object ValueTypeJBoolean extends ValueTypeParameterless:
-  override def apply(node: Node): jBoolean = node.as[Boolean]
-
-
-object ValueTypeChar extends ValueTypeInherited[Char]
-
-object ValueTypeJChar extends ValueTypeParameterless:
-  override def apply(node: Node): Character = node.as[Char]
+object RefTypeNode extends RefTypeParameterless:
+  override def apply(node: Node): Ref[? <: Node] = RefObj(node)(using ClassTag(node.getClass))

@@ -1,54 +1,55 @@
 package borscht.typed.types
 
 import borscht.test.scalar
+import borscht.typed.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 class NumericTypesTest extends AnyFlatSpec with Matchers:
   "BigInt value type" should "parse big integers correctly" in {
-    ValueTypeBigInt.parser(Nil) map (_(scalar("42"))) shouldEqual Right(BigInt(42))
-    ValueTypeBigInt.parser(Nil) map (_(scalar(BigInt(42)))) shouldEqual Right(BigInt(42))
-    ValueTypeBigInt.parser(Nil) map (_(scalar(42))) shouldEqual Right(BigInt(42))
+    RefTypeBigInt.parser(Nil) map (_(scalar("42"))) shouldEqual Right(Ref(BigInt(42)))
+    RefTypeBigInt.parser(Nil) map (_(scalar(BigInt(42)))) shouldEqual Right(Ref(BigInt(42)))
+    RefTypeBigInt.parser(Nil) map (_(scalar(42))) shouldEqual Right(Ref(BigInt(42)))
   }
 
   "BigDecimal value type" should "parse big decimals correctly" in {
-    ValueTypeBigDecimal.parser(Nil) map (_(scalar("3.14159"))) shouldEqual Right(BigDecimal(3.14159))
-    ValueTypeBigDecimal.parser(Nil) map (_(scalar(BigDecimal(3.14159)))) shouldEqual Right(BigDecimal(3.14159))
-    ValueTypeBigDecimal.parser(Nil) map (_(scalar(3.14159))) shouldEqual Right(BigDecimal(3.14159))
+    RefTypeBigDecimal.parser(Nil) map (_(scalar("3.14159"))) shouldEqual Right(Ref(BigDecimal(3.14159)))
+    RefTypeBigDecimal.parser(Nil) map (_(scalar(BigDecimal(3.14159)))) shouldEqual Right(Ref(BigDecimal(3.14159)))
+    RefTypeBigDecimal.parser(Nil) map (_(scalar(3.14159))) shouldEqual Right(Ref(BigDecimal(3.14159)))
   }
 
   "Byte value type" should "parse bytes correctly" in {
-    ValueTypeByte.parser(Nil) map (_(scalar("42"))) shouldEqual Right(42.toByte)
-    ValueTypeByte.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(42.toByte)
-    ValueTypeByte.parser(Nil) map (_(scalar(42.toByte))) shouldEqual Right(42.toByte)
+    RefTypeByte.parser(Nil) map (_(scalar("42"))) shouldEqual Right(RefByte(42))
+    RefTypeByte.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(RefByte(42))
+    RefTypeByte.parser(Nil) map (_(scalar(42.toByte))) shouldEqual Right(RefByte(42))
   }
 
   "Double value type" should "parse doubles correctly" in {
-    ValueTypeDouble.parser(Nil) map (_(scalar("3.14159"))) shouldEqual Right(3.14159)
-    ValueTypeDouble.parser(Nil) map (_(scalar(BigDecimal(3.14159)))) shouldEqual Right(3.14159)
-    ValueTypeDouble.parser(Nil) map (_(scalar(3.14159d))) shouldEqual Right(3.14159)
+    RefTypeDouble.parser(Nil) map (_(scalar("3.14159"))) shouldEqual Right(RefDouble(3.14159))
+    RefTypeDouble.parser(Nil) map (_(scalar(BigDecimal(3.14159)))) shouldEqual Right(RefDouble(3.14159))
+    RefTypeDouble.parser(Nil) map (_(scalar(3.14159d))) shouldEqual Right(RefDouble(3.14159))
   }
 
   "Float value type" should "parse floats correctly" in {
-    ValueTypeFloat.parser(Nil) map (_(scalar("3.14159"))) shouldEqual Right(3.14159.toFloat)
-    ValueTypeFloat.parser(Nil) map (_(scalar(BigDecimal(3.14159)))) shouldEqual Right(3.14159.toFloat)
-    ValueTypeFloat.parser(Nil) map (_(scalar(3.14159f))) shouldEqual Right(3.14159f)
+    RefTypeFloat.parser(Nil) map (_(scalar("3.14159"))) shouldEqual Right(RefFloat(3.14159))
+    RefTypeFloat.parser(Nil) map (_(scalar(BigDecimal(3.14159)))) shouldEqual Right(RefFloat(3.14159))
+    RefTypeFloat.parser(Nil) map (_(scalar(3.14159f))) shouldEqual Right(RefFloat(3.14159))
   }
 
   "Integer value type" should "parse bytes correctly" in {
-    ValueTypeInt.parser(Nil) map (_(scalar("42"))) shouldEqual Right(42)
-    ValueTypeInt.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(42)
-    ValueTypeInt.parser(Nil) map (_(scalar(42))) shouldEqual Right(42)
+    RefTypeInt.parser(Nil) map (_(scalar("42"))) shouldEqual Right(RefInt(42))
+    RefTypeInt.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(RefInt(42))
+    RefTypeInt.parser(Nil) map (_(scalar(42))) shouldEqual Right(RefInt(42))
   }
 
   "Long value type" should "parse bytes correctly" in {
-    ValueTypeLong.parser(Nil) map (_(scalar("42"))) shouldEqual Right(42L)
-    ValueTypeLong.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(42L)
-    ValueTypeLong.parser(Nil) map (_(scalar(42L))) shouldEqual Right(42L)
+    RefTypeLong.parser(Nil) map (_(scalar("42"))) shouldEqual Right(RefLong(42))
+    RefTypeLong.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(RefLong(42))
+    RefTypeLong.parser(Nil) map (_(scalar(42L))) shouldEqual Right(RefLong(42L))
   }
 
   "Short value type" should "parse bytes correctly" in {
-    ValueTypeShort.parser(Nil) map (_(scalar("42"))) shouldEqual Right(42.toShort)
-    ValueTypeShort.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(42.toShort)
-    ValueTypeShort.parser(Nil) map (_(scalar(42.toShort))) shouldEqual Right(42.toShort)
+    RefTypeShort.parser(Nil) map (_(scalar("42"))) shouldEqual Right(RefShort(42))
+    RefTypeShort.parser(Nil) map (_(scalar(BigDecimal(42)))) shouldEqual Right(RefShort(42))
+    RefTypeShort.parser(Nil) map (_(scalar(42.toShort))) shouldEqual Right(RefShort(42))
   }

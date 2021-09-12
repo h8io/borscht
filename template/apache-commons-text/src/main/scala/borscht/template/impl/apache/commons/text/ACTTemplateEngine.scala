@@ -1,10 +1,10 @@
 package borscht.template.impl.apache.commons.text
 
-import borscht.{Node, SeqNode}
-import borscht.parsers.{NodeParserComponentRef, NodeParserList, NodeParserString}
-import borscht.reflect.ComponentRef
+import borscht.parsers.{NodeParserRef, NodeParserString}
 import borscht.template.impl.apache.commons.text.renderers.Renderer
 import borscht.template.{Template, TemplateEngine}
+import borscht.typed.Ref
+import borscht.{Node, SeqNode}
 import org.apache.commons.text.StringSubstitutor
 import org.apache.commons.text.lookup.StringLookupFactory
 
@@ -15,7 +15,7 @@ final class ACTTemplateEngine(substitutor: StringSubstitutor,
 
   def this(renderers: List[Renderer]) = this(ACTTemplateEngine.DefaultStringSubstitutor, renderers, ValueFormat.default)
 
-  def this(renderers: SeqNode) = this(renderers.list[ComponentRef[Renderer]] map (_.get))
+  def this(renderers: SeqNode) = this(renderers.list[Ref[Renderer]] map (_.value))
 
   override def apply(template: Node): Template =
     ACTTemplate(substitutor, template.as[String], renderers, valueFormat)

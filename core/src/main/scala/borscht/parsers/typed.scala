@@ -3,6 +3,10 @@ package borscht.parsers
 import borscht.*
 import borscht.typed.*
 
-given NodeParserNodeParser: NodeParser[NodeParser[?]] = node => parseType(node.as[String], node.meta.valueTypes)
+import scala.reflect.ClassTag
 
-given NodeParserValueRef: NodeParser[ValueRef] = node => ValueRef(parseValue(node))
+given NodeParserNodeParser: NodeParser[NodeParser[?]] = node =>
+  val parser = parseType(node)
+  parser(_).value
+
+given NodeParserRef[T: ClassTag]: NodeParser[Ref[T]] = node => parseRef(node).cast[T]

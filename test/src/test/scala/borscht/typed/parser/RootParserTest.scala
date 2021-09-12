@@ -1,15 +1,15 @@
 package borscht.typed.parser
 
-import borscht.typed.ValueType
+import borscht.typed.RefType
 import borscht.typed.parser.{AfterParser, Events, UnknownTypeException}
-import borscht.typed.types.{TestNodeParser, TestValueType}
+import borscht.typed.types.{TestNodeParser, TestRefType}
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 import scala.annotation.tailrec
 
 class RootParserTest extends AnyFlatSpec with Matchers:
-  private val types = Iterator("abc", "def", "ghi", "jkl", "mno").map(name => name -> TestValueType(name)).toMap
+  private val types = Iterator("abc", "def", "ghi", "jkl", "mno").map(name => name -> TestRefType(name)).toMap
 
   "Root type parser" should "parse a parameterless definition" in {
     val events = Events("abc")

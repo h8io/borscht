@@ -2,8 +2,7 @@ package borscht.template
 
 import borscht.*
 import borscht.parsers.given
-import borscht.reflect.ComponentRef
-import borscht.typed.ValueRefEntries
+import borscht.typed.Ref
 
 class DefaultNodeParserTemplate(default: Option[TemplateEngine],
                                 underlying: Map[String, TemplateEngine]) extends PartialNodeParser[Template]:
@@ -34,7 +33,9 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
         throw TemplateEngineException("Both \"engine\" property and default engine are not defined", node.position)
       }
       cfg.child(Template) map { template =>
-        (cfg.get[CfgNode](Parameters) map (ValueRefEntries(_)) foldLeft engine(template))(_ set _)
+        (cfg.get[Map[String, Ref[Any]]](Parameters).iterator map { parameters =>
+          parameters map { (key, ref) => key -> ref.value }
+        } foldLeft engine(template))(_ set _)
       } getOrElse {
         throw TemplateEngineException("Template is not defined", node.position)
       }
@@ -49,7 +50,6 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
   private inline def Parameters = "parameters"
 
 private object DefaultNodeParserTemplate:
-  private def underlying(cfg: CfgNode) = cfg.map[ComponentRef[TemplateEngine]]() map { (name, component) =>
-    name -> component.get
+  private def underlying(cfg: CfgNode) = cfg.map[Ref[TemplateEngine]]() map { (name, ref) =>
+    name -> ref.value
   }
-

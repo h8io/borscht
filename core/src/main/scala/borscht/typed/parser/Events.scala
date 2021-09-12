@@ -1,7 +1,5 @@
 package borscht.typed.parser
 
-import borscht.typed.parser.Events.{SingleCharacterTypeName, TypeNameSpecialChars}
-
 import scala.annotation.tailrec
 import scala.collection.BitSet
 
@@ -31,9 +29,9 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends (Parser => Pa
       _hasNext = false
       End(Position(index))
   
-  private def isTypeNameChar(char: Char) = char.isLetterOrDigit || TypeNameSpecialChars.contains(char)
+  private def isTypeNameChar(char: Char) = char.isLetterOrDigit || Events.TypeNameSpecialChars.contains(char)
 
-  private def isSingleCharName(char: Char) = SingleCharacterTypeName.contains(char)
+  private def isSingleCharName(char: Char) = Events.SingleCharacterTypeName.contains(char)
 
   @tailrec
   private def typeName(builder: StringBuilder, i: Int): Event =

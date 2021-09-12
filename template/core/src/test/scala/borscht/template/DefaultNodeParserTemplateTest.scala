@@ -1,9 +1,9 @@
 package borscht.template
 
 import borscht.{Node, NodeParser, ScalarNode}
-import borscht.parsers.NodeParserComponentRef
-import borscht.reflect.ComponentRef
+import borscht.parsers.NodeParserRef
 import borscht.test.{cfg, scalar, seq}
+import borscht.typed.Ref
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -76,14 +76,14 @@ class DefaultNodeParserTemplateTest extends AnyFlatSpec with Matchers:
   }
 
   it should "be retrieved as a component" in {
-    val parser = cfg("class" -> classOf[DefaultNodeParserTemplate].getName,
+    val parser = cfg("component" -> cfg("class" -> classOf[DefaultNodeParserTemplate].getName,
       "parameters" -> cfg(
         "underlying" -> cfg("map[$, component]" -> cfg(
           "test1" -> cfg("class" -> classOf[TestTemplateEngine].getName,
             "parameters" -> "test1"),
           "test2" -> cfg("class" -> classOf[TestTemplateEngine].getName,
             "parameters" -> "test2"))),
-        "default" -> "test2"))[ComponentRef[NodeParser[Template]]]().get.asInstanceOf[DefaultNodeParserTemplate]
+        "default" -> "test2")))[Ref[NodeParser[Template]]]().value.asInstanceOf[DefaultNodeParserTemplate]
 
     val scalarTmpl = parser.test(scalar("template text"))
     scalarTmpl.engine shouldBe "test2"

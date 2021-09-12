@@ -1,15 +1,17 @@
 package borscht.parsers
 
 import borscht.*
-import borscht.parsers.{NodeParserMap, NodeParserValueRef}
+import borscht.parsers.{NodeParserMap, NodeParserRef}
 import borscht.test.*
-import borscht.typed.ValueRef
+import borscht.typed.*
 import borscht.typed.parser.UnknownTypeException
 import borscht.typed.types.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
+import java.lang.{Boolean as jBoolean, Integer as jInt}
+
+class NodeParserRefTest extends AnyFlatSpec with Matchers:
   private val config = cfg(
     "str" -> "The Answer",
     "num" -> 42,
@@ -18,8 +20,8 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
     "seq" -> cfg("node" -> seq(1, 2, 3)),
     "cfg" -> cfg("node" -> cfg("key" -> "value")))
 
-  private val testMeta = new Meta(None, Map("my-type" -> new ValueTypeParameterless:
-    override def apply(node: Node): Any = node.as[String] + "!"
+  private val testMeta = new Meta(None, Map("my-type" -> new RefTypeParameterless:
+    override def apply(node: Node): Ref[String] = RefObj(node.as[String] + "!")
   ))
 
   System.setProperty("prayer", "Cthulhu fhtagn")
@@ -28,7 +30,7 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
   System.setProperty("secret-ref", "secret-answer")
   System.setProperty("secret-answer", "42")
 
-  "Value reference node" should "provide correct values references from cfg nodes" in {
+  "Reference node" should "provide values references from cfg nodes" in {
     val config = cfg(
       "str" -> cfg("str" -> "String with \"str\" type"),
       "int" -> cfg("int" -> 42),
@@ -36,7 +38,7 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
       "string-property" -> cfg("prop[str]" -> "city"),
       "bigint-property" -> cfg("prop[bigint]" -> "factorial"),
       "secret-property" -> cfg("prop[prop[long]]" -> "secret-ref"))
-    config[Map[String, ValueRef]]() map { (key: String, value: ValueRef) => key -> value.get } shouldEqual Map(
+    config[Map[String, Ref[Any]]]() map { (key: String, value: Ref[Any]) => key -> value.value } shouldEqual Map(
       "str" -> "String with \"str\" type",
       "int" -> 42,
       "untyped-property" -> "Cthulhu fhtagn",
@@ -53,7 +55,7 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
       "string-property" -> scalar("prop[str]:city"),
       "bigint-property" -> scalar("prop[bigint]:factorial"),
       "secret-property" -> scalar("prop[prop[long]]:secret-ref"))
-    config[Map[String, ValueRef]]() map { (key: String, value: ValueRef) => key -> value.get } shouldEqual Map(
+    config[Map[String, Ref[Any]]]() map { (key: String, value: Ref[Any]) => key -> value.value } shouldEqual Map(
       "str" -> "String with \"str\" type",
       "int" -> 42,
       "untyped-property" -> "Cthulhu fhtagn",
@@ -63,29 +65,29 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
   }
 
   it should "provide correct typeless values references" in {
-    cfg("what" -> "answer", "value" -> 42, "is" -> true)[Map[String, ValueRef]]() shouldEqual
-      Map("what" -> ValueRef("answer"), "value" -> ValueRef(42), "is" -> ValueRef(true))
+    cfg("what" -> "answer", "value" -> 42, "is" -> true)[Map[String, Ref[Any]]]() shouldEqual
+      Map("what" -> RefObj("answer"), "value" -> RefObj[jInt](42), "is" -> RefObj[jBoolean](true))
   }
 
   "Scalar typed value node parser" should "return a correct value for the base value type parser" in {
-    val e = the[NodeParserException] thrownBy config[ValueRef]("my-str")
+    val e = the[NodeParserException] thrownBy config[Ref[Any]]("my-str")
     e.getCause shouldBe a[UnknownTypeException]
-    config[ValueRef]("str") shouldEqual ValueRef("The Answer")
-    config[ValueRef]("num") shouldEqual ValueRef(42)
-    config[ValueRef]("bool") shouldEqual ValueRef(true)
+    config[Ref[Any]]("str") shouldEqual RefObj("The Answer")
+    config[Ref[Any]]("num") shouldEqual RefObj[jInt](42)
+    config[Ref[Any]]("bool") shouldEqual RefObj[jBoolean](true)
   }
 
   it should "return a correct value for the test value type parser" in {
     val cfgWithMeta = config withMeta testMeta
-    cfgWithMeta[ValueRef]("my-str") shouldEqual ValueRef("The Answer!")
-    cfgWithMeta[ValueRef]("str") shouldEqual ValueRef("The Answer")
-    cfgWithMeta[ValueRef]("num") shouldEqual ValueRef(42)
-    cfgWithMeta[ValueRef]("bool") shouldEqual ValueRef(true)
+    cfgWithMeta[Ref[Any]]("my-str") shouldEqual RefObj("The Answer!")
+    cfgWithMeta[Ref[Any]]("str") shouldEqual RefObj("The Answer")
+    cfgWithMeta[Ref[Any]]("num") shouldEqual RefObj[jInt](42)
+    cfgWithMeta[Ref[Any]]("bool") shouldEqual RefObj[jBoolean](true)
   }
 
   "Sequence typed value node parser" should "return a correct value for the base value type parser" in {
-    val tv = config[ValueRef]("seq")
-    tv.get match
+    val ref = config[Ref[Any]]("seq")
+    ref.value match
       case value: SeqNode => (value.iterator map {
         case node: ScalarNode => node.value
         case node => node
@@ -94,8 +96,8 @@ class NodeParserValueRefTest extends AnyFlatSpec with Matchers:
   }
 
   "Configuration typed value node parser" should "return a correct value for the base value type parser" in {
-    val tv = config[ValueRef]("cfg")
-    tv.get match
+    val ref = config[Ref[Any]]("cfg")
+    ref.value match
       case value: CfgNode => (value.iterator map {
         case (key: String, node: ScalarNode) => key -> node.value
         case entry => entry
