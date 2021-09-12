@@ -27,6 +27,9 @@ given NodeParserLocalDate: NodeParser[LocalDate] =
 given NodeParserYearMonth: NodeParser[YearMonth] =
   NodeParserString andThen (YearMonth.parse(_))
 
+given NodeParserYear: NodeParser[Year] =
+  NodeParserString andThen (_.toUpperCase) andThen (Year.parse(_))
+
 given NodeParserMonthDay: NodeParser[MonthDay] =
   NodeParserString andThen (MonthDay.parse(_))
 

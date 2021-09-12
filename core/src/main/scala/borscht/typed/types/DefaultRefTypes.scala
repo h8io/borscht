@@ -2,54 +2,72 @@ package borscht.typed.types
 
 import borscht.typed.RefType
 
-val DefaultRefTypes: Map[String, RefType] = Map(
-  "?" -> RefTypeAny,
-  "any" -> RefTypeAny,
-  
-  "$" -> RefTypeString,
-  "str" -> RefTypeString,
+val DefaultRefTypes: Map[String, RefType] = {
+  val refTypeZonedDateTime = RefTypeZonedDateTime()
+  val refTypeLocalDate = RefTypeLocalDate()
+  val refTypeOffsetTime = RefTypeOffsetTime()
 
-  "_" -> RefTypeNode,
-  "node" -> RefTypeNode,
-  "component" -> RefTypeComponent,
+  Map(
+    "?" -> RefTypeAny,
+    "any" -> RefTypeAny,
 
-  "list" -> RefTypeList,
-  "map" -> RefTypeMap,
+    "$" -> RefTypeString,
+    "str" -> RefTypeString,
 
-  "env" -> RefTypeEnv,
-  "prop" -> RefTypeProp,
+    "_" -> RefTypeNode,
+    "node" -> RefTypeNode,
+    "component" -> RefTypeComponent,
 
-  "bool" -> RefTypeBoolean,
-  "boolean" -> RefTypeBoolean,
+    "list" -> RefTypeList,
+    "map" -> RefTypeMap,
 
-  "char" -> RefTypeChar,
+    "env" -> RefTypeEnv,
+    "prop" -> RefTypeProp,
 
-  "bigint" -> RefTypeBigInt,
-  "bigdecimal" -> RefTypeBigDecimal,
+    "bool" -> RefTypeBoolean,
+    "boolean" -> RefTypeBoolean,
 
-  "byte" -> RefTypeByte,
-  "double" -> RefTypeDouble,
-  "float" -> RefTypeFloat,
-  "int" -> RefTypeInt,
-  "long" -> RefTypeLong,
-  "short" -> RefTypeShort,
+    "char" -> RefTypeChar,
 
-  "datetime-formatter" -> RefTypeDateTimeFormatter,
-  "tz" -> RefTypeZoneId,
-  "timezone" -> RefTypeZoneId,
-  "tz-offset" -> RefTypeZoneOffset,
-  "timezone-offset" -> RefTypeZoneOffset,
-  "now" -> RefTypeNow(),
-  "datetime" -> RefTypeDateTime(),
-  "date" -> RefTypeDate(),
-  "time" -> RefTypeTime(),
+    "bigint" -> RefTypeBigInt,
+    "bigdecimal" -> RefTypeBigDecimal,
 
-  "locale" -> RefTypeLocale,
-  "message-format" -> RefTypeMessageFormat,
+    "byte" -> RefTypeByte,
+    "double" -> RefTypeDouble,
+    "float" -> RefTypeFloat,
+    "int" -> RefTypeInt,
+    "long" -> RefTypeLong,
+    "short" -> RefTypeShort,
 
-  "pattern" -> RefTypePattern,
-  "re" -> RefTypeRegex,
-  "regex" -> RefTypeRegex,
+    "datetime-formatter" -> RefTypeDateTimeFormatter,
+    "tz" -> RefTypeZoneId,
+    "timezone" -> RefTypeZoneId,
+    "tz-offset" -> RefTypeZoneOffset,
+    "timezone-offset" -> RefTypeZoneOffset,
+    "now" -> RefTypeNow(),
+    "temporal-accessor" -> RefTypeTemporalAccessor(),
+    "datetine" -> refTypeZonedDateTime,
+    "datetime-zoned" -> refTypeZonedDateTime,
+    "datetime-offset" -> RefTypeOffsetDateTime(),
+    "datetime-local" -> RefTypeLocalDateTime(),
+    "date" -> refTypeLocalDate,
+    "date-local" -> refTypeLocalDate,
+    "time" -> refTypeOffsetTime,
+    "time-offset" -> refTypeOffsetTime,
+    "time-local" -> RefTypeLocalTime(),
+    "month" -> RefTypeMonth,
+    "monthday" -> RefTypeMonthDay,
+    "year" -> RefTypeYear,
+    "yearmonth" -> RefTypeYearMonth,
+    "period" -> RefTypePeriod,
 
-  "duration" -> RefTypeDuration,
-  "finite-duration" -> RefTypeFiniteDuration)
+    "locale" -> RefTypeLocale,
+    "message-format" -> RefTypeMessageFormat,
+
+    "pattern" -> RefTypePattern,
+    "re" -> RefTypeRegex,
+    "regex" -> RefTypeRegex,
+
+    "duration" -> RefTypeDuration,
+    "finite-duration" -> RefTypeFiniteDuration)
+}

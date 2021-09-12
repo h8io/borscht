@@ -28,5 +28,6 @@ class NodeParserNodeParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "return a correct value for a scalar value" in {
-    (scalar("my-type") withMeta testMeta).as[NodeParser[?]](scalar("test")) shouldEqual scalar("test")
+    (scalar("my-type") withMeta testMeta).as[NodeParser[?]](scalar("test")) shouldEqual
+      scalar("test")
   }
