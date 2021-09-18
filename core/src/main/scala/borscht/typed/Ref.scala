@@ -34,7 +34,7 @@ object Ref:
     case anyRefTag: ClassTag[? <: AnyRef] => RefObj(value)(using tag)
 
 
-class RefAnyRef[T <: AnyRef](_value: => T)(using val classTag: ClassTag[T]) extends Ref[T] :
+class RefObj[T <: AnyRef](_value: => T)(using val classTag: ClassTag[T]) extends Ref[T] :
   lazy val value: T = classTag.unapply(_value) getOrElse (throw IllegalStateException(
     s"Value $_value has wrong type (${_value.getClass.getName} instead $classTag)"))
 
@@ -42,17 +42,17 @@ class RefAnyRef[T <: AnyRef](_value: => T)(using val classTag: ClassTag[T]) exte
     val r = tag.runtimeClass
     val t = classTag.runtimeClass
     if (r.isAssignableFrom(t)) asInstanceOf[Ref[R]]
-    else RefAnyRef.UnboxMap.get(t) collect {
+    else RefObj.UnboxMap.get(t) collect {
       case (p, f) if r.isAssignableFrom(p) => Ref(f.asInstanceOf[T => R](value))
     } getOrElse {
       throw ClassCastException(s"${t.getName} could not be transformed to ${r.getName}")
     }
 
   override def isCastableTo(`class`: Class[?]): Boolean = `class`.isAssignableFrom(classTag.runtimeClass) ||
-    RefAnyRef.UnboxMap.get(classTag.runtimeClass).exists(_._1 == `class`)
+    RefObj.UnboxMap.get(classTag.runtimeClass).exists(_._1 == `class`)
 
 
-object RefAnyRef:
+object RefObj:
   private def lift[B <: AnyRef, P <: Primitive](f: B => P)
                                                (using b: ClassTag[B], p: ClassTag[P]): (Class[B], (Class[P], B => P)) =
     (b.runtimeClass.asInstanceOf[Class[B]], (p.runtimeClass.asInstanceOf[Class[P]], f))
@@ -68,10 +68,7 @@ object RefAnyRef:
     lift((_: java.lang.Short).shortValue))
 
 
-final class RefObj[T <: AnyRef : ClassTag](value: => T) extends RefAnyRef(value)
-
-
-final class RefComponent[T <: AnyRef : ClassTag](value: => T) extends RefAnyRef(value):
+final class RefComponent[T <: AnyRef : ClassTag](value: => T) extends RefObj(value):
   def assign[R <: AnyRef](using tag: ClassTag[R]): RefComponent[R] =
     val r = tag.runtimeClass
     val t = classTag.runtimeClass
