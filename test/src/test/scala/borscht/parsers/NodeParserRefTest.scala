@@ -10,6 +10,8 @@ import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
 import java.lang.{Boolean as jBoolean, Integer as jInt}
+import java.util.concurrent.atomic.AtomicLong
+import scala.reflect.ClassTag
 
 class NodeParserRefTest extends AnyFlatSpec with Matchers:
   private val config = cfg(
@@ -18,7 +20,9 @@ class NodeParserRefTest extends AnyFlatSpec with Matchers:
     "bool" -> true,
     "my-str" -> "my-type:The Answer",
     "seq" -> cfg("node" -> seq(1, 2, 3)),
-    "cfg" -> cfg("node" -> cfg("key" -> "value")))
+    "cfg" -> cfg("node" -> cfg("key" -> "value")),
+    "atomic" -> cfg("component" ->
+      cfg("class" -> classOf[AtomicLong].getName, "parameters" -> "long:-1")))
 
   private val testMeta = new Meta(None, Map("my-type" -> new RefTypeParameterless:
     override def apply(node: Node): Ref[String] = RefObj(node.as[String] + "!")
@@ -75,6 +79,10 @@ class NodeParserRefTest extends AnyFlatSpec with Matchers:
     config[Ref[Any]]("str") shouldEqual RefObj("The Answer")
     config[Ref[Any]]("num") shouldEqual RefObj[jInt](42)
     config[Ref[Any]]("bool") shouldEqual RefObj[jBoolean](true)
+    val atomic = config[Ref[Any]]("atomic")
+    atomic shouldBe a[RefComponent[?]]
+    atomic.classTag shouldBe ClassTag(classOf[AtomicLong])
+    atomic.value.asInstanceOf[AtomicLong].get shouldEqual -1L
   }
 
   it should "return a correct value for the test value type parser" in {
@@ -83,6 +91,10 @@ class NodeParserRefTest extends AnyFlatSpec with Matchers:
     cfgWithMeta[Ref[Any]]("str") shouldEqual RefObj("The Answer")
     cfgWithMeta[Ref[Any]]("num") shouldEqual RefObj[jInt](42)
     cfgWithMeta[Ref[Any]]("bool") shouldEqual RefObj[jBoolean](true)
+    val atomic = config[Ref[Any]]("atomic")
+    atomic shouldBe a[RefComponent[?]]
+    atomic.classTag shouldBe ClassTag(classOf[AtomicLong])
+    atomic.value.asInstanceOf[AtomicLong].get shouldEqual -1L
   }
 
   "Sequence typed value node parser" should "return a correct value for the base value type parser" in {
