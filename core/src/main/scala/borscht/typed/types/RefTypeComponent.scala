@@ -2,34 +2,34 @@ package borscht.typed.types
 
 import borscht.*
 import borscht.parsers.{NodeParserClass, NodeParserRef}
-import borscht.typed.Ref
+import borscht.typed.{Ref, RefComponent}
 
 import java.lang.reflect.Constructor
 import scala.reflect.ClassTag
 
 object RefTypeComponent extends RefTypeParameterless:
-  override def apply(node: Node): Ref[?] =
+  override def apply(node: Node): RefComponent[?] =
     val (refClass, constructor) = node match
       case scalar: ScalarNode =>
-        val `class` = NodeParserClass(scalar)
+        val `class` = scalar.as[Class[?]].asSubclass(classOf[AnyRef])
         (`class`, creator(`class`))
       case cfg: CfgNode =>
-        val `class` = cfg[Class[?]]("class")
+        val `class` = cfg[Class[?]]("class").asSubclass(classOf[AnyRef])
         (`class`, cfg.child("parameters") map {
           case named: CfgNode => creator(`class`, named)
           case unnamed: SeqNode => creator(`class`, unnamed.iterator)
           case unnamed: ScalarNode => creator(`class`, Iterator(unnamed))
         } getOrElse creator(`class`))
       case _ => throw NodeParserException(s"Wrong component node type ${node.`type`}", node.position)
-    Ref(constructor())(using ClassTag(refClass))
+    RefComponent(constructor())(using ClassTag(refClass))
 
-  private def creator(`class`: Class[?]): () => ? = () => `class`.getConstructor().newInstance()
+  private def creator[T](`class`: Class[? <: T]): () => T = () => `class`.getConstructor().newInstance()
 
-  private def creator(`class`: Class[?], named: CfgNode): () => ? =
+  private def creator[T](`class`: Class[? <: T], named: CfgNode): () => T =
     val parameters = (named.iterator map { (name, node) => name -> node.as[Ref[AnyRef]] }).toMap
     getConstructors(`class`, parameters.size) find { constructor =>
       constructor.getParameters.iterator forall { parameter =>
-        parameters.get(parameter.getName) exists (_.isAssignableTo(parameter.getType))
+        parameters.get(parameter.getName) exists (_ isCastableTo parameter.getType)
       }
     } map { constructor =>
       val args = constructor.getParameters map { p => parameters(p.getName) }
@@ -40,10 +40,10 @@ object RefTypeComponent extends RefTypeParameterless:
         s"A suitable constructor with parameters ($expected) not found for ${`class`.getName}")
     }
 
-  private def creator(`class`: Class[?], unnamed: Iterator[Node]): () => ? =
+  private def creator[T](`class`: Class[? <: T], unnamed: Iterator[Node]): () => T =
     val parameters = (unnamed.iterator map (_.as[Ref[AnyRef]])).toList
     getConstructors(`class`, parameters.size) find { constructor =>
-      parameters.iterator zip constructor.getParameterTypes forall (_ isAssignableTo _)
+      parameters.iterator zip constructor.getParameterTypes forall (_ isCastableTo _)
     } map { constructor => () => constructor.newInstance(parameters map (_.value): _*) } getOrElse {
       val expected = parameters.iterator.map(_.classTag).mkString(", ")
       throw NoSuchMethodException(

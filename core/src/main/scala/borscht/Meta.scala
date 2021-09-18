@@ -1,8 +1,8 @@
 package borscht
 
-import borscht.parsers.{NodeParserCfgNode, NodeParserRef}
+import borscht.parsers.{NodeParserCfgNode, NodeParserRefComponent}
 import borscht.typed.*
-import borscht.typed.types.{DefaultRefTypes, RefTypeComponent}
+import borscht.typed.types.DefaultRefTypes
 
 import scala.annotation.targetName
 
@@ -23,7 +23,7 @@ object Meta extends (CfgNode => Meta):
   override def apply(cfg: CfgNode): Meta =
     cfg.get[CfgNode]("borscht") map { nps =>
       new Meta(
-        nps.child("renderable-string") map (RefTypeComponent(_).cast[NodeParser[RenderableString]].value),
+        nps.child("renderable-string") map (_.as[RefComponent[NodeParser[RenderableString]]].value),
         DefaultRefTypes ++
           (nps.map[Ref[RefType]]("ref-types") map  { (key, value) => key -> value.value }))
     } getOrElse Empty

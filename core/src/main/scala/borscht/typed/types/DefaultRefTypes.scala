@@ -13,6 +13,7 @@ val DefaultRefTypes: Map[String, RefType] = {
 
     "$" -> RefTypeString,
     "str" -> RefTypeString,
+    "string" -> RefTypeString,
 
     "_" -> RefTypeNode,
     "node" -> RefTypeNode,
