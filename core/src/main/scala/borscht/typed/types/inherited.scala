@@ -15,6 +15,8 @@ object RefTypeBigDecimal extends RefTypeInherited[BigDecimal]
 
 object RefTypeBigInt extends RefTypeInherited[BigInt]
 
+object RefTypeClass extends RefTypeInherited[Class[?]]
+
 object RefTypeDuration extends RefTypeInherited[Duration]
 
 object RefTypeFiniteDuration extends RefTypeInherited[FiniteDuration]

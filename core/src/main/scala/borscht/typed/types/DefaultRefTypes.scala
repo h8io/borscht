@@ -18,6 +18,8 @@ val DefaultRefTypes: Map[String, RefType] = {
     "_" -> RefTypeNode,
     "node" -> RefTypeNode,
     "component" -> RefTypeComponent,
+    "class" -> RefTypeClass,
+    "object" -> RefTypeObject,
 
     "list" -> RefTypeList,
     "map" -> RefTypeMap,
