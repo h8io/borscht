@@ -50,4 +50,4 @@ private[typed] final class Events(chars: IndexedSeq[Char]) extends (Parser => Pa
 object Events:
   private val TypeNameSpecialChars = BitSet('_', '-', '.')
 
-  private val SingleCharacterTypeName = BitSet('#', '$', '?', '*')
+  private val SingleCharacterTypeName = BitSet('#', '$', '?', '*', '!')

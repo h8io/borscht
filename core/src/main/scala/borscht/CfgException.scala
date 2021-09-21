@@ -12,3 +12,6 @@ open class NodeParserException(message: String, position: Position, cause: Optio
   def this(message: String, position: Position, cause: Throwable) = this(message, position, Some(cause))
 
   def this(position: Position, cause: Throwable) = this(cause.getMessage, position, cause)
+
+open class WrongNodeTypeException(expected: NodeType, actual: NodeType, position: Position)
+  extends NodeParserException(s"Unexpected node type: $actual ($expected expected)", position)
