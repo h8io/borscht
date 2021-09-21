@@ -8,14 +8,14 @@ import java.lang.reflect.{Constructor, Executable, Method}
 import scala.reflect.ClassTag
 
 object RefTypeComponent extends RefTypeParameterless:
+  private val ComponentTypes = Map("class" -> cls, "object" -> obj)
+
   override def apply(node: Node): RefComponent[?] = node match
-    case scalar: ScalarNode => cls(None)(scalar)
-    case cfg: CfgNode => cfg.oneOf(Map(
-      "class" -> cls(cfg.child("parameters")),
-      "object" -> RefTypeObject.apply))
+    case scalar: ScalarNode => cls(scalar)(None)
+    case cfg: CfgNode => cfg.oneOf(ComponentTypes)(cfg.child("parameters"))
     case _ => throw WrongNodeTypeException(node)
 
-  private def cls(parametersNode: Option[Node])(classNode: Node) =
+  private def cls(classNode: Node): Option[Node] => RefComponent[?] = parametersNode =>
     val `class` = classNode.as[Class[?]].asSubclass(classOf[AnyRef])
     val constructor = parametersNode map {
       case named: CfgNode => executable(constructors(`class`, named.size), named)
@@ -29,8 +29,7 @@ object RefTypeComponent extends RefTypeParameterless:
     } getOrElse (() => `class`.getConstructor().newInstance())
     RefComponent(constructor())(using ClassTag(`class`))
 
-object RefTypeObject extends RefTypeParameterless:
-  override def apply(node: Node): RefComponent[?] =
+  private def obj(node: Node): Option[Node] => RefComponent[?] = _ =>
     val className = node.as[String]
     try {
       val objectClass = Class.forName(className + "$")

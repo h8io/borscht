@@ -87,11 +87,11 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
         key -> (() => parser(node))
       }
     }
-    if (mappings.size == 1) mappings.headOption map (_._2())
-    else throw NodeParserException(
+    if (mappings.size > 1) throw NodeParserException(
       s"No more than one key of ${map.keys.mkString(", ")} should exist, but ${mappings.keys.mkString(", ")} found",
       position)
-    
+    else mappings.headOption map (_._2())
+
   final def oneOf[T](map: Map[String, NodeParser[? <: T]]): T = optionalOneOf(map) getOrElse {
     throw NodeParserException(s"No one of ${map.keys.mkString(", ")} was found", position)
   }

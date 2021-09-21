@@ -1,6 +1,6 @@
 package borscht.typed.types
 
-import borscht.Meta
+import borscht.{Meta, NodeParserException}
 import borscht.test.{cfg, scalar, seq}
 import borscht.typed.Ref
 import borscht.typed.types.components.TestComponentWithBoxedParameter
@@ -62,4 +62,8 @@ class ComponentRefTest extends AnyFlatSpec with Matchers:
 
   "Object component reference value type" should "create a correct component instance from the cfg node" in {
     RefTypeComponent(cfg("object" -> "scala.None")).value shouldEqual None
+  }
+
+  it should "throw NodeParserException if the class do not have a companion object" in {
+    a[NodeParserException] should be thrownBy RefTypeComponent(cfg("object" -> "java.util.Map"))
   }
