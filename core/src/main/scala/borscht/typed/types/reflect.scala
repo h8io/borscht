@@ -8,32 +8,33 @@ import java.lang.reflect.{Constructor, Executable, Method}
 import scala.reflect.ClassTag
 
 object RefTypeComponent extends RefTypeParameterless:
-  override def apply(node: Node): RefComponent[?] =
-    val (refClass, constructor) = node match
-      case scalar: ScalarNode =>
-        val `class` = scalar.as[Class[?]].asSubclass(classOf[AnyRef])
-        (`class`, () => `class`.getConstructor().newInstance())
-      case cfg: CfgNode =>
-        val `class` = cfg[Class[?]]("class").asSubclass(classOf[AnyRef])
-        (`class`, cfg.child("parameters") map {
-          case named: CfgNode => executable(constructors(`class`, named.size), named)
-          case unnamed: SeqNode => executable(constructors(`class`, unnamed.size), unnamed)
-          case unnamed: ScalarNode => executable(constructors(`class`, 1), List(unnamed))
-        } map {
-          case Right((constructor, parameters)) =>
-            () => constructor.newInstance(parameters: _*)
-          case Left(expected) => throw NoSuchMethodException(
-            s"A suitable constructor with parameters ($expected) not found for ${`class`.getName}")
-        } getOrElse (() => `class`.getConstructor().newInstance()))
-      case _ => throw NodeParserException(s"Wrong component node type ${node.`type`}", node.position)
-    RefComponent(constructor())(using ClassTag(refClass))
+  override def apply(node: Node): RefComponent[?] = node match
+    case scalar: ScalarNode => cls(None)(scalar)
+    case cfg: CfgNode => cfg.oneOf(Map(
+      "class" -> cls(cfg.child("parameters")),
+      "object" -> RefTypeObject.apply))
+    case _ => throw WrongNodeTypeException(node)
+
+  private def cls(parametersNode: Option[Node])(classNode: Node) =
+    val `class` = classNode.as[Class[?]].asSubclass(classOf[AnyRef])
+    val constructor = parametersNode map {
+      case named: CfgNode => executable(constructors(`class`, named.size), named)
+      case unnamed: SeqNode => executable(constructors(`class`, unnamed.size), unnamed)
+      case unnamed: ScalarNode => executable(constructors(`class`, 1), List(unnamed))
+    } map {
+      case Right((constructor, parameters)) =>
+        () => constructor.newInstance(parameters: _*)
+      case Left(expected) => throw NoSuchMethodException(
+        s"A suitable constructor with parameters ($expected) not found for ${`class`.getName}")
+    } getOrElse (() => `class`.getConstructor().newInstance())
+    RefComponent(constructor())(using ClassTag(`class`))
 
 object RefTypeObject extends RefTypeParameterless:
-  override def apply(node: Node): RefObj[?] =
+  override def apply(node: Node): RefComponent[?] =
     val className = node.as[String]
     try {
       val objectClass = Class.forName(className + "$")
-      RefObj(objectClass.getField("MODULE$").get(objectClass))(using ClassTag(objectClass))
+      RefComponent(objectClass.getField("MODULE$").get(objectClass))(using ClassTag(objectClass))
     } catch {
       case e: ClassNotFoundException =>
         throw NodeParserException(s"Object $className not found", node.position, e)

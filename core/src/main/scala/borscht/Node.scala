@@ -81,6 +81,21 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
 
     loop(this)
 
+  final def optionalOneOf[T](map: Map[String, NodeParser[? <: T]]): Option[T] =
+    val mappings = map flatMap { (key, parser) =>
+      child(key) map { node =>
+        key -> (() => parser(node))
+      }
+    }
+    if (mappings.size == 1) mappings.headOption map (_._2())
+    else throw NodeParserException(
+      s"No more than one key of ${map.keys.mkString(", ")} should exist, but ${mappings.keys.mkString(", ")} found",
+      position)
+    
+  final def oneOf[T](map: Map[String, NodeParser[? <: T]]): T = optionalOneOf(map) getOrElse {
+    throw NodeParserException(s"No one of ${map.keys.mkString(", ")} was found", position)
+  }
+
   final def contains(key: String): Boolean = child(key).isDefined
 
   final def `type`: NodeType = NodeType.cfg
