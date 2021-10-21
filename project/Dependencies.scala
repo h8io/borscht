@@ -11,7 +11,7 @@ object Dependencies {
 
   val ApacheCommonsText = "org.apache.commons" % "commons-text" % "1.9"
 
-  val ScalaTest = "org.scalatest" %% "scalatest" % "3.2.9"
+  val ScalaTest = "org.scalatest" %% "scalatest" % "3.2.10"
 
   val ScalaMock = "org.scalamock" %% "scalamock" % "5.1.0"
 }

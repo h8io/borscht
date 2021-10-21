@@ -19,7 +19,7 @@ ThisBuild / developers := List(
   )
 )
 
-ThisBuild / description := "Borscht: Scala 3 configuration liblrary"
+ThisBuild / description := "Borscht: Scala 3 configuration library"
 ThisBuild / licenses := List("Apache 2" -> new URL("http://www.apache.org/licenses/LICENSE-2.0.txt"))
 ThisBuild / homepage := Some(url("https://github.com/h8io/borscht"))
 ThisBuild / versionScheme := Some("semver-spec")
