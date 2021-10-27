@@ -12,12 +12,14 @@ import scala.jdk.CollectionConverters.*
 
 given NodeParserString: NodeParser[String] =
   case scalar: ScalarNode => scalar.asString
-  case node => node.meta.nodeParserRenderableString map (_(node).render) getOrElse {
+  case node =>
+  node.meta.nodeParserRenderableString map (_ (node).render) getOrElse {
     throw IllegalStateException("Renderable string parser is not defined")
   }
 
 given NodeParserBoolean: NodeParser[Boolean] =
-  case scalar: ScalarNode => scalar.value match
+  case scalar: ScalarNode =>
+  scalar.value match
     case v: Boolean => v
     case v: jBoolean => v.booleanValue
     case v: String => v.toBoolean
@@ -32,7 +34,8 @@ private def parseChar(value: String): Char =
     case _ => throw IllegalArgumentException("Could not parse \"$value\" to a character")
 
 given NodeParserChar: NodeParser[Char] =
-  case scalar: ScalarNode => scalar.value match
+  case scalar: ScalarNode =>
+  scalar.value match
     case value: Char => value
     case value: Character => value.charValue
     case value: Int => value.toChar
@@ -45,10 +48,14 @@ given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]
 
 given NodeParserList[T: NodeParser]: NodeParser[List[T]] = NodeParserIterator[T] andThen (_.toList)
 
-given NodeParserSet[T] (using parser: NodeParser[T]): NodeParser[Set[T]] =
+given NodeParserSet[T](using parser: NodeParser[T]): NodeParser[Set[T]] =
   NodeParserSeqNode andThen { node => (node.iterator map parser).toSet }
 
-given NodeParserMap[T] (using parser: NodeParser[T]): NodeParser[Map[String, T]] =
+given NodeParserMap[T](using parser: NodeParser[T]): NodeParser[Map[String, T]] =
   NodeParserCfgNode andThen { cfg =>
     (cfg.iterator map { (key: String, value: Node) => key -> parser(value) }).toMap
   }
+
+given NodeParserOption[T](using parser: NodeParser[T]): NodeParser[Option[T]] = node => node match
+  case seq: SeqNode => seq.option[T]
+  case _ => Some(parser(node))

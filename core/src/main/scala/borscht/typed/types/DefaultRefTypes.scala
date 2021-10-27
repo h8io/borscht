@@ -22,6 +22,7 @@ val DefaultRefTypes: Map[String, RefType] = {
 
     "list" -> RefTypeList,
     "map" -> RefTypeMap,
+    "opt" -> RefTypeOption, 
 
     "env" -> RefTypeEnv,
     "prop" -> RefTypeProp,

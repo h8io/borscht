@@ -4,8 +4,8 @@ import borscht.test.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
-class NodeParserSeqTest extends AnyFlatSpec with Matchers:
-  "Sequence node parser" should "provide a singleton list of strings" in {
+class NodeParserListTest extends AnyFlatSpec with Matchers:
+  "List node parser" should "provide a singleton list of strings" in {
     cfg("key" -> "value")[List[String]]("key") should contain theSameElementsInOrderAs List("value")
   }
 
@@ -34,4 +34,17 @@ class NodeParserSeqTest extends AnyFlatSpec with Matchers:
   it should "provide a list of booleans from a string sequence" in {
     seq("false", "true", "false").as[List[Boolean]] should contain theSameElementsInOrderAs
       List(false, true, false)
+  }
+
+  it should "provide a list of lists" in {
+    seq(
+      seq(1, 2, 3),
+      seq(4, 5, 6),
+      seq(7, 8, 9)).as[List[List[Int]]] should contain theSameElementsInOrderAs
+      List(List(1, 2, 3), List(4, 5, 6), List(7, 8, 9))
+  }
+
+  it should "provide a list of options" in {
+    seq(seq(), seq(42), 7).as[List[Option[Int]]] should contain theSameElementsInOrderAs
+      List(None, Some(42), Some(7))
   }

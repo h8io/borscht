@@ -25,3 +25,8 @@ object RefTypeMap extends AbstractRefType[(NodeParser[Ref[?]], NodeParser[Ref[?]
         keyParser(new VirtualScalarNode(key, cfg)).value -> valueParser(value).value
       }).toMap)
       case node => throw NodeParserException(s"cfg node expected, but ${node.`type`} received", node.position)
+
+object RefTypeOption extends RefTypeWithOptionalParameter:
+  override protected def create(parameter: NodeParser[Ref[?]]): NodeParser[Ref[Option[?]]] = node => node match
+    case seq: SeqNode => RefObj(seq.option(using parameter) map (_.value))
+    case _ => RefObj(Some(parameter(node).value))

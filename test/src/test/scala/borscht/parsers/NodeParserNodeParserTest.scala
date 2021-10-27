@@ -24,7 +24,8 @@ class NodeParserNodeParserTest extends AnyFlatSpec with Matchers:
   }
 
   it should "throw an exception if it is not defined in meta" in {
-    an[UnknownTypeException] should be thrownBy (scalar("my-type").as[NodeParser[?]])
+    val e = the[NodeParserException] thrownBy (scalar("my-type").as[NodeParser[?]])
+    e.getCause shouldBe a[UnknownTypeException]
   }
 
   it should "return a correct value for a scalar value" in {

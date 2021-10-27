@@ -20,7 +20,9 @@ sealed trait Node:
 
   def toString: String
 
-  final def as[T](using parser: NodeParser[T]) = parser(this)
+  final def as[T](using parser: NodeParser[T]) = try parser(this) catch {
+    case e: Exception if !e.isInstanceOf[CfgException] => throw NodeParserException(position, e)
+  }
 
 trait ScalarNode extends Node:
   def value: Any
@@ -38,7 +40,13 @@ trait SeqNode extends Node with Iterable[Node] :
 
   final def `type`: NodeType = NodeType.seq
   
-  final def list[T](using parser: NodeParser[T]) = (this.iterator map parser).toList
+  final def list[T](using parser: NodeParser[T]): List[T] = (iterator map parser).toList
+
+  final def option[T](using parser: NodeParser[T]): Option[T] = size match
+    case 0 => None
+    case 1 => Some(parser(head))
+    case n =>
+      throw throw NodeParserException(s"Node should be empty or contain a single element, but $n found", position)
 
   override def toString: String = mkString(s"${getClass.getName}([", ", ", "])")
 
@@ -55,11 +63,7 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
       throw NodeNotFoundException(ref, position)
     }
 
-  final def get[T: NodeParser](ref: String*): Option[T] = node(ref: _*) map { n =>
-    try n.as[T] catch {
-      case e: Exception if !e.isInstanceOf[CfgException] => throw NodeParserException(n.position, e)
-    }
-  }
+  final def get[T: NodeParser](ref: String*): Option[T] = node(ref: _*) map (_.as[T])
 
   final def list[T: NodeParser](ref: String*): List[T] = get[List[T]](ref: _*) getOrElse Nil
 
