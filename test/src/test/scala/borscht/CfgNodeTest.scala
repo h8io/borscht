@@ -1,7 +1,7 @@
 package borscht
 
 import borscht.parsers.NodeParserString
-import borscht.test.cfg
+import borscht.test.*
 import org.scalatest.flatspec.AnyFlatSpec
 import org.scalatest.matchers.should.Matchers
 
@@ -32,4 +32,23 @@ class CfgNodeTest extends AnyFlatSpec with Matchers:
 
   it should "throw a NodeParserException if there are multiple keys from the map" in {
     a[NodeParserException] should be thrownBy cfg("key1" -> "value", "key2" -> "value").oneOf(OneOfMap)
+  }
+
+  "properties" should "return empty map for unexistent node" in {
+    cfg().properties("unexistent") shouldBe empty
+  }
+
+  it should "return a correct map" in {
+    cfg("key1" ->
+      cfg("key2" ->
+        cfg("cfg" -> cfg(
+          "seq" -> seq(1, 2, 3),
+          "scalar1" -> "value1",
+          "scalar2" -> "value2",
+          "empty" -> cfg())))).properties("key1", "key2") shouldEqual Map(
+      "key1.key2.cfg.seq.0" -> "1",
+      "key1.key2.cfg.seq.1" -> "2",
+      "key1.key2.cfg.seq.2" -> "3",
+      "key1.key2.cfg.scalar1" -> "value1",
+      "key1.key2.cfg.scalar2" -> "value2")
   }

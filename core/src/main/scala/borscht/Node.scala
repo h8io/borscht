@@ -71,6 +71,18 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
 
   final def map[T: NodeParser](ref: String*): Map[String, T] = get[Map[String, T]](ref: _*) getOrElse Map.empty
 
+  final def properties(ref: String*): Map[String, String] =
+    node(ref: _*) map (properties(ref.mkString("."), _, Map.empty)) getOrElse Map.empty
+
+  private def properties(prefix: String, node: Node, result: Map[String, String]): Map[String, String] = node match
+    case scalar: ScalarNode => result + (prefix -> scalar.asString)
+    case cfg: CfgNode =>
+      val p = prefix + "."
+      (cfg foldLeft result) { case (r, (k, n)) => properties(p + k, n, r) }
+    case seq: SeqNode =>
+      val p = prefix + "."
+      (seq.iterator.zipWithIndex foldLeft result) { case (r, (n, i)) => properties(p + i, n, r) }
+
   final def node(ref: String*): Option[Node] = if (ref.isEmpty) Some(this) else
     val it = ref.iterator
 

@@ -59,12 +59,13 @@ class TimeTypesTest extends AnyFlatSpec with Matchers:
 
   it should "be parsed with adjuster and time zone" in {
     val zone = "Europe/London"
-    val before = ZonedDateTime.now.minusMonths(1)
+    val zoneId = ZoneId.of(zone)
+    val before = ZonedDateTime.now(zoneId).minusMonths(1)
     val now = RefTypeNow(zone).parser(Nil) map (_(scalar("-0000-01-00")))
     now match
       case Right(ref: Ref[?]) =>
         val value = ref.cast[ZonedDateTime].value
-        val after = ZonedDateTime.now.minusMonths(1)
+        val after = ZonedDateTime.now(zoneId).minusMonths(1)
         value.getZone shouldBe ZoneId.of(zone)
         value should (be >= before and be <= after)
       case _ => fail("Unexpected result $now")
