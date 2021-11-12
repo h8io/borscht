@@ -72,7 +72,8 @@ trait CfgNode extends Node with Iterable[(String, Node)] :
   final def map[T: NodeParser](ref: String*): Map[String, T] = get[Map[String, T]](ref: _*) getOrElse Map.empty
 
   final def properties(ref: String*): Map[String, String] =
-    node(ref: _*) map (properties(ref.mkString("."), _, Map.empty)) getOrElse Map.empty
+    if (ref.isEmpty) (this foldLeft Map.empty) { case (r, (k, n)) => properties(k, n, r) }
+    else node(ref: _*) map (properties(ref.mkString("."), _, Map.empty)) getOrElse Map.empty
 
   private def properties(prefix: String, node: Node, result: Map[String, String]): Map[String, String] = node match
     case scalar: ScalarNode => result + (prefix -> scalar.asString)

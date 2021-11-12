@@ -38,7 +38,7 @@ class CfgNodeTest extends AnyFlatSpec with Matchers:
     cfg().properties("unexistent") shouldBe empty
   }
 
-  it should "return a correct map" in {
+  it should "return a correct map for a non-empty reference" in {
     cfg("key1" ->
       cfg("key2" ->
         cfg("cfg" -> cfg(
@@ -51,4 +51,22 @@ class CfgNodeTest extends AnyFlatSpec with Matchers:
       "key1.key2.cfg.seq.2" -> "3",
       "key1.key2.cfg.scalar1" -> "value1",
       "key1.key2.cfg.scalar2" -> "value2")
+  }
+
+  it should "return a correct map for an empty reference" in {
+    cfg("seq" -> seq(1, 2, 3),
+      "scalar1" -> "value1",
+      "scalar2" -> "value2",
+      "cfg" -> cfg(
+        "question" -> "life, universe and everything",
+        "answer" -> 42),
+      "empty" -> cfg()).properties() shouldEqual
+      Map(
+        "seq.0" -> "1",
+        "seq.1" -> "2",
+        "seq.2" -> "3",
+        "scalar1" -> "value1",
+        "scalar2" -> "value2",
+        "cfg.question" -> "life, universe and everything",
+        "cfg.answer" -> "42")
   }
