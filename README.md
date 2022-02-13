@@ -6,6 +6,7 @@
   * supports configuration files (could be extended)
     * [HOCON](https://github.com/lightbend/config/blob/main/README.md)
     * [YAML](https://yaml.org/) ([Jackson YAML](https://github.com/FasterXML/jackson-dataformats-text/tree/master/yaml) is the underlying library)
+    * [TOML](https://toml.io/) ([Jackson TOML](https://github.com/FasterXML/jackson-dataformats-text/tree/master/toml) is the underlying library)
   * merges configurations of all formats
   * renders strings from objects with template engines (could be extended)
     * [StringTemplate 4](https://www.stringtemplate.org/)
