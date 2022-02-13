@@ -2,7 +2,6 @@ package borscht.parsers
 
 import borscht.{Entries, Node, RenderableString}
 
-import java.lang.{Boolean => jBoolean}
 import borscht.*
 
 import scala.annotation.tailrec

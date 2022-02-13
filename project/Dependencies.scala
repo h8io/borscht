@@ -6,6 +6,7 @@ object Dependencies {
   private val JacksonVersion = "2.13.1"
   val JacksonDatabind = "com.fasterxml.jackson.core" % "jackson-databind" % JacksonVersion
   val JacksonDataformatYAML = "com.fasterxml.jackson.dataformat" % "jackson-dataformat-yaml" % JacksonVersion
+  val JacksonDataformatTOML = "com.fasterxml.jackson.dataformat" % "jackson-dataformat-toml" % JacksonVersion
 
   val ST4 = "org.antlr" % "ST4" % "4.3.1"
 

@@ -89,6 +89,13 @@ lazy val `recipe-jackson-yaml` = project
     libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`recipe-jackson`)
 
+lazy val `recipe-jackson-toml` = project
+  .in(file("recipe/jackson/toml"))
+  .settings(
+    name := "borscht-jackson-toml",
+    libraryDependencies += Dependencies.JacksonDataformatTOML)
+  .dependsOn(`recipe-jackson`)
+
 lazy val `template-core` = project
   .in(file("template/core"))
   .settings(name := "borscht-template-core")
@@ -134,6 +141,6 @@ lazy val root = project
     publishArtifact := false)
   .aggregate(
     core, `test-core`,
-    `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`,
+    `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`, `recipe-jackson-toml`,
     `template-core`, `template-st4`, `template-apache-commons-text`,
     examples, classic)
