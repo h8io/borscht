@@ -1,5 +1,3 @@
-import sbt.Test
-
 ThisBuild / organization := "io.h8.borscht"
 ThisBuild / organizationName := "H8IO"
 ThisBuild / organizationHomepage := Some(url("https://github.com/h8io/"))
@@ -48,7 +46,7 @@ releaseProcess := Seq[ReleaseStep](
   pushChanges
 )
 
-ThisBuild / scalaVersion := "3.1.0"
+ThisBuild / scalaVersion := "3.1.1"
 
 ThisBuild / libraryDependencies ++= Seq(
   //Dependencies.ScalaMock % Test,
