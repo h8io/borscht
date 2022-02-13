@@ -21,7 +21,6 @@ given NodeParserBoolean: NodeParser[Boolean] =
   case scalar: ScalarNode =>
   scalar.value match
     case v: Boolean => v
-    case v: jBoolean => v.booleanValue
     case v: String => v.toBoolean
     case v: Number => v != 0
   case node: Node => node.as[String].toBoolean
@@ -37,7 +36,6 @@ given NodeParserChar: NodeParser[Char] =
   case scalar: ScalarNode =>
   scalar.value match
     case value: Char => value
-    case value: Character => value.charValue
     case value: Int => value.toChar
     case _ => parseChar(scalar.asString)
   case node => parseChar(node.as[String])
