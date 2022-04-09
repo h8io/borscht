@@ -45,8 +45,7 @@ trait SeqNode extends Node with Iterable[Node] :
   final def option[T](using parser: NodeParser[T]): Option[T] = size match
     case 0 => None
     case 1 => Some(parser(head))
-    case n =>
-      throw throw NodeParserException(s"Node should be empty or contain a single element, but $n found", position)
+    case n => throw NodeParserException(s"Node should be empty or contain a single element, but $n found", position)
 
   override def toString: String = mkString(s"${getClass.getName}([", ", ", "])")
 
