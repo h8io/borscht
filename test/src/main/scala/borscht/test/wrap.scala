@@ -6,4 +6,4 @@ private[test] def wrap(value: Any, meta: Meta, position: => Position): Node = va
   case node: Node => node withMeta meta
   case map: Map[?, ?] => MockCfgNode(map map { (key, value) => key.toString -> value }, meta, position)
   case seq: Iterable[?] => MockSeqNode(seq, meta, position)
-  case scalar: _ => MockScalarNode(scalar, meta, position)
+  case scalar => MockScalarNode(scalar, meta, position)
