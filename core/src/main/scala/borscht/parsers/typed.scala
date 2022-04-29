@@ -12,6 +12,5 @@ given NodeParserNodeParser: NodeParser[NodeParser[?]] = node =>
 
 given NodeParserRef[T: ClassTag]: NodeParser[Ref[T]] = node => parseRef(node).cast[T]
 
-given NodeParserRefComponent[T <: AnyRef : ClassTag]: NodeParser[RefComponent[T]] =
+given NodeParserRefComponent[T <: AnyRef: ClassTag]: NodeParser[RefComponent[T]] =
   node => RefTypeComponent(node).assign[T]
-

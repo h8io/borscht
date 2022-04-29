@@ -12,20 +12,22 @@ object RefTypeComponent extends RefTypeParameterless:
 
   override def apply(node: Node): RefComponent[?] = node match
     case scalar: ScalarNode => cls(scalar)(None)
-    case cfg: CfgNode => cfg.oneOf(ComponentTypes)(cfg.child("parameters"))
-    case _ => throw WrongNodeTypeException(node)
+    case cfg: CfgNode       => cfg.oneOf(ComponentTypes)(cfg.child("parameters"))
+    case _                  => throw WrongNodeTypeException(node)
 
   private def cls(classNode: Node): Option[Node] => RefComponent[?] = parametersNode =>
     val `class` = classNode.as[Class[?]].asSubclass(classOf[AnyRef])
     val constructor = parametersNode map {
-      case named: CfgNode => executable(constructors(`class`, named.size), named)
-      case unnamed: SeqNode => executable(constructors(`class`, unnamed.size), unnamed)
+      case named: CfgNode      => executable(constructors(`class`, named.size), named)
+      case unnamed: SeqNode    => executable(constructors(`class`, unnamed.size), unnamed)
       case unnamed: ScalarNode => executable(constructors(`class`, 1), List(unnamed))
     } map {
       case Right((constructor, parameters)) =>
-        () => constructor.newInstance(parameters: _*)
-      case Left(expected) => throw NoSuchMethodException(
-        s"A suitable constructor with parameters ($expected) not found for ${`class`.getName}")
+        () => constructor.newInstance(parameters*)
+      case Left(expected) =>
+        throw NoSuchMethodException(
+          s"A suitable constructor with parameters ($expected) not found for ${`class`.getName}"
+        )
     } getOrElse (() => `class`.getConstructor().newInstance())
     RefComponent(constructor())(using ClassTag(`class`))
 
@@ -51,8 +53,10 @@ private def executable[T <: Executable](executables: Iterator[T], named: CfgNode
     parameters.iterator.map(_ -> _.classTag).mkString(", ")
   }
 
-private def executable[T <: Executable](executables: Iterator[T],
-                                        unnamed: Iterable[Node]): Either[String, (T, Seq[Any])] =
+private def executable[T <: Executable](
+    executables: Iterator[T],
+    unnamed: Iterable[Node]
+): Either[String, (T, Seq[Any])] =
   val parameters = (unnamed.iterator map (_.as[Ref[AnyRef]])).toList
   executables find { executable =>
     parameters.iterator zip executable.getParameterTypes forall (_ isCastableTo _)

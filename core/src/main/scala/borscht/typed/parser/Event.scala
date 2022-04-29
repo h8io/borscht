@@ -12,5 +12,5 @@ private[parser] enum Event(val position: Position):
   case None(val previous: Event) extends Event(previous.position)
 
   case NodeParserRef(parser: borscht.NodeParser[Ref[?]], override val position: Position) extends Event(position)
-  case TypeParameters(parameters: List[borscht.NodeParser[Ref[?]]],
-                      override val position: Position) extends Event(position)
+  case TypeParameters(parameters: List[borscht.NodeParser[Ref[?]]], override val position: Position)
+      extends Event(position)

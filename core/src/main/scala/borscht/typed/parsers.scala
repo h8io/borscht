@@ -16,10 +16,12 @@ def parseRef(node: Node): Ref[?] = node match
   case cfg: CfgNode if cfg.size == 1 =>
     val (tp, node) = cfg.iterator.next
     parseType(tp, cfg.meta.refTypes)(node)
-  case scalar: ScalarNode => scalar.value match
-    case str: String => str split (":", 2) match
-      case Array(value) => RefObj[String](str)
-      case Array(tp, value) => parseType(tp, scalar.meta.refTypes)(new VirtualScalarNode(value, scalar))
-      case unexpected => throw Error(s"Unexpected array size ${unexpected.length}")
-    case value => Ref(value)(using ClassTag(value.getClass))
+  case scalar: ScalarNode =>
+    scalar.value match
+      case str: String =>
+        str split (":", 2) match
+          case Array(_)         => RefObj[String](str)
+          case Array(tp, value) => parseType(tp, scalar.meta.refTypes)(new VirtualScalarNode(value, scalar))
+          case unexpected       => throw Error(s"Unexpected array size ${unexpected.length}")
+      case value => Ref(value)(using ClassTag(value.getClass))
   case node: Node => RefObj(node)(using ClassTag(node.getClass))

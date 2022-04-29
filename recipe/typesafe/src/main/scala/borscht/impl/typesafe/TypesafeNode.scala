@@ -6,11 +6,11 @@ import com.typesafe.config.{ConfigList, ConfigObject, ConfigRenderOptions, Confi
 private[typesafe] trait TypesafeNode(value: ConfigValue):
   self: Node =>
 
-  override lazy val position = TypesafePosition(value.origin)
+  override lazy val position: TypesafePosition = TypesafePosition(value.origin)
 
   override def toString: String = getClass.getSimpleName + "(" + value.render(ConfigRenderOptions.concise) + ")"
 
 private[typesafe] def wrap(value: ConfigValue, meta: Meta): Node = value match
-  case list: ConfigList => TypesafeSeqNode(list, meta)
+  case list: ConfigList  => TypesafeSeqNode(list, meta)
   case obj: ConfigObject => TypesafeCfgNode(obj, meta)
-  case scalar => TypesafeScalarNode(scalar, meta)
+  case scalar            => TypesafeScalarNode(scalar, meta)

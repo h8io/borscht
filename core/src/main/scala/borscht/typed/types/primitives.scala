@@ -6,8 +6,8 @@ import borscht.{Node, NodeParser}
 
 import scala.reflect.ClassTag
 
-trait RefTypePrimitive[T <: Primitive](ref: T => RefPrimitive[T])
-                                      (using parser: NodeParser[T], tag: ClassTag[T]) extends RefTypeParameterless: 
+trait RefTypePrimitive[T <: Primitive](ref: T => RefPrimitive[T])(using parser: NodeParser[T], tag: ClassTag[T])
+    extends RefTypeParameterless:
   override def apply(node: Node): RefPrimitive[T] = ref(parser(node))
 
 object RefTypeBoolean extends RefTypePrimitive[Boolean](RefBoolean(_))

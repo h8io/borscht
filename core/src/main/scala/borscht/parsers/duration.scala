@@ -8,5 +8,5 @@ given NodeParserDuration: NodeParser[Duration] = NodeParserString andThen (Durat
 
 given NodeParserFiniteDuration: NodeParser[FiniteDuration] = NodeParserDuration andThen {
   case value: FiniteDuration => value
-  case infinite => throw IllegalArgumentException("A finite duration is expected")
+  case _                     => throw IllegalArgumentException("A finite duration is expected")
 }

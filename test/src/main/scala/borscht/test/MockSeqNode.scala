@@ -9,5 +9,5 @@ private[test] case class MockSeqNode(values: Iterable[?], meta: Meta, position: 
     wrap(item, meta, MockSeqPosition(position, index))
   }
 
-private case class MockSeqPosition(position: Position, index: Int) extends Position.Some :
+private case class MockSeqPosition(position: Position, index: Int) extends Position.Some:
   override def toString: String = s"[$position, index $index]"

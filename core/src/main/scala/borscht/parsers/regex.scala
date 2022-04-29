@@ -9,4 +9,4 @@ given NodeParserPattern: NodeParser[Pattern] = node => Pattern.compile(node.as[S
 
 given NodeParserRegex: PartialNodeParser[Regex] =
   case scalar: ScalarNode => Regex(scalar.asString)
-  case cfg: CfgNode => Regex(cfg[String]("pattern"), cfg.list[String]("groups"): _*)
+  case cfg: CfgNode       => Regex(cfg[String]("pattern"), cfg.list[String]("groups")*)

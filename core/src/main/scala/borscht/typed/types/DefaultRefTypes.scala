@@ -10,38 +10,29 @@ val DefaultRefTypes: Map[String, RefType] = {
   Map(
     "?" -> RefTypeAny,
     "any" -> RefTypeAny,
-
     "$" -> RefTypeString,
     "str" -> RefTypeString,
     "string" -> RefTypeString,
-
     "_" -> RefTypeNode,
     "node" -> RefTypeNode,
     "component" -> RefTypeComponent,
     "class" -> RefTypeClass,
-
     "list" -> RefTypeList,
     "map" -> RefTypeMap,
-    "opt" -> RefTypeOption, 
-
+    "opt" -> RefTypeOption,
     "env" -> RefTypeEnv,
     "prop" -> RefTypeProp,
-
     "bool" -> RefTypeBoolean,
     "boolean" -> RefTypeBoolean,
-
     "char" -> RefTypeChar,
-
     "bigint" -> RefTypeBigInt,
     "bigdecimal" -> RefTypeBigDecimal,
-
     "byte" -> RefTypeByte,
     "double" -> RefTypeDouble,
     "float" -> RefTypeFloat,
     "int" -> RefTypeInt,
     "long" -> RefTypeLong,
     "short" -> RefTypeShort,
-
     "datetime-formatter" -> RefTypeDateTimeFormatter,
     "tz" -> RefTypeZoneId,
     "timezone" -> RefTypeZoneId,
@@ -66,14 +57,12 @@ val DefaultRefTypes: Map[String, RefType] = {
     "dayofweek" -> RefTypeDayOfWeek,
     "period" -> RefTypePeriod,
     "duration-java" -> RefTypeJavaDuration,
-
     "locale" -> RefTypeLocale,
     "message-format" -> RefTypeMessageFormat,
-
     "pattern" -> RefTypePattern,
     "re" -> RefTypeRegex,
     "regex" -> RefTypeRegex,
-
     "duration" -> RefTypeDuration,
-    "finite-duration" -> RefTypeFiniteDuration)
+    "finite-duration" -> RefTypeFiniteDuration
+  )
 }

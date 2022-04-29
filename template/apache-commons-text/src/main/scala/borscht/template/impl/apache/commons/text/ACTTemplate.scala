@@ -11,11 +11,14 @@ import java.time.temporal.TemporalAccessor
 import java.util.{Calendar, Date, Formatter, Locale}
 import scala.jdk.CollectionConverters.*
 
-private[text] final class ACTTemplate(substitutor: StringSubstitutor,
-                                      template: String,
-                                      renderers: List[Renderer],
-                                      valueFormat: ValueFormat,
-                                      parameters: Map[String, Any] = Map.empty) extends Template with StringLookup:
+final private[text] class ACTTemplate(
+    substitutor: StringSubstitutor,
+    template: String,
+    renderers: List[Renderer],
+    valueFormat: ValueFormat,
+    parameters: Map[String, Any] = Map.empty
+) extends Template
+    with StringLookup:
   override def set(key: String, value: Any): Template =
     ACTTemplate(substitutor, template, renderers, valueFormat, parameters + (key -> value))
 
@@ -26,7 +29,8 @@ private[text] final class ACTTemplate(substitutor: StringSubstitutor,
     val lookup = StringLookupFactory.INSTANCE.interpolatorStringLookup(
       java.util.Collections.singletonMap("ph", this),
       substitutor.getStringLookup,
-      true)
+      true
+    )
     new StringSubstitutor(substitutor).setVariableResolver(lookup).replace(template)
 
   override def lookup(ph: String): String =
@@ -34,38 +38,39 @@ private[text] final class ACTTemplate(substitutor: StringSubstitutor,
     render(vf, parameters.get(key).orNull)
 
   private def render(vf: ValueFormat, value: Any): String =
-    val iterator = renderers.iterator
-    renderers.iterator.map(_(vf, value)).flatten.nextOption getOrElse {
+    renderers.iterator.flatMap(_(vf, value)).nextOption getOrElse {
       value match
         case null | None => vf.nullValue
-        case Some(value) => render(vf, value.asInstanceOf[Any])
-        case _ => vf.format map { fmt =>
-          value.asInstanceOf[AnyRef] match
-            case _: (Character | CharSequence | Number | Date | Calendar | TemporalAccessor) =>
-              val formatter = Formatter(vf.locale)
-              try formatter.format(fmt, value).toString finally formatter.close()
-            case seq: Iterable[_] =>
-              render(vf, seq.iterator, vf.list.start, vf.list.separator, vf.list.end)
-            case product: Product =>
-              render(vf, product.productIterator, vf.product.start, vf.product.separator, vf.product.end)
-            case _ => throw IllegalArgumentException(s"Unformattable value $value class ${value.getClass}")
-        } getOrElse {
-          value.asInstanceOf[AnyRef] match
-            case n: Number => NumberFormat.getInstance(vf.locale).format(n)
-            case cs: CharSequence => cs.toString
-            case temporal: TemporalAccessor => TimeFormats.default.format(None, vf.locale, temporal)
-            case date: Date => render(date, vf.locale)
-            case calendar: Calendar => render(calendar.getTime, vf.locale)
-            case seq: Iterable[_] =>
-              render(vf, seq.iterator, vf.list.start, vf.list.separator, vf.list.end)
-            case product: Product =>
-              render(vf, product.productIterator, vf.product.start, vf.product.separator, vf.product.end)
-            case _ => value.toString
-        }
-  }
+        case Some(value) => render(vf, value)
+        case _ =>
+          vf.format map { fmt =>
+            value.asInstanceOf[AnyRef] match
+              case _: (Character | CharSequence | Number | Date | Calendar | TemporalAccessor) =>
+                val formatter = Formatter(vf.locale)
+                try formatter.format(fmt, value).toString
+                finally formatter.close()
+              case seq: Iterable[?] =>
+                render(vf, seq.iterator, vf.list.start, vf.list.separator, vf.list.end)
+              case product: Product =>
+                render(vf, product.productIterator, vf.product.start, vf.product.separator, vf.product.end)
+              case _ => throw IllegalArgumentException(s"Unformattable value $value class ${value.getClass}")
+          } getOrElse {
+            value.asInstanceOf[AnyRef] match
+              case n: Number                  => NumberFormat.getInstance(vf.locale).format(n)
+              case cs: CharSequence           => cs.toString
+              case temporal: TemporalAccessor => TimeFormats.default.format(None, vf.locale, temporal)
+              case date: Date                 => render(date, vf.locale)
+              case calendar: Calendar         => render(calendar.getTime, vf.locale)
+              case seq: Iterable[?] =>
+                render(vf, seq.iterator, vf.list.start, vf.list.separator, vf.list.end)
+              case product: Product =>
+                render(vf, product.productIterator, vf.product.start, vf.product.separator, vf.product.end)
+              case _ => value.toString
+          }
+    }
 
   private def render(date: Date, locale: Locale): String =
     DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL, locale).format(date)
 
-  private def render(vf: ValueFormat, seq: Iterator[_], start: String, separator: String, end: String): String =
+  private def render(vf: ValueFormat, seq: Iterator[?], start: String, separator: String, end: String): String =
     seq map { item => render(vf, item.asInstanceOf[AnyRef]) } mkString (start, separator, end)

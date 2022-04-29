@@ -9,10 +9,10 @@ private def pointer(value: String, position: Int) =
   def append(i: Int): StringBuilder =
     if i > 0 && chars.hasNext then
       val c = chars.next
-      if (c.isWhitespace) sb += c else sb += ' '
+      if c.isWhitespace then sb += c else sb += ' '
       append(i - 1)
     else sb += '^'
   append(position)
 
 class PlaceholderParserException(message: String, position: Int, value: String)
-  extends RuntimeException(s"$message @ $position\n$value\n${pointer(value, position)}")
+    extends RuntimeException(s"$message @ $position\n$value\n${pointer(value, position)}")

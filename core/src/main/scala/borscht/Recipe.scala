@@ -4,7 +4,7 @@ import java.io.{File, InputStream}
 import java.net.URL
 import java.nio.file.Path
 
-type CfgSource = File | Path | String | URL 
+type CfgSource = File | Path | String | URL
 
 class Recipe(provider: CfgProvider):
   def apply(sources: CfgSource*): CfgNode = apply(sources)
@@ -14,4 +14,4 @@ class Recipe(provider: CfgProvider):
   private def upgrade(cfg: CfgNode): CfgNode = cfg.withMeta(Meta(cfg))
 
   implicit final class CfgStringContext(sc: StringContext):
-    def cfg(args: Any*): CfgNode = apply(sc.s(args: _*).stripMargin)
+    def cfg(args: Any*): CfgNode = apply(sc.s(args*).stripMargin)

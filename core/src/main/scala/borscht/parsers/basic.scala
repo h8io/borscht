@@ -1,7 +1,5 @@
 package borscht.parsers
 
-import borscht.{Entries, Node, RenderableString}
-
 import borscht.*
 
 import scala.annotation.tailrec
@@ -12,33 +10,34 @@ import scala.jdk.CollectionConverters.*
 given NodeParserString: NodeParser[String] =
   case scalar: ScalarNode => scalar.asString
   case node =>
-  node.meta.nodeParserRenderableString map (_ (node).render) getOrElse {
-    throw IllegalStateException("Renderable string parser is not defined")
-  }
+    node.meta.nodeParserRenderableString map (_(node).render) getOrElse {
+      throw IllegalStateException("Renderable string parser is not defined")
+    }
 
 given NodeParserBoolean: NodeParser[Boolean] =
   case scalar: ScalarNode =>
-  scalar.value match
-    case v: Boolean => v
-    case v: String => v.toBoolean
-    case v: Number => v != 0
+    scalar.value match
+      case v: Boolean => v
+      case v: String  => v.toBoolean
+      case v: Number  => v != 0
   case node: Node => node.as[String].toBoolean
 
 private val EncodedCharPattern = raw"\\u([\d+A-Fa-f]{4})".r
 
 private def parseChar(value: String): Char =
-  if (value.length == 1) value.head else value match
-    case EncodedCharPattern(code) => Integer.parseInt(code, 16).toChar
-    case _ => throw IllegalArgumentException("Could not parse \"$value\" to a character")
+  if value.length == 1 then value.head
+  else
+    value match
+      case EncodedCharPattern(code) => Integer.parseInt(code, 16).toChar
+      case _                        => throw IllegalArgumentException("Could not parse \"$value\" to a character")
 
 given NodeParserChar: NodeParser[Char] =
   case scalar: ScalarNode =>
-  scalar.value match
-    case value: Char => value
-    case value: Int => value.toChar
-    case _ => parseChar(scalar.asString)
+    scalar.value match
+      case value: Char => value
+      case value: Int  => value.toChar
+      case _           => parseChar(scalar.asString)
   case node => parseChar(node.as[String])
-
 
 given NodeParserIterator[T](using parser: NodeParser[T]): NodeParser[Iterator[T]] =
   NodeParserSeqNode andThen { node => node.iterator map parser }
@@ -53,6 +52,7 @@ given NodeParserMap[T](using parser: NodeParser[T]): NodeParser[Map[String, T]] 
     (cfg.iterator map { (key: String, value: Node) => key -> parser(value) }).toMap
   }
 
-given NodeParserOption[T](using parser: NodeParser[T]): NodeParser[Option[T]] = node => node match
-  case seq: SeqNode => seq.option[T]
-  case _ => Some(parser(node))
+given NodeParserOption[T](using parser: NodeParser[T]): NodeParser[Option[T]] = node =>
+  node match
+    case seq: SeqNode => seq.option[T]
+    case _            => Some(parser(node))

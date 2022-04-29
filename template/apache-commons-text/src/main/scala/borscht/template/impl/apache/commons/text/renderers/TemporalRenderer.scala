@@ -18,9 +18,9 @@ final class TemporalRenderer(formats: TimeFormats) extends Renderer:
 
   override def apply(vf: ValueFormat, value: Any): Option[String] = value match
     case temporal: TemporalAccessor => Some(formats.format(vf.format, vf.locale, temporal))
-    case date: Date => Some(render(vf, date))
-    case calendar: Calendar => Some(render(vf, calendar.getTime)) 
-    case _ => None
+    case date: Date                 => Some(render(vf, date))
+    case calendar: Calendar         => Some(render(vf, calendar.getTime))
+    case _                          => None
 
   private def render(vf: ValueFormat, date: Date): String = (vf.format map { fmt =>
     new SimpleDateFormat(fmt, vf.locale)

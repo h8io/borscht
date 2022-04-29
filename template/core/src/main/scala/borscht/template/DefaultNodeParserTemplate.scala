@@ -4,12 +4,14 @@ import borscht.*
 import borscht.parsers.given
 import borscht.typed.Ref
 
-class DefaultNodeParserTemplate(default: Option[TemplateEngine],
-                                underlying: Map[String, TemplateEngine]) extends PartialNodeParser[Template]:
+class DefaultNodeParserTemplate(default: Option[TemplateEngine], underlying: Map[String, TemplateEngine])
+    extends PartialNodeParser[Template]:
   private def this(underlying: Map[String, TemplateEngine], default: Option[String]) = this(
     default map { engine =>
       underlying.get(engine) getOrElse (throw IllegalArgumentException("Unknown default engine $engine"))
-    }, underlying)
+    },
+    underlying
+  )
 
   def this(underlying: Map[String, TemplateEngine]) = this(underlying, None)
 
@@ -21,7 +23,7 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
 
   override def isDefinedAt(node: Node): Boolean = node match
     case cfg: CfgNode => (cfg.get[String](Engine) flatMap underlying.get).isDefined || default.isDefined
-    case _ => default.isDefined
+    case _            => default.isDefined
 
   override def apply(node: Node): Template = node match
     case cfg: CfgNode =>
@@ -39,9 +41,10 @@ class DefaultNodeParserTemplate(default: Option[TemplateEngine],
       } getOrElse {
         throw TemplateEngineException("Template is not defined", node.position)
       }
-    case _ => default map (_ (node)) getOrElse {
-      throw TemplateEngineException("The default template engine is unknown", node.position)
-    }
+    case _ =>
+      default map (_(node)) getOrElse {
+        throw TemplateEngineException("The default template engine is unknown", node.position)
+      }
 
   private inline def Engine = "engine"
 

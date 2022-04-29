@@ -8,9 +8,11 @@ import borscht.{Node, SeqNode}
 import org.apache.commons.text.StringSubstitutor
 import org.apache.commons.text.lookup.StringLookupFactory
 
-final class ACTTemplateEngine(substitutor: StringSubstitutor,
-                              renderers: List[Renderer],
-                              valueFormat: ValueFormat = ValueFormat.default) extends TemplateEngine:
+final class ACTTemplateEngine(
+    substitutor: StringSubstitutor,
+    renderers: List[Renderer],
+    valueFormat: ValueFormat = ValueFormat.default
+) extends TemplateEngine:
   def this() = this(ACTTemplateEngine.DefaultStringSubstitutor, Nil, ValueFormat.default)
 
   def this(renderers: List[Renderer]) = this(ACTTemplateEngine.DefaultStringSubstitutor, renderers, ValueFormat.default)
@@ -21,9 +23,11 @@ final class ACTTemplateEngine(substitutor: StringSubstitutor,
     ACTTemplate(substitutor, template.as[String], renderers, valueFormat)
 
 object ACTTemplateEngine:
-  object DefaultStringSubstitutor extends StringSubstitutor(
-    StringLookupFactory.INSTANCE.nullStringLookup(),
-    StringSubstitutor.DEFAULT_PREFIX,
-    StringSubstitutor.DEFAULT_SUFFIX,
-    StringSubstitutor.DEFAULT_ESCAPE,
-    StringSubstitutor.DEFAULT_VALUE_DELIMITER)
+  object DefaultStringSubstitutor
+      extends StringSubstitutor(
+        StringLookupFactory.INSTANCE.nullStringLookup(),
+        StringSubstitutor.DEFAULT_PREFIX,
+        StringSubstitutor.DEFAULT_SUFFIX,
+        StringSubstitutor.DEFAULT_ESCAPE,
+        StringSubstitutor.DEFAULT_VALUE_DELIMITER
+      )

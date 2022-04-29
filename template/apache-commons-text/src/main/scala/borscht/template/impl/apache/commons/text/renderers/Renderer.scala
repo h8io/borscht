@@ -6,8 +6,7 @@ import borscht.template.impl.apache.commons.text.ValueFormat
 trait Renderer:
   def apply(vf: ValueFormat, value: Any): Option[String]
 
-  final def orElse(that: Renderer): Renderer = (vf: ValueFormat, value: Any) =>
-    this(vf, value) orElse that(vf, value) 
+  final def orElse(that: Renderer): Renderer = (vf: ValueFormat, value: Any) => this(vf, value) orElse that(vf, value)
 
 object Renderer:
   val empty: Renderer = (_, _) => None

@@ -11,4 +11,3 @@ object RefTypeAny extends RefTypeParameterless:
 
 object RefTypeNode extends RefTypeParameterless:
   override def apply(node: Node): Ref[? <: Node] = RefObj(node)(using ClassTag(node.getClass))
-

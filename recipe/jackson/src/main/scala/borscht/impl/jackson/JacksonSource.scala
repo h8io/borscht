@@ -16,9 +16,9 @@ private[jackson] enum JacksonSource extends Position.Some:
   case oneOf(sources: Iterable[JacksonSource])
 
   override def toString: String = this match
-    case _: raw.type => "raw"
-    case resource(name) => s"resource($name)"
-    case path(path) => s"path(${path.toAbsolutePath})"
-    case file(file) => s"file(${file.getAbsolutePath}"
-    case url(url: URL) => s"url($url)"
+    case _: raw.type                             => "raw"
+    case resource(name)                          => s"resource($name)"
+    case path(path)                              => s"path(${path.toAbsolutePath})"
+    case file(file)                              => s"file(${file.getAbsolutePath}"
+    case url(url: URL)                           => s"url($url)"
     case oneOf(sources: Iterable[JacksonSource]) => s"one-of(${sources mkString ", "})"

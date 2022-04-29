@@ -12,7 +12,7 @@ import java.time.temporal.TemporalAccessor
 final class ST4TemplateEngine(group: STGroup) extends TemplateEngine:
   def this() = this(STGroup())
 
-  def this(renderers: List[Renderer[?]]) = this((renderers foldLeft STGroup()) { (group, renderer) => renderer(group) })
+  def this(renderers: List[Renderer[?]]) = this((renderers foldLeft STGroup())((group, renderer) => renderer(group)))
 
   def this(renderers: SeqNode) = this(renderers.list[Ref[Renderer[?]]] map (_.value))
 

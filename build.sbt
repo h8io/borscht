@@ -54,7 +54,10 @@ ThisBuild / libraryDependencies ++= Seq(
 
 ThisBuild / scalacOptions ++= Seq(
   //"-Yexplicit-nulls",
-  "-Ysafe-init")
+  "-Ysafe-init",
+  "-explain",
+  "-new-syntax",
+  "-unchecked")
 
 ThisBuild / javacOptions += "-parameters"
 

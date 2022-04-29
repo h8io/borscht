@@ -5,7 +5,7 @@ import org.stringtemplate.v4.ST
 
 import scala.collection.mutable
 
-private[st4] final class ST4Template private(underlying: ST, parameters: Map[String, Any]) extends Template:
+final private[st4] class ST4Template private (underlying: ST, parameters: Map[String, Any]) extends Template:
   def this(underlying: ST) = this(underlying, Map.empty)
 
   override def set(key: String, value: Any): Template = ST4Template(underlying, parameters + (key -> value))
