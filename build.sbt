@@ -29,7 +29,7 @@ sonatypeCredentialHost := "s01.oss.sonatype.org"
 sonatypeRepository := "https://s01.oss.sonatype.org/service/local"
 ThisBuild / publishTo := sonatypePublishToBundle.value
 
-import ReleaseTransformations._
+import ReleaseTransformations.*
 releaseProcess := Seq[ReleaseStep](
   checkSnapshotDependencies,
   inquireVersions,
@@ -49,15 +49,17 @@ releaseProcess := Seq[ReleaseStep](
 ThisBuild / scalaVersion := "3.1.2"
 
 ThisBuild / libraryDependencies ++= Seq(
-  //Dependencies.ScalaMock % Test,
-  Dependencies.ScalaTest % Test)
+  // Dependencies.ScalaMock % Test,
+  Dependencies.ScalaTest % Test
+)
 
 ThisBuild / scalacOptions ++= Seq(
-  //"-Yexplicit-nulls",
+  // "-Yexplicit-nulls",
   "-Ysafe-init",
   "-explain",
   "-new-syntax",
-  "-unchecked")
+  "-unchecked"
+)
 
 ThisBuild / javacOptions += "-parameters"
 
@@ -73,30 +75,22 @@ lazy val `test-core`: Project = project
 
 lazy val `recipe-typesafe` = project
   .in(file("recipe/typesafe"))
-  .settings(
-    name := "borscht-typesafe",
-    libraryDependencies += Dependencies.TypesafeConfig)
+  .settings(name := "borscht-typesafe", libraryDependencies += Dependencies.TypesafeConfig)
   .dependsOn(core)
 
 lazy val `recipe-jackson` = project
   .in(file("recipe/jackson"))
-  .settings(
-    name := "borscht-jackson",
-    libraryDependencies += Dependencies.JacksonDatabind)
+  .settings(name := "borscht-jackson", libraryDependencies += Dependencies.JacksonDatabind)
   .dependsOn(core)
 
 lazy val `recipe-jackson-yaml` = project
   .in(file("recipe/jackson/yaml"))
-  .settings(
-    name := "borscht-jackson-yaml",
-    libraryDependencies += Dependencies.JacksonDataformatYAML)
+  .settings(name := "borscht-jackson-yaml", libraryDependencies += Dependencies.JacksonDataformatYAML)
   .dependsOn(`recipe-jackson`)
 
 lazy val `recipe-jackson-toml` = project
   .in(file("recipe/jackson/toml"))
-  .settings(
-    name := "borscht-jackson-toml",
-    libraryDependencies += Dependencies.JacksonDataformatTOML)
+  .settings(name := "borscht-jackson-toml", libraryDependencies += Dependencies.JacksonDataformatTOML)
   .dependsOn(`recipe-jackson`)
 
 lazy val `template-core` = project
@@ -106,16 +100,12 @@ lazy val `template-core` = project
 
 lazy val `template-st4` = project
   .in(file("template/st4"))
-  .settings(
-    name := "borscht-template-st4",
-    libraryDependencies += Dependencies.ST4)
+  .settings(name := "borscht-template-st4", libraryDependencies += Dependencies.ST4)
   .dependsOn(`template-core`, `test-core` % "test -> compile")
 
 lazy val `template-apache-commons-text` = project
   .in(file("template/apache-commons-text"))
-  .settings(
-    name := "borscht-template-apache-commons-text",
-    libraryDependencies += Dependencies.ApacheCommonsText)
+  .settings(name := "borscht-template-apache-commons-text", libraryDependencies += Dependencies.ApacheCommonsText)
   .dependsOn(`template-core`, `test-core` % "test -> compile")
 
 lazy val examples = project
@@ -125,25 +115,33 @@ lazy val examples = project
     libraryDependencies ++= Seq( // for GitHub Scala CI
       Dependencies.JacksonDataformatYAML,
       Dependencies.ST4,
-      Dependencies.ApacheCommonsText),
-    publishArtifact := false)
+      Dependencies.ApacheCommonsText
+    ),
+    publishArtifact := false
+  )
   .dependsOn(`recipe-typesafe`, `recipe-jackson-yaml`, `template-st4`, `template-apache-commons-text`)
 
 lazy val classic = project
   .in(file("classic"))
-  .settings(
-    name := "borscht-classic")
+  .settings(name := "borscht-classic")
   .dependsOn(
-    `recipe-typesafe`, `template-st4`
+    `recipe-typesafe`,
+    `template-st4`
   )
 
 lazy val root = project
   .in(file("."))
-  .settings(
-    name := "borscht",
-    publishArtifact := false)
+  .settings(name := "borscht", publishArtifact := false)
   .aggregate(
-    core, `test-core`,
-    `recipe-typesafe`, `recipe-jackson`, `recipe-jackson-yaml`, `recipe-jackson-toml`,
-    `template-core`, `template-st4`, `template-apache-commons-text`,
-    examples, classic)
+    core,
+    `test-core`,
+    `recipe-typesafe`,
+    `recipe-jackson`,
+    `recipe-jackson-yaml`,
+    `recipe-jackson-toml`,
+    `template-core`,
+    `template-st4`,
+    `template-apache-commons-text`,
+    examples,
+    classic
+  )
